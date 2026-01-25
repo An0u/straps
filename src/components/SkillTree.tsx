@@ -5,7 +5,8 @@ import ConnectionLines from './ConnectionLines';
 import SkillModal from './SkillModal';
 import { useSkillProgress } from '@/hooks/useSkillProgress';
 import { useEditableSkillTree } from '@/hooks/useEditableSkillTree';
-import { ZoomIn, ZoomOut, RotateCcw, Move, Lock, Unlock, Grid3X3, RotateCw, Copy, Trash2 } from 'lucide-react';
+import { ZoomIn, ZoomOut, RotateCcw, Move, Lock, Unlock, Grid3X3, RotateCw, Copy, Trash2, Download } from 'lucide-react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
@@ -273,19 +274,46 @@ const SkillTree: React.FC = () => {
               </Tooltip>
 
               {isEditMode && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={resetPositions}
-                      className="h-8 w-8 text-destructive hover:text-destructive"
-                    >
-                      <RotateCw size={18} />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent side="right">Reset to Default</TooltipContent>
-                </Tooltip>
+                <>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={resetPositions}
+                        className="h-8 w-8 text-destructive hover:text-destructive"
+                      >
+                        <RotateCw size={18} />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="right">Reset to Default</TooltipContent>
+                  </Tooltip>
+                  
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => {
+                          const exportData = skills.map(s => ({
+                            id: s.id,
+                            name: s.name,
+                            x: s.x,
+                            y: s.y,
+                            connections: s.connections,
+                          }));
+                          navigator.clipboard.writeText(JSON.stringify(exportData, null, 2));
+                          toast.success('Layout copied to clipboard!');
+                          console.log('Skill Tree Layout Export:', JSON.stringify(exportData, null, 2));
+                        }}
+                        className="h-8 w-8"
+                      >
+                        <Download size={18} />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="right">Export Layout</TooltipContent>
+                  </Tooltip>
+                </>
               )}
             </>
           )}
