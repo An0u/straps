@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pirata+One&family=Inter:wght@300;400;500;600&display=swap');
 
 @layer base {
   :root {
@@ -85,7 +85,31 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Cinzel', serif;
+    font-family: 'Pirata One', serif;
+  }
+
+  .skill-text {
+    font-family: 'Pirata One', serif;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  }
+
+  .skill-node-grayscale {
+    filter: grayscale(100%);
+  }
+
+  .skill-node-svg-glow {
+    filter: drop-shadow(0 0 8px hsl(var(--skill-active-glow) / 0.7)) 
+            drop-shadow(0 0 16px hsl(var(--skill-active-glow) / 0.4));
+  }
+
+  .skill-node-svg-glow-blue {
+    filter: drop-shadow(0 0 8px hsl(var(--skill-key-glow) / 0.7)) 
+            drop-shadow(0 0 16px hsl(var(--skill-key-glow) / 0.4));
+  }
+
+  .skill-node-svg-glow-gold {
+    filter: drop-shadow(0 0 10px hsl(var(--skill-gold-glow) / 0.8)) 
+            drop-shadow(0 0 20px hsl(var(--skill-gold-glow) / 0.5));
   }
 }
 
