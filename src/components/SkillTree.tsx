@@ -489,7 +489,7 @@ const SkillTree: React.FC = () => {
           )}
 
           {/* Connection lines */}
-          <ConnectionLines skills={skills} />
+          <ConnectionLines skills={skills} completedSkills={completedSkills} />
 
           {/* Skill nodes */}
           {skills.map(skill => (
