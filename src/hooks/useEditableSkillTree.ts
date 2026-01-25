@@ -3,6 +3,7 @@ import { Skill, skillTreeData as originalData } from '@/data/skillTreeData';
 
 const STORAGE_KEY = 'skillTreePositions';
 const NAMES_STORAGE_KEY = 'skillTreeNames';
+const CONNECTIONS_STORAGE_KEY = 'skillTreeConnections';
 
 interface StoredPosition {
   id: string;
@@ -15,9 +16,15 @@ interface StoredName {
   name: string;
 }
 
+interface StoredConnection {
+  from: string;
+  to: string;
+}
+
 export const useEditableSkillTree = (gridSize: number = 30) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [connectionSourceId, setConnectionSourceId] = useState<string | null>(null);
   const dragStartPositions = useRef<Map<string, { x: number; y: number }>>(new Map());
   const accumulatedDelta = useRef({ x: 0, y: 0 });
   
@@ -48,6 +55,27 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
         result = result.map(skill => {
           const savedName = nameMap.get(skill.id);
           return savedName ? { ...skill, name: savedName } : skill;
+        });
+      } catch {
+        // Ignore parse errors
+      }
+    }
+    
+    // Load saved connections
+    const savedConnections = localStorage.getItem(CONNECTIONS_STORAGE_KEY);
+    if (savedConnections) {
+      try {
+        const connections: StoredConnection[] = JSON.parse(savedConnections);
+        // Build connection map: from -> [to1, to2, ...]
+        const connectionMap = new Map<string, string[]>();
+        connections.forEach(c => {
+          const existing = connectionMap.get(c.from) || [];
+          existing.push(c.to);
+          connectionMap.set(c.from, existing);
+        });
+        result = result.map(skill => {
+          const savedConns = connectionMap.get(skill.id);
+          return savedConns ? { ...skill, connections: savedConns } : skill;
         });
       } catch {
         // Ignore parse errors
@@ -87,11 +115,39 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
 
   const clearSelection = useCallback(() => {
     setSelectedIds(new Set());
+    setConnectionSourceId(null);
   }, []);
 
   const selectAll = useCallback(() => {
     setSelectedIds(new Set(skills.map(s => s.id)));
   }, [skills]);
+
+  // Connection editing
+  const startConnection = useCallback((sourceId: string) => {
+    setConnectionSourceId(sourceId);
+  }, []);
+
+  const completeConnection = useCallback((targetId: string) => {
+    if (!connectionSourceId || connectionSourceId === targetId) {
+      setConnectionSourceId(null);
+      return;
+    }
+
+    setSkills(prev => prev.map(skill => {
+      if (skill.id === connectionSourceId) {
+        // Check if connection already exists
+        if (skill.connections.includes(targetId)) {
+          // Remove the connection (toggle behavior)
+          return { ...skill, connections: skill.connections.filter(c => c !== targetId) };
+        }
+        // Add the connection
+        return { ...skill, connections: [...skill.connections, targetId] };
+      }
+      return skill;
+    }));
+
+    setConnectionSourceId(null);
+  }, [connectionSourceId]);
 
   const handleDragStart = useCallback((id: string, newSelection: Set<string>) => {
     // Store starting positions of all selected nodes
@@ -140,6 +196,16 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
     localStorage.setItem(NAMES_STORAGE_KEY, JSON.stringify(names));
   }, [skills]);
 
+  const saveConnections = useCallback(() => {
+    const connections: StoredConnection[] = [];
+    skills.forEach(skill => {
+      skill.connections.forEach(toId => {
+        connections.push({ from: skill.id, to: toId });
+      });
+    });
+    localStorage.setItem(CONNECTIONS_STORAGE_KEY, JSON.stringify(connections));
+  }, [skills]);
+
   const updateNodeName = useCallback((id: string, newName: string) => {
     setSkills(prev => prev.map(skill => 
       skill.id === id ? { ...skill, name: newName } : skill
@@ -162,14 +228,14 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
           name: `${skill.name} (copy)`,
           x: snapToGrid(skill.x + 60),
           y: snapToGrid(skill.y + 60),
-          connections: [], // Clear connections for duplicates
+          connections: [],
           prerequisites: [],
         });
       }
     });
     
     setSkills(prev => [...prev, ...newNodes]);
-    setSelectedIds(new Set(newIds)); // Select the new duplicates
+    setSelectedIds(new Set(newIds));
   }, [selectedIds, skills, snapToGrid]);
 
   const deleteSelected = useCallback(() => {
@@ -183,37 +249,43 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
     if (isEditMode) {
       savePositions();
       saveNames();
+      saveConnections();
       clearSelection();
     }
     setIsEditMode(prev => !prev);
-  }, [isEditMode, savePositions, saveNames, clearSelection]);
+  }, [isEditMode, savePositions, saveNames, saveConnections, clearSelection]);
 
   const resetPositions = useCallback(() => {
     setSkills(originalData);
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(NAMES_STORAGE_KEY);
+    localStorage.removeItem(CONNECTIONS_STORAGE_KEY);
     clearSelection();
   }, [clearSelection]);
 
-  // Auto-save when positions or names change in edit mode
+  // Auto-save when positions, names, or connections change in edit mode
   useEffect(() => {
     if (isEditMode) {
       const timeout = setTimeout(() => {
         savePositions();
         saveNames();
+        saveConnections();
       }, 500);
       return () => clearTimeout(timeout);
     }
-  }, [skills, isEditMode, savePositions, saveNames]);
+  }, [skills, isEditMode, savePositions, saveNames, saveConnections]);
 
   return {
     skills,
     isEditMode,
     selectedIds,
+    connectionSourceId,
     toggleEditMode,
     selectNode,
     clearSelection,
     selectAll,
+    startConnection,
+    completeConnection,
     handleDragStart,
     handleDragMove,
     handleDragEnd,
