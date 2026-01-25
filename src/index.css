@@ -79,6 +79,16 @@
     @apply border-border;
   }
 
+  html, body, #root {
+    @apply overscroll-none;
+    height: 100dvh;
+    height: 100vh; /* Fallback for older browsers */
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', sans-serif;
