@@ -152,7 +152,7 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'cruiser',
-    name: 'Cruiser',
+    name: 'Center',
     description: 'Advanced cruiser position. Signature skill for flow.',
     prerequisites: ['spin-hang', 'reverse-hang'],
     type: 'category',
@@ -685,8 +685,8 @@ export const skillTreeData: Skill[] = [
   // LEVEL 3
   {
     id: 'sitting-right',
-    name: 'Sitting',
-    description: 'Sitting position on apparatus.',
+    name: 'Swing',
+    description: 'Swing position on apparatus.',
     prerequisites: ['rotating-right'],
     type: 'category',
     state: 'active',
@@ -729,8 +729,8 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'split-right',
-    name: 'Split',
-    description: 'Split position in hang.',
+    name: 'Spin',
+    description: 'Spin position in hang.',
     prerequisites: ['center'],
     type: 'category',
     state: 'active',
