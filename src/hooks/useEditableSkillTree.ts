@@ -36,28 +36,29 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
     return Math.round(value / gridSize) * gridSize;
   }, [gridSize]);
 
+  // Compute what the new selection should be
+  const computeNewSelection = useCallback((id: string, addToSelection: boolean): Set<string> => {
+    const prev = selectedIds;
+    if (addToSelection) {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    }
+    if (prev.has(id)) {
+      return prev;
+    }
+    return new Set([id]);
+  }, [selectedIds]);
+
   const selectNode = useCallback((id: string, addToSelection: boolean) => {
-    setSelectedIds(prev => {
-      // If adding to selection (shift held)
-      if (addToSelection) {
-        const next = new Set(prev);
-        if (next.has(id)) {
-          next.delete(id);
-        } else {
-          next.add(id);
-        }
-        return next;
-      }
-      
-      // If clicking on an already selected node without shift, keep selection
-      if (prev.has(id)) {
-        return prev;
-      }
-      
-      // Otherwise, select only this node
-      return new Set([id]);
-    });
-  }, []);
+    const newSelection = computeNewSelection(id, addToSelection);
+    setSelectedIds(newSelection);
+    return newSelection;
+  }, [computeNewSelection]);
 
   const clearSelection = useCallback(() => {
     setSelectedIds(new Set());
@@ -67,24 +68,20 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
     setSelectedIds(new Set(skills.map(s => s.id)));
   }, [skills]);
 
-  const handleDragStart = useCallback((id: string) => {
+  const handleDragStart = useCallback((id: string, newSelection: Set<string>) => {
     // Store starting positions of all selected nodes
     dragStartPositions.current.clear();
     accumulatedDelta.current = { x: 0, y: 0 };
     
-    const idsToMove = selectedIds.has(id) ? selectedIds : new Set([id]);
+    // Use the passed newSelection which is current
+    const idsToMove = newSelection.has(id) ? newSelection : new Set([id]);
     
     skills.forEach(skill => {
       if (idsToMove.has(skill.id)) {
         dragStartPositions.current.set(skill.id, { x: skill.x, y: skill.y });
       }
     });
-    
-    // If dragging an unselected node, select only it
-    if (!selectedIds.has(id)) {
-      setSelectedIds(new Set([id]));
-    }
-  }, [selectedIds, skills]);
+  }, [skills]);
 
   const handleDragMove = useCallback((deltaX: number, deltaY: number) => {
     accumulatedDelta.current.x += deltaX;
