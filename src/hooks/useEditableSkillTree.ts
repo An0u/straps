@@ -2,11 +2,17 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { Skill, skillTreeData as originalData } from '@/data/skillTreeData';
 
 const STORAGE_KEY = 'skillTreePositions';
+const NAMES_STORAGE_KEY = 'skillTreeNames';
 
 interface StoredPosition {
   id: string;
   x: number;
   y: number;
+}
+
+interface StoredName {
+  id: string;
+  name: string;
 }
 
 export const useEditableSkillTree = (gridSize: number = 30) => {
@@ -16,20 +22,39 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
   const accumulatedDelta = useRef({ x: 0, y: 0 });
   
   const [skills, setSkills] = useState<Skill[]>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
+    let result = [...originalData];
+    
+    // Load saved positions
+    const savedPositions = localStorage.getItem(STORAGE_KEY);
+    if (savedPositions) {
       try {
-        const positions: StoredPosition[] = JSON.parse(saved);
+        const positions: StoredPosition[] = JSON.parse(savedPositions);
         const positionMap = new Map(positions.map(p => [p.id, { x: p.x, y: p.y }]));
-        return originalData.map(skill => {
+        result = result.map(skill => {
           const savedPos = positionMap.get(skill.id);
           return savedPos ? { ...skill, x: savedPos.x, y: savedPos.y } : skill;
         });
       } catch {
-        return originalData;
+        // Ignore parse errors
       }
     }
-    return originalData;
+    
+    // Load saved names
+    const savedNames = localStorage.getItem(NAMES_STORAGE_KEY);
+    if (savedNames) {
+      try {
+        const names: StoredName[] = JSON.parse(savedNames);
+        const nameMap = new Map(names.map(n => [n.id, n.name]));
+        result = result.map(skill => {
+          const savedName = nameMap.get(skill.id);
+          return savedName ? { ...skill, name: savedName } : skill;
+        });
+      } catch {
+        // Ignore parse errors
+      }
+    }
+    
+    return result;
   });
 
   const snapToGrid = useCallback((value: number) => {
@@ -108,27 +133,45 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(positions));
   }, [skills]);
 
+  const saveNames = useCallback(() => {
+    const names: StoredName[] = skills
+      .filter(s => s.name !== originalData.find(o => o.id === s.id)?.name)
+      .map(s => ({ id: s.id, name: s.name }));
+    localStorage.setItem(NAMES_STORAGE_KEY, JSON.stringify(names));
+  }, [skills]);
+
+  const updateNodeName = useCallback((id: string, newName: string) => {
+    setSkills(prev => prev.map(skill => 
+      skill.id === id ? { ...skill, name: newName } : skill
+    ));
+  }, []);
+
   const toggleEditMode = useCallback(() => {
     if (isEditMode) {
       savePositions();
+      saveNames();
       clearSelection();
     }
     setIsEditMode(prev => !prev);
-  }, [isEditMode, savePositions, clearSelection]);
+  }, [isEditMode, savePositions, saveNames, clearSelection]);
 
   const resetPositions = useCallback(() => {
     setSkills(originalData);
     localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(NAMES_STORAGE_KEY);
     clearSelection();
   }, [clearSelection]);
 
-  // Auto-save when positions change in edit mode
+  // Auto-save when positions or names change in edit mode
   useEffect(() => {
     if (isEditMode) {
-      const timeout = setTimeout(savePositions, 500);
+      const timeout = setTimeout(() => {
+        savePositions();
+        saveNames();
+      }, 500);
       return () => clearTimeout(timeout);
     }
-  }, [skills, isEditMode, savePositions]);
+  }, [skills, isEditMode, savePositions, saveNames]);
 
   return {
     skills,
@@ -142,5 +185,6 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
     handleDragMove,
     handleDragEnd,
     resetPositions,
+    updateNodeName,
   };
 };

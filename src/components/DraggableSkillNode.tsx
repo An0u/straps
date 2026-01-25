@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, forwardRef } from 'react';
+import React, { useState, useCallback, useRef, forwardRef, useEffect } from 'react';
 import { Skill } from '@/data/skillTreeData';
 import { Unlock } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -15,6 +15,7 @@ interface DraggableSkillNodeProps {
   onDragMove: (deltaX: number, deltaY: number) => void;
   onDragEnd: () => void;
   gridSize: number;
+  onNameChange?: (id: string, newName: string) => void;
 }
 
 const SVG_PATHS = {
@@ -44,10 +45,29 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
   onDragMove,
   onDragEnd,
   gridSize,
+  onNameChange,
 }, ref) => {
   const [isDragging, setIsDragging] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editValue, setEditValue] = useState(skill.name);
   const lastMousePos = useRef({ x: 0, y: 0 });
   const nodeRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Sync edit value with skill name when it changes externally
+  useEffect(() => {
+    if (!isEditing) {
+      setEditValue(skill.name);
+    }
+  }, [skill.name, isEditing]);
+
+  // Focus input when editing starts
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+  }, [isEditing]);
 
   const isCategory = skill.type === 'category';
   const isKey = skill.type === 'key';
@@ -131,12 +151,38 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
   const handleClick = useCallback((e: React.MouseEvent) => {
-    if (isEditMode) {
+    if (isEditMode || isEditing) {
       e.stopPropagation();
       return;
     }
     onClick();
-  }, [isEditMode, onClick]);
+  }, [isEditMode, isEditing, onClick]);
+
+  const handleDoubleClick = useCallback((e: React.MouseEvent) => {
+    if (!isEditMode) return;
+    e.stopPropagation();
+    e.preventDefault();
+    setIsEditing(true);
+  }, [isEditMode]);
+
+  const handleInputBlur = useCallback(() => {
+    setIsEditing(false);
+    if (editValue.trim() && editValue !== skill.name) {
+      onNameChange?.(skill.id, editValue.trim());
+    } else {
+      setEditValue(skill.name);
+    }
+  }, [editValue, skill.name, skill.id, onNameChange]);
+
+  const handleInputKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleInputBlur();
+    } else if (e.key === 'Escape') {
+      setEditValue(skill.name);
+      setIsEditing(false);
+    }
+    e.stopPropagation();
+  }, [handleInputBlur, skill.name]);
 
   return (
     <div
@@ -156,14 +202,20 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
       }}
       onMouseDown={handleMouseDown}
       onClick={handleClick}
+      onDoubleClick={handleDoubleClick}
     >
       {/* Selection indicator */}
-      {isEditMode && isSelected && (
+      {isEditMode && isSelected && !isEditing && (
         <div className="absolute -inset-3 border-2 border-primary rounded bg-primary/10 pointer-events-none z-30" />
       )}
       
+      {/* Editing indicator */}
+      {isEditing && (
+        <div className="absolute -inset-3 border-2 border-skill-gold rounded bg-skill-gold/10 pointer-events-none z-30" />
+      )}
+      
       {/* Edit mode hover indicator */}
-      {isEditMode && !isSelected && (
+      {isEditMode && !isSelected && !isEditing && (
         <div className="absolute -inset-2 border-2 border-dashed border-muted-foreground/30 rounded pointer-events-none z-30" />
       )}
 
@@ -189,7 +241,7 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
         />
       )}
 
-      {/* Text Overlay */}
+      {/* Text Overlay / Edit Input */}
       <div 
         className="relative z-10 flex items-center justify-center text-center px-2"
         style={{ 
@@ -197,20 +249,36 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
           paddingTop: isCategory ? '8px' : '4px',
         }}
       >
-        <span 
-          className={cn(
-            'skill-text font-display font-normal leading-tight',
-            getTextSize(),
-            isActive ? 'text-primary-foreground' : 'text-muted-foreground'
-          )}
-          style={{
-            textShadow: isActive 
-              ? '1px 1px 3px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.5)' 
-              : '1px 1px 2px rgba(0,0,0,0.8)',
-          }}
-        >
-          {skill.name}
-        </span>
+        {isEditing ? (
+          <input
+            ref={inputRef}
+            type="text"
+            value={editValue}
+            onChange={(e) => setEditValue(e.target.value)}
+            onBlur={handleInputBlur}
+            onKeyDown={handleInputKeyDown}
+            className={cn(
+              'w-full bg-background/90 text-foreground rounded px-1 py-0.5 text-center border border-skill-gold focus:outline-none focus:ring-1 focus:ring-skill-gold',
+              getTextSize()
+            )}
+            style={{ maxWidth: width - 20 }}
+          />
+        ) : (
+          <span 
+            className={cn(
+              'skill-text font-display font-normal leading-tight',
+              getTextSize(),
+              isActive ? 'text-primary-foreground' : 'text-muted-foreground'
+            )}
+            style={{
+              textShadow: isActive 
+                ? '1px 1px 3px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.5)' 
+                : '1px 1px 2px rgba(0,0,0,0.8)',
+            }}
+          >
+            {skill.name}
+          </span>
+        )}
       </div>
 
       {/* Completion indicator */}

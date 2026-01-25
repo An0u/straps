@@ -36,7 +36,8 @@ const SkillTree: React.FC = () => {
     handleDragStart,
     handleDragMove,
     handleDragEnd,
-    resetPositions 
+    resetPositions,
+    updateNodeName,
   } = useEditableSkillTree(GRID_SIZE);
 
   // Calculate tree bounds
@@ -240,7 +241,10 @@ const SkillTree: React.FC = () => {
               <span>Grid: {GRID_SIZE}px</span>
             </div>
             <div className="text-xs opacity-80 mt-1">
-              Click to select • Shift+click for multi • {selectedIds.size} selected
+              Click to select • Shift+click for multi • Double-click to rename
+            </div>
+            <div className="text-xs opacity-80">
+              {selectedIds.size} selected
             </div>
           </div>
         )}
@@ -331,6 +335,7 @@ const SkillTree: React.FC = () => {
               onDragMove={handleDragMove}
               onDragEnd={handleDragEnd}
               gridSize={GRID_SIZE}
+              onNameChange={updateNodeName}
             />
           ))}
         </div>
