@@ -75,8 +75,9 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
 
   const isCategory = skill.type === 'category';
   const isKey = skill.type === 'key';
-  const isActive = skill.state === 'active';
-  const hasGoldBorder = skill.isGoldBorder;
+  // Active state is now based on completion, not stored state
+  const isActive = isCompleted;
+  const hasGoldBorder = skill.isGoldBorder || isKey; // Key skills always have gold treatment
 
   const getSize = () => {
     if (isCategory) return { width: 101, height: 101 };
@@ -100,6 +101,8 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
   };
 
   const getGlowClass = () => {
+    // Key skills get gold glow even when inactive
+    if (isKey) return 'skill-node-svg-glow-gold';
     if (!isActive) return '';
     if (hasGoldBorder) return 'skill-node-svg-glow-gold';
     // Use blue glow for right side (x > 1020) or nodes with isBlue, purple for left
@@ -252,18 +255,23 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
         alt=""
         className={cn(
           'absolute inset-0 w-full h-full object-contain transition-all duration-300',
-          !isActive && 'skill-node-grayscale opacity-70',
-          isActive && getGlowClass()
+          !isActive && !isKey && 'skill-node-grayscale opacity-70',
+          (isActive || isKey) && getGlowClass()
         )}
         draggable={false}
       />
 
-      {/* Gold glow overlay */}
-      {hasGoldBorder && isActive && (
+      {/* Gold glow overlay for key skills and gold border skills */}
+      {hasGoldBorder && (
         <div 
-          className="absolute inset-0 pointer-events-none animate-glow-pulse"
+          className={cn(
+            "absolute inset-0 pointer-events-none",
+            isActive && "animate-glow-pulse"
+          )}
           style={{
-            background: 'radial-gradient(circle, hsl(45 90% 55% / 0.2) 0%, transparent 70%)',
+            background: isActive 
+              ? 'radial-gradient(circle, hsl(45 90% 55% / 0.3) 0%, transparent 70%)'
+              : 'radial-gradient(circle, hsl(45 90% 55% / 0.15) 0%, transparent 60%)',
           }}
         />
       )}
