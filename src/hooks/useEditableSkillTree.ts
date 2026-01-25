@@ -38,13 +38,24 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
 
   const selectNode = useCallback((id: string, addToSelection: boolean) => {
     setSelectedIds(prev => {
-      const next = new Set(addToSelection ? prev : []);
-      if (next.has(id) && addToSelection) {
-        next.delete(id);
-      } else {
-        next.add(id);
+      // If adding to selection (shift held)
+      if (addToSelection) {
+        const next = new Set(prev);
+        if (next.has(id)) {
+          next.delete(id);
+        } else {
+          next.add(id);
+        }
+        return next;
       }
-      return next;
+      
+      // If clicking on an already selected node without shift, keep selection
+      if (prev.has(id)) {
+        return prev;
+      }
+      
+      // Otherwise, select only this node
+      return new Set([id]);
     });
   }, []);
 
