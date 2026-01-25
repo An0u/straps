@@ -5,7 +5,7 @@ import ConnectionLines from './ConnectionLines';
 import SkillModal from './SkillModal';
 import { useSkillProgress } from '@/hooks/useSkillProgress';
 import { useEditableSkillTree } from '@/hooks/useEditableSkillTree';
-import { ZoomIn, ZoomOut, RotateCcw, Move, Lock, Unlock, Grid3X3, RotateCw, Copy, Trash2, Link } from 'lucide-react';
+import { ZoomIn, ZoomOut, RotateCcw, Move, Lock, Unlock, Grid3X3, RotateCw, Copy, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
@@ -29,13 +29,10 @@ const SkillTree: React.FC = () => {
     skills, 
     isEditMode, 
     selectedIds,
-    connectionSourceId,
     toggleEditMode, 
     selectNode,
     clearSelection,
     selectAll,
-    startConnection,
-    completeConnection,
     handleDragStart,
     handleDragMove,
     handleDragEnd,
@@ -63,16 +60,11 @@ const SkillTree: React.FC = () => {
         e.preventDefault();
         deleteSelected();
       }
-      
-      // Escape to cancel connection mode
-      if (e.key === 'Escape' && connectionSourceId) {
-        clearSelection();
-      }
     };
     
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isEditMode, duplicateSelected, deleteSelected, connectionSourceId, clearSelection]);
+  }, [isEditMode, duplicateSelected, deleteSelected]);
 
   // Calculate tree bounds
   const treeBounds = {
@@ -312,17 +304,6 @@ const SkillTree: React.FC = () => {
               Click to select • Shift+click for multi • Double-click to rename
             </div>
             <div className="text-xs opacity-80">
-              <span className="flex items-center gap-1">
-                <Link size={10} />
-                Ctrl+Shift+click to connect nodes
-              </span>
-            </div>
-            {connectionSourceId && (
-              <div className="text-xs mt-1 bg-skill-gold/20 text-skill-gold px-2 py-1 rounded">
-                Click target node to connect from "{skills.find(s => s.id === connectionSourceId)?.name}"
-              </div>
-            )}
-            <div className="text-xs opacity-80">
               {selectedIds.size} selected
             </div>
           </div>
@@ -409,13 +390,10 @@ const SkillTree: React.FC = () => {
               scale={scale}
               isEditMode={isEditMode}
               isSelected={selectedIds.has(skill.id)}
-              isConnectionSource={connectionSourceId === skill.id}
               onSelect={selectNode}
               onDragStart={handleDragStart}
               onDragMove={handleDragMove}
               onDragEnd={handleDragEnd}
-              onStartConnection={startConnection}
-              onCompleteConnection={completeConnection}
               gridSize={GRID_SIZE}
               onNameChange={updateNodeName}
             />
