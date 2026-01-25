@@ -126,7 +126,7 @@ const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills, completedSkil
           stroke={
             line.isActive 
               ? `url(#lineGradient${line.colorType === 'blue' ? 'Blue' : 'Purple'})` 
-              : 'hsl(220 10% 30%)'
+              : 'hsl(220 15% 45%)'
           }
           strokeWidth={line.isActive ? 4 : 3}
           strokeLinecap="round"
