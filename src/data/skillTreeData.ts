@@ -22,12 +22,7 @@ export interface SkillTreeSection {
 }
 
 // Skill tree layout matching reference image
-// Central horizontal axis with One Arm (left) and Two Arm (right)
-// LEFT SIDE HIERARCHY:
-// Level 1: One Arm
-// Level 2: Swing, Static, Spin
-// Level 3: Rotating, Twisting, Basics, Hanging, Normal, Reverse, Cruiser
-// Level 4: Everything else to the left
+// All connections cleared - use edit mode to create connections
 export const skillTreeData: Skill[] = [
   // ============ CENTRAL SPINE ============
   {
@@ -39,1167 +34,1158 @@ export const skillTreeData: Skill[] = [
     state: 'active',
     x: 900,
     y: 450,
-    connections: ['two-arm', 'swing-left', 'static-left', 'spin-hang'] // Level 1 → Level 2
+    connections: []
   },
   {
     id: 'two-arm',
     name: 'Two Arm',
     description: 'Foundation for all two-arm skills. Essential grip and positioning.',
-    prerequisites: ['one-arm'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 1020,
     y: 450,
-    connections: ['static-right', 'support', 'hanging-right', 'rotating-right']
+    connections: []
   },
 
   // ============ LEFT SIDE - ONE ARM BRANCH ============
   
-  // LEVEL 2: Swing, Static, Spin (direct children of One Arm)
+  // LEVEL 2: Swing, Static, Spin
   {
     id: 'swing-left',
     name: 'Swing',
     description: 'Swinging from rotation. Momentum-based skills.',
-    prerequisites: ['one-arm'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 780,
     y: 240,
-    connections: ['rotating-left'] // Level 2 → Level 3 only
+    connections: []
   },
   {
     id: 'static-left',
     name: 'Static',
     description: 'Static holds and positions. Focus on stability and control.',
-    prerequisites: ['one-arm'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 780,
     y: 450,
-    connections: ['hanging-left', 'basics'] // Level 2 → Level 3
+    connections: []
   },
   {
     id: 'spin-hang',
     name: 'Spin',
     description: 'Spinning from hang position. Dynamic movement skills.',
-    prerequisites: ['one-arm'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 720,
     y: 540,
-    connections: ['cruiser'] // Level 2 → Level 3
+    connections: []
   },
 
-  // LEVEL 3: Rotating, Twisting, Basics, Hanging, Normal, Reverse, Cruiser
+  // LEVEL 3
   {
     id: 'rotating-left',
     name: 'Rotating',
     description: 'Rotating movements and spins. Dynamic one-arm rotations.',
-    prerequisites: ['swing-left'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 720,
     y: 150,
-    connections: ['twisting-left', 'bucket'] // Only horizontally adjacent Level 4
+    connections: []
   },
   {
     id: 'twisting-left',
     name: 'Twisting',
     description: 'Twisting movements from rotation. Advanced coordination.',
-    prerequisites: ['rotating-left'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 660,
     y: 240,
-    connections: ['reverse-swing'] // Only horizontally adjacent Level 4
+    connections: []
   },
   {
     id: 'basics',
     name: 'Basics',
     description: 'Fundamental movements and positions. Essential foundation.',
-    prerequisites: ['static-left'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 720,
     y: 330,
-    connections: ['front-to-front'] // Only horizontally adjacent Level 4
+    connections: []
   },
   {
     id: 'hanging-left',
     name: 'Hanging',
     description: 'Hanging positions using one arm. Build endurance and grip strength.',
-    prerequisites: ['static-left'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 660,
     y: 450,
-    connections: ['normal-hang', 'reverse-hang', 'straddle-invert-flag'] // Level 3 connections + adjacent Level 4
+    connections: []
   },
   {
     id: 'normal-hang',
     name: 'Normal',
     description: 'Standard hanging position. Entry point for hang variations.',
-    prerequisites: ['hanging-left'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 600,
     y: 540,
-    connections: ['meathook'] // Only horizontally adjacent Level 4
+    connections: []
   },
   {
     id: 'reverse-hang',
     name: 'Reverse',
     description: 'Inverted hanging position. Builds core and grip.',
-    prerequisites: ['hanging-left'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 660,
     y: 630,
-    connections: ['cruiser', 'split-grip-flag'] // Level 3 + horizontally adjacent Level 4
+    connections: []
   },
   {
     id: 'cruiser',
     name: 'Cruiser',
     description: 'Advanced cruiser position. Signature skill for flow.',
-    prerequisites: ['spin-hang', 'reverse-hang'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 660,
     y: 720,
-    connections: ['cruiser-spin'] // Only horizontally adjacent Level 4
+    connections: []
   },
 
-  // LEVEL 4: All other skills - HORIZONTAL connections only
-  
-  // Row y=60 (top row) - horizontal chain
+  // LEVEL 4 - Row y=60
   {
     id: 'double-twist',
     name: 'Double Twist',
     description: 'Double twisting motion. Advanced rotation.',
-    prerequisites: ['rotating-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 540,
     y: 60,
-    connections: ['soleil'] // horizontal only
+    connections: []
   },
   {
     id: 'soleil',
     name: 'Soleil',
     description: 'Soleil position. Sun-like extension.',
-    prerequisites: ['rotating-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 600,
     y: 60,
-    connections: ['bucket'] // horizontal only
+    connections: []
   },
   {
     id: 'bucket',
     name: 'Bucket',
     description: 'Bucket position. Compact hold.',
-    prerequisites: ['rotating-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 660,
     y: 60,
-    connections: [] // end of row
+    connections: []
   },
   
-  // Row y=120 - horizontal chain (fill gaps with continuous chain)
+  // Row y=120
   {
     id: 'double-salta',
     name: 'Double Salta',
     description: 'Double salta technique.',
-    prerequisites: ['rotating-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 300,
     y: 120,
-    connections: ['1-5-arm-salta'] // horizontal only
+    connections: []
   },
   {
     id: '1-5-arm-salta',
     name: '1.5 Arm Salta',
     description: 'One and a half arm salta.',
-    prerequisites: ['rotating-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 360,
     y: 120,
-    connections: ['sailor'] // horizontal - jumps gap to next node
+    connections: []
   },
   {
     id: 'sailor',
     name: 'Sailor',
     description: 'Sailor position.',
-    prerequisites: ['rotating-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 540,
     y: 120,
-    connections: ['splits'] // horizontal only
+    connections: []
   },
   {
     id: 'splits',
     name: 'Splits',
     description: 'Split position.',
-    prerequisites: ['rotating-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 600,
     y: 120,
-    connections: [], // end of row
+    connections: [],
     isBlue: true
   },
 
-  // Row y=180 - horizontal chain with Swing and Twisting as parents
+  // Row y=180
   {
     id: 'swing-in-armtie',
     name: 'Swing in Armtie',
     description: 'Swing with arm tie.',
-    prerequisites: ['swing-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 300,
     y: 180,
-    connections: ['swing-to-flag'] // horizontal only
+    connections: []
   },
   {
     id: 'swing-to-flag',
     name: 'Swing to Flag',
     description: 'Swing transition to flag.',
-    prerequisites: ['swing-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 360,
     y: 180,
-    connections: ['shoulder-pirouette'] // horizontal only
+    connections: []
   },
   {
     id: 'shoulder-pirouette',
     name: 'Shoulder Pirouette',
     description: 'Pirouette from shoulder.',
-    prerequisites: ['swing-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 420,
     y: 180,
-    connections: ['soleil-2'] // horizontal only
+    connections: []
   },
   {
     id: 'soleil-2',
     name: 'Soleil',
     description: 'Soleil variation.',
-    prerequisites: ['swing-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 480,
     y: 180,
-    connections: ['reverse-swing'] // horizontal - jumps gap
+    connections: []
   },
   {
     id: 'reverse-swing',
     name: 'Reverse Swing',
     description: 'Reverse direction swing.',
-    prerequisites: ['twisting-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 600,
     y: 180,
-    connections: ['inside-pirouette'] // horizontal only
+    connections: []
   },
   {
     id: 'inside-pirouette',
     name: 'Inside Pirouette',
     description: 'Inside pirouette spin.',
-    prerequisites: ['swing-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 720,
     y: 180,
-    connections: [] // end of row
+    connections: []
   },
 
-  // Row y=150 - Kick adjacent to Swing
+  // Row y=150
   {
     id: 'kick',
     name: 'Kick',
     description: 'Kick movement. Dynamic power move.',
-    prerequisites: ['swing-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 780,
     y: 150,
-    connections: [] // single node adjacent to Swing parent
+    connections: []
   },
 
-  // Row y=300 - horizontal chain below Twisting/Basics
+  // Row y=300
   {
     id: 'front-to-side',
     name: 'Front to Side',
     description: 'Transition from front to side.',
-    prerequisites: ['twisting-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 600,
     y: 300,
-    connections: ['front-to-front'] // horizontal only
+    connections: []
   },
   {
     id: 'front-to-front',
     name: 'Front to Front',
     description: 'Front position maintenance.',
-    prerequisites: ['basics'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 660,
     y: 300,
-    connections: [] // connects to Basics parent
+    connections: []
   },
 
-  // Row y=420 - horizontal chain (Hanging is adjacent parent)
+  // Row y=420
   {
     id: 'inversion-flag',
     name: 'Inversion to Flag',
     description: 'Invert into flag position.',
-    prerequisites: ['hanging-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 300,
     y: 420,
-    connections: ['inversion-meathook'] // horizontal only
+    connections: []
   },
   {
     id: 'inversion-meathook',
     name: 'Inversion to Meathook',
     description: 'Invert directly to meathook.',
-    prerequisites: ['hanging-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     isGoldBorder: true,
     x: 360,
     y: 420,
-    connections: ['inversion'] // horizontal only
+    connections: []
   },
   {
     id: 'inversion',
     name: 'Inversion',
     description: 'Basic inversion technique.',
-    prerequisites: ['hanging-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 420,
     y: 420,
-    connections: ['high-switch'] // horizontal only
+    connections: []
   },
   {
     id: 'high-switch',
     name: 'High Switch',
     description: 'High position switch.',
-    prerequisites: ['hanging-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 480,
     y: 420,
-    connections: ['straddle-invert-flag'] // horizontal only
+    connections: []
   },
   {
     id: 'straddle-invert-flag',
     name: 'Straddle Invert Flag',
     description: 'Straddle into inverted flag.',
-    prerequisites: ['hanging-left'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     isGoldBorder: true,
     x: 540,
     y: 420,
-    connections: [] // end of row, adjacent to Hanging
+    connections: []
   },
 
-  // Row y=540 - horizontal chain (Normal is adjacent parent at x=600)
+  // Row y=540
   {
     id: 'double-full',
     name: 'Double Full',
     description: 'Double full rotation.',
-    prerequisites: ['normal-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 60,
     y: 540,
-    connections: ['blanks'] // horizontal only
+    connections: []
   },
   {
     id: 'blanks',
     name: 'Blanks',
     description: 'Blanks position.',
-    prerequisites: ['normal-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 120,
     y: 540,
-    connections: ['full'] // horizontal only
+    connections: []
   },
   {
     id: 'full',
     name: 'Full',
     description: 'Full rotation skill.',
-    prerequisites: ['normal-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 180,
     y: 540,
-    connections: ['high-switch-left'] // horizontal only
+    connections: []
   },
   {
     id: 'high-switch-left',
     name: 'High Switch',
     description: 'High switch variation.',
-    prerequisites: ['normal-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 240,
     y: 540,
-    connections: ['barswrecker-switch'] // horizontal only
+    connections: []
   },
   {
     id: 'barswrecker-switch',
     name: 'Barswrecker Switch',
     description: 'Barswrecker with switch.',
-    prerequisites: ['normal-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 300,
     y: 540,
-    connections: ['low-switch'] // horizontal only
+    connections: []
   },
   {
     id: 'low-switch',
     name: 'Low Switch',
     description: 'Low position switch.',
-    prerequisites: ['normal-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 360,
     y: 540,
-    connections: ['flare-to-flag'] // horizontal only
+    connections: []
   },
   {
     id: 'flare-to-flag',
     name: 'Flare to Flag',
     description: 'Flare transition to flag.',
-    prerequisites: ['normal-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 420,
     y: 540,
-    connections: ['reverse-meathook'] // horizontal only
+    connections: []
   },
   {
     id: 'reverse-meathook',
     name: 'Reverse Meathook',
     description: 'Reverse grip meathook.',
-    prerequisites: ['normal-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 480,
     y: 540,
-    connections: ['barswrecker'] // horizontal only
+    connections: []
   },
   {
     id: 'barswrecker',
     name: 'Barswrecker',
     description: 'Barswrecker skill.',
-    prerequisites: ['normal-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 540,
     y: 540,
-    connections: ['flare'] // horizontal only
+    connections: []
   },
   {
     id: 'flare',
     name: 'Flare',
     description: 'Flare movement.',
-    prerequisites: ['normal-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 600,
     y: 540,
-    connections: ['meathook'] // horizontal to parent-adjacent
+    connections: []
   },
 
-  // Row y=600 - horizontal chain (Reverse is adjacent parent at x=660)
+  // Row y=600
   {
     id: 'reverse-blanks',
     name: 'Reverse Blanks',
     description: 'Reverse blanks position.',
-    prerequisites: ['reverse-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 60,
     y: 600,
-    connections: ['reverse-full'] // horizontal only
+    connections: []
   },
   {
     id: 'reverse-full',
     name: 'Reverse Full',
     description: 'Reverse full rotation.',
-    prerequisites: ['reverse-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 120,
     y: 600,
-    connections: ['reverse-flag'] // horizontal only
+    connections: []
   },
   {
     id: 'reverse-flag',
     name: 'Reverse Flag',
     description: 'Reverse flag position.',
-    prerequisites: ['reverse-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 180,
     y: 600,
-    connections: ['front-3-arm'] // horizontal only
+    connections: []
   },
   {
     id: 'front-3-arm',
     name: 'Front 3 Arm',
     description: 'Front position with three arm contact.',
-    prerequisites: ['reverse-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 240,
     y: 600,
-    connections: ['flare-to-lockoff'] // horizontal only
+    connections: []
   },
   {
     id: 'flare-to-lockoff',
     name: 'Flare to Lockoff',
     description: 'Flare into lockoff.',
-    prerequisites: ['reverse-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     isGoldBorder: true,
     x: 300,
     y: 600,
-    connections: ['split-grip-full'] // horizontal only
+    connections: []
   },
   {
     id: 'split-grip-full',
     name: 'Split Grip to Full',
     description: 'Split grip transition to full.',
-    prerequisites: ['reverse-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     isGoldBorder: true,
     x: 360,
     y: 600,
-    connections: [] // end of row
+    connections: []
   },
 
-  // Row y=660 - horizontal chain
+  // Row y=660
   {
     id: 'split-grip-flag',
     name: 'Split Grip Flag',
     description: 'Flag with split grip.',
-    prerequisites: ['reverse-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     isGoldBorder: true,
     x: 420,
     y: 660,
-    connections: [] // single node in this row
+    connections: []
   },
 
-  // Row y=540 continued - Meathook (adjacent to Normal)
+  // Row y=540 continued
   {
     id: 'meathook',
     name: 'Meathook',
     description: 'Meathook position.',
-    prerequisites: ['normal-hang'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 660,
     y: 540,
-    connections: [] // end, adjacent to Normal/Spin
+    connections: []
   },
 
-  // Row y=720 - horizontal chain (Cruiser is adjacent parent at x=660)
+  // Row y=720
   {
     id: 'scorpion',
     name: 'Scorpion',
     description: 'Scorpion position.',
-    prerequisites: ['cruiser'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 480,
     y: 720,
-    connections: ['dragon'] // horizontal only
+    connections: []
   },
   {
     id: 'dragon',
     name: 'Dragon',
     description: 'Dragon position.',
-    prerequisites: ['cruiser'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 540,
     y: 720,
-    connections: ['cruiser-spin'] // horizontal only
+    connections: []
   },
   {
     id: 'cruiser-spin',
     name: 'Cruiser Spin',
     description: 'Spinning cruiser variation.',
-    prerequisites: ['cruiser'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 600,
     y: 720,
-    connections: [] // end, adjacent to Cruiser
+    connections: []
   },
 
   // ============ RIGHT SIDE - TWO ARM BRANCH ============
-  // RIGHT SIDE HIERARCHY:
-  // Level 1: Two Arm
-  // Level 2: Static, Rotating, Support
-  // Level 3: Sitting, Twisting, Hanging, Center, Split, Reverse, Normal
-  // Level 4: Everything else (horizontal chains only)
 
-  // LEVEL 2: Static, Rotating, Support (direct children of Two Arm)
+  // LEVEL 2
   {
     id: 'static-right',
     name: 'Static',
     description: 'Two-arm static positions.',
-    prerequisites: ['two-arm'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 1140,
     y: 450,
-    connections: ['hanging-right'] // Level 2 → Level 3
+    connections: []
   },
   {
     id: 'rotating-right',
     name: 'Rotating',
     description: 'Two-arm rotational movements.',
-    prerequisites: ['two-arm'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 1200,
     y: 150,
-    connections: ['sitting-right', 'twisting-right'] // Level 2 → Level 3
+    connections: []
   },
   {
     id: 'support',
     name: 'Support',
     description: 'Support positions and transitions.',
-    prerequisites: ['two-arm'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 1200,
     y: 360,
-    connections: ['roll-ups'] // Level 2 → adjacent Level 4
+    connections: []
   },
 
-  // LEVEL 3: Sitting, Twisting, Hanging, Center, Split, Reverse, Normal
+  // LEVEL 3
   {
     id: 'sitting-right',
     name: 'Sitting',
     description: 'Sitting position on apparatus.',
-    prerequisites: ['rotating-right'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 1140,
     y: 210,
-    connections: ['ball-twists'] // Level 3 → adjacent Level 4
+    connections: []
   },
   {
     id: 'twisting-right',
     name: 'Twisting',
     description: 'Twisting from rotation.',
-    prerequisites: ['rotating-right'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 1200,
     y: 270,
-    connections: ['pull-to-hips'] // Level 3 → adjacent Level 4
+    connections: []
   },
   {
     id: 'hanging-right',
     name: 'Hanging',
     description: 'Two-arm hanging techniques.',
-    prerequisites: ['static-right'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 1140,
     y: 540,
-    connections: ['center', 'two-arm-inversion'] // Level 3 + adjacent Level 4
+    connections: []
   },
   {
     id: 'center',
     name: 'Center',
     description: 'Center position.',
-    prerequisites: ['hanging-right'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 1140,
     y: 630,
-    connections: ['spinning-meathook', 'split-right'] // Level 3 + adjacent Level 4
+    connections: []
   },
   {
     id: 'split-right',
     name: 'Split',
     description: 'Split position in hang.',
-    prerequisites: ['center'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 1080,
     y: 720,
-    connections: ['reverse-right'] // Level 3 → Level 3
+    connections: []
   },
   {
     id: 'reverse-right',
     name: 'Reverse',
     description: 'Reverse hanging position.',
-    prerequisites: ['split-right'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 1140,
     y: 720,
-    connections: ['normal-bottom', 'meathook-right'] // Level 3 + adjacent Level 4
+    connections: []
   },
   {
     id: 'normal-bottom',
     name: 'Normal',
     description: 'Normal bottom position.',
-    prerequisites: ['reverse-right'],
+    prerequisites: [],
     type: 'category',
     state: 'active',
     x: 1140,
     y: 810,
-    connections: ['flare-bottom'] // Level 3 → adjacent Level 4
+    connections: []
   },
 
-  // LEVEL 4: All other skills - HORIZONTAL connections only
-
-  // Row y=60 - horizontal chain (Rotating is parent)
+  // LEVEL 4 - Row y=60
   {
     id: 'bengal-loops',
     name: 'Bengal Loops',
     description: 'Bengal loop technique.',
-    prerequisites: ['rotating-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1140,
     y: 60,
-    connections: ['shaker'] // horizontal only
+    connections: []
   },
   {
     id: 'shaker',
     name: 'Shaker',
     description: 'Shaker movement.',
-    prerequisites: ['rotating-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1200,
     y: 60,
-    connections: ['staller'] // horizontal only
+    connections: []
   },
   {
     id: 'staller',
     name: 'Staller',
     description: 'Staller position.',
-    prerequisites: ['rotating-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1260,
     y: 60,
-    connections: ['giants'] // horizontal - jumps gap
+    connections: []
   },
   {
     id: 'giants',
     name: 'Giants',
     description: 'Giant swing movement.',
-    prerequisites: ['rotating-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1380,
     y: 60,
-    connections: ['astro-plants'] // horizontal only
+    connections: []
   },
   {
     id: 'astro-plants',
     name: 'Astro Plants',
     description: 'Astro plant position.',
-    prerequisites: ['rotating-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1440,
     y: 60,
-    connections: ['back-staller'] // horizontal only
+    connections: []
   },
   {
     id: 'back-staller',
     name: 'Back Staller',
     description: 'Back staller variation.',
-    prerequisites: ['rotating-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1500,
     y: 60,
-    connections: ['delacrew'] // horizontal only
+    connections: []
   },
   {
     id: 'delacrew',
     name: 'Delacrew',
     description: 'Delacrew technique.',
-    prerequisites: ['rotating-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1560,
     y: 60,
-    connections: ['tamazuki'] // horizontal only
+    connections: []
   },
   {
     id: 'tamazuki',
     name: 'Tamazuki',
     description: 'Tamazuki skill.',
-    prerequisites: ['rotating-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1620,
     y: 60,
-    connections: [] // end of row
+    connections: []
   },
 
-  // Row y=120 - horizontal chain
+  // Row y=120
   {
     id: 'side-pull-push',
     name: 'Side Pull Push',
     description: 'Side pulling and pushing.',
-    prerequisites: ['rotating-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1320,
     y: 120,
-    connections: ['ball-turn'] // horizontal only
+    connections: []
   },
   {
     id: 'ball-turn',
     name: 'Ball Turn',
     description: 'Ball position with turn.',
-    prerequisites: ['rotating-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1380,
     y: 120,
-    connections: ['pirouette'] // horizontal only
+    connections: []
   },
   {
     id: 'pirouette',
     name: 'Pirouette',
     description: 'Pirouette spin.',
-    prerequisites: ['rotating-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1440,
     y: 120,
-    connections: ['swing-to-handstand'] // horizontal only
+    connections: []
   },
   {
     id: 'swing-to-handstand',
     name: 'Swing to Handstand',
     description: 'Swing into handstand.',
-    prerequisites: ['rotating-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1500,
     y: 120,
-    connections: [] // end of row
+    connections: []
   },
 
-  // Row y=150 - Ball Twists and Tap Plank (Sitting is parent)
+  // Row y=150
   {
     id: 'ball-twists',
     name: 'Ball Twists',
     description: 'Ball twisting technique.',
-    prerequisites: ['sitting-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1140,
     y: 150,
-    connections: ['tap-plank'] // horizontal only
+    connections: []
   },
   {
     id: 'tap-plank',
     name: 'Tap Plank',
     description: 'Tap into plank position.',
-    prerequisites: ['sitting-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     isGoldBorder: true,
     x: 1260,
     y: 150,
-    connections: [] // end of row
+    connections: []
   },
 
-  // Row y=210 - horizontal chain (Twisting is parent)
+  // Row y=210
   {
     id: 'pull-to-hips',
     name: 'Pull to Hips',
     description: 'Pull to hip position.',
-    prerequisites: ['twisting-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1200,
     y: 210,
-    connections: ['swing-to-meathook'] // horizontal only
+    connections: []
   },
   {
     id: 'swing-to-meathook',
     name: 'Swing to Meathook',
     description: 'Swing into meathook.',
-    prerequisites: ['twisting-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1260,
     y: 210,
-    connections: ['swing-to-full'] // horizontal only
+    connections: []
   },
   {
     id: 'swing-to-full',
     name: 'Swing to Full',
     description: 'Swing to full rotation.',
-    prerequisites: ['twisting-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1320,
     y: 210,
-    connections: [] // end of row
+    connections: []
   },
 
-  // Row y=330 - horizontal chain (Support is parent)
+  // Row y=330
   {
     id: 'roll-ups',
     name: 'Roll Ups',
     description: 'Roll up technique.',
-    prerequisites: ['support'],
+    prerequisites: [],
     type: 'key',
     state: 'active',
     x: 1260,
     y: 330,
-    connections: ['front-armstand'] // horizontal only
+    connections: []
   },
   {
     id: 'front-armstand',
     name: 'Front Armstand',
     description: 'Front arm stand.',
-    prerequisites: ['support'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1320,
     y: 330,
-    connections: ['starliar'] // horizontal only
+    connections: []
   },
   {
     id: 'starliar',
     name: 'Starliar',
     description: 'Starliar position.',
-    prerequisites: ['support'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1380,
     y: 330,
-    connections: [] // end of row
+    connections: []
   },
 
-  // Row y=390 - horizontal chain (Support is parent)
+  // Row y=390
   {
     id: 'front-balance',
     name: 'Front Balance',
     description: 'Front balance position.',
-    prerequisites: ['support'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1260,
     y: 390,
-    connections: ['side-balance'] // horizontal only
+    connections: []
   },
   {
     id: 'side-balance',
     name: 'Side Balance',
     description: 'Side balance position.',
-    prerequisites: ['support'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1320,
     y: 390,
-    connections: ['butterfly'] // horizontal only
+    connections: []
   },
   {
     id: 'butterfly',
     name: 'Butterfly',
     description: 'Butterfly position.',
-    prerequisites: ['support'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1380,
     y: 390,
-    connections: ['pull-to-full'] // horizontal only
+    connections: []
   },
   {
     id: 'pull-to-full',
     name: 'Pull to Full',
     description: 'Pull to full position.',
-    prerequisites: ['support'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1440,
     y: 390,
-    connections: [] // end of row
+    connections: []
   },
 
-  // Row y=540 - horizontal chain (Hanging is parent)
+  // Row y=540
   {
     id: 'two-arm-inversion',
     name: '2 Arm Inversion',
     description: 'Two arm inversion.',
-    prerequisites: ['hanging-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1260,
     y: 540,
-    connections: ['inversion-meathook-right'] // horizontal only
+    connections: []
   },
   {
     id: 'inversion-meathook-right',
     name: 'Inversion to Meathook',
     description: 'Invert into meathook.',
-    prerequisites: ['hanging-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1320,
     y: 540,
-    connections: ['back-flag'] // horizontal only
+    connections: []
   },
   {
     id: 'back-flag',
     name: 'Back Flag',
     description: 'Back flag position.',
-    prerequisites: ['hanging-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     isGoldBorder: true,
     x: 1380,
     y: 540,
-    connections: [] // end of row
+    connections: []
   },
 
-  // Row y=630 - Spinning Meathook (Center is parent)
+  // Row y=630
   {
     id: 'spinning-meathook',
     name: 'Spinning Meathook',
     description: 'Meathook with spin.',
-    prerequisites: ['center'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1200,
     y: 630,
-    connections: [] // adjacent to Center
+    connections: []
   },
 
-  // Row y=720 - horizontal chain (Reverse is parent)
+  // Row y=720
   {
     id: 'meathook-right',
     name: 'Meathook',
     description: 'Right side meathook.',
-    prerequisites: ['reverse-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1200,
     y: 720,
-    connections: ['straightstar'] // horizontal only
+    connections: []
   },
   {
     id: 'straightstar',
     name: 'Straightstar',
     description: 'Straightstar position.',
-    prerequisites: ['reverse-right'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1260,
     y: 720,
-    connections: [] // end of row
+    connections: []
   },
 
-  // Row y=810 - horizontal chain (Normal is parent)
+  // Row y=810
   {
     id: 'flare-bottom',
     name: 'Flare',
     description: 'Flare from bottom.',
-    prerequisites: ['normal-bottom'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1200,
     y: 810,
-    connections: ['barswrecker-bottom'] // horizontal only
+    connections: []
   },
   {
     id: 'barswrecker-bottom',
     name: 'Barswrecker',
     description: 'Barswrecker from bottom.',
-    prerequisites: ['normal-bottom'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1260,
     y: 810,
-    connections: ['meathook-bottom'] // horizontal only
+    connections: []
   },
   {
     id: 'meathook-bottom',
     name: 'Meathook',
     description: 'Meathook from bottom.',
-    prerequisites: ['normal-bottom'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1320,
     y: 810,
-    connections: ['straightstar-flag'] // horizontal only
+    connections: []
   },
   {
     id: 'straightstar-flag',
     name: 'Straightstar Flag',
     description: 'Straightstar into flag.',
-    prerequisites: ['normal-bottom'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1380,
     y: 810,
-    connections: ['flare-to-flag-right'] // horizontal only
+    connections: []
   },
   {
     id: 'flare-to-flag-right',
     name: 'Flare to Flag',
     description: 'Flare to flag.',
-    prerequisites: ['normal-bottom'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1440,
     y: 810,
-    connections: ['flare-to-full'] // horizontal only
+    connections: []
   },
   {
     id: 'flare-to-full',
     name: 'Flare to Full',
     description: 'Flare into full.',
-    prerequisites: ['normal-bottom'],
+    prerequisites: [],
     type: 'regular',
     state: 'inactive',
     x: 1500,
     y: 810,
-    connections: [] // end of row
+    connections: []
   },
 ];
 

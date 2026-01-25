@@ -10,10 +10,13 @@ interface DraggableSkillNodeProps {
   scale: number;
   isEditMode: boolean;
   isSelected: boolean;
+  isConnectionSource: boolean;
   onSelect: (id: string, addToSelection: boolean) => Set<string>;
   onDragStart: (id: string, newSelection: Set<string>) => void;
   onDragMove: (deltaX: number, deltaY: number) => void;
   onDragEnd: () => void;
+  onStartConnection: (id: string) => void;
+  onCompleteConnection: (id: string) => void;
   gridSize: number;
   onNameChange?: (id: string, newName: string) => void;
 }
@@ -40,10 +43,13 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
   scale,
   isEditMode,
   isSelected,
+  isConnectionSource,
   onSelect,
   onDragStart,
   onDragMove,
   onDragEnd,
+  onStartConnection,
+  onCompleteConnection,
   gridSize,
   onNameChange,
 }, ref) => {
@@ -114,13 +120,26 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
     e.stopPropagation();
     e.preventDefault();
     
+    // Ctrl+Shift+click to start/complete connection
+    if (e.ctrlKey && e.shiftKey) {
+      if (isConnectionSource) {
+        // Already a source, do nothing (will complete on target click)
+        return;
+      }
+      // Check if there's already a source selected
+      onCompleteConnection(skill.id);
+      // Also start a new connection from this node if no source was set
+      onStartConnection(skill.id);
+      return;
+    }
+    
     // Select this node (shift adds to selection) and get the new selection
     const newSelection = onSelect(skill.id, e.shiftKey);
     
     lastMousePos.current = { x: e.clientX, y: e.clientY };
     setIsDragging(true);
     onDragStart(skill.id, newSelection);
-  }, [isEditMode, skill.id, onSelect, onDragStart]);
+  }, [isEditMode, skill.id, onSelect, onDragStart, isConnectionSource, onStartConnection, onCompleteConnection]);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isDragging || !isEditMode) return;
@@ -205,8 +224,13 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
       onDoubleClick={handleDoubleClick}
     >
       {/* Selection indicator */}
-      {isEditMode && isSelected && !isEditing && (
+      {isEditMode && isSelected && !isEditing && !isConnectionSource && (
         <div className="absolute -inset-3 border-2 border-primary rounded bg-primary/10 pointer-events-none z-30" />
+      )}
+      
+      {/* Connection source indicator */}
+      {isConnectionSource && (
+        <div className="absolute -inset-3 border-2 border-accent rounded bg-accent/20 pointer-events-none z-30 animate-pulse" />
       )}
       
       {/* Editing indicator */}
@@ -215,7 +239,7 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
       )}
       
       {/* Edit mode hover indicator */}
-      {isEditMode && !isSelected && !isEditing && (
+      {isEditMode && !isSelected && !isEditing && !isConnectionSource && (
         <div className="absolute -inset-2 border-2 border-dashed border-muted-foreground/30 rounded pointer-events-none z-30" />
       )}
 
