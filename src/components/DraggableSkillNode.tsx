@@ -104,9 +104,9 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
   };
 
   const getTextSize = () => {
-    if (isCategory) return 'text-sm';
-    if (isKey) return 'text-[11px]';
-    return 'text-[10px]';
+    if (isCategory) return 'text-sm leading-[14px]';
+    if (isKey) return 'text-[11px] leading-[11px]';
+    return 'text-[10px] leading-[10px]';
   };
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
