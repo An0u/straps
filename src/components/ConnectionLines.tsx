@@ -3,9 +3,10 @@ import { Skill } from '@/data/skillTreeData';
 
 interface ConnectionLinesProps {
   skills: Skill[];
+  completedSkills: Set<string>;
 }
 
-const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills }) => {
+const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills, completedSkills }) => {
   const getSkillById = (skillId: string) => {
     return skills.find(s => s.id === skillId);
   };
@@ -43,16 +44,32 @@ const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills }) => {
     };
   };
 
-  const lines: { x1: number; y1: number; x2: number; y2: number; isActive: boolean }[] = [];
+  // Determine if connection should use blue or purple based on position
+  const getConnectionColor = (fromSkill: Skill, toSkill: Skill) => {
+    // Use blue if either node is on the right side (x > 1020)
+    const useBlue = fromSkill.x > 1020 || toSkill.x > 1020 || fromSkill.isBlue || toSkill.isBlue;
+    return useBlue ? 'blue' : 'purple';
+  };
+
+  const lines: { 
+    x1: number; 
+    y1: number; 
+    x2: number; 
+    y2: number; 
+    isActive: boolean;
+    colorType: 'blue' | 'purple';
+  }[] = [];
 
   skills.forEach(skill => {
     skill.connections.forEach(connectionId => {
       const toSkill = getSkillById(connectionId);
       
       if (toSkill) {
-        const isActive = skill.state === 'active' && toSkill.state === 'active';
+        // Connection is active only when BOTH connected nodes are completed
+        const isActive = completedSkills.has(skill.id) && completedSkills.has(toSkill.id);
         const fromRadius = getNodeRadius(skill);
         const toRadius = getNodeRadius(toSkill);
+        const colorType = getConnectionColor(skill, toSkill);
         
         const shortened = shortenLine(
           skill.x, skill.y,
@@ -63,6 +80,7 @@ const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills }) => {
         lines.push({
           ...shortened,
           isActive,
+          colorType,
         });
       }
     });
@@ -74,12 +92,23 @@ const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills }) => {
       style={{ width: '100%', height: '100%' }}
     >
       <defs>
-        <linearGradient id="lineGradientActive" x1="0%" y1="0%" x2="100%" y2="100%">
+        <linearGradient id="lineGradientPurple" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="hsl(270 70% 55%)" />
-          <stop offset="100%" stopColor="hsl(220 70% 55%)" />
+          <stop offset="100%" stopColor="hsl(280 60% 50%)" />
         </linearGradient>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+        <linearGradient id="lineGradientBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="hsl(220 70% 55%)" />
+          <stop offset="100%" stopColor="hsl(230 60% 50%)" />
+        </linearGradient>
+        <filter id="glowPurple">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+          <feMerge>
+            <feMergeNode in="coloredBlur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <filter id="glowBlue">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur" />
           <feMerge>
             <feMergeNode in="coloredBlur" />
             <feMergeNode in="SourceGraphic" />
@@ -94,8 +123,15 @@ const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills }) => {
           y1={line.y1}
           x2={line.x2}
           y2={line.y2}
-          className={line.isActive ? 'connection-line' : 'connection-line-inactive'}
-          filter={line.isActive ? 'url(#glow)' : undefined}
+          stroke={
+            line.isActive 
+              ? `url(#lineGradient${line.colorType === 'blue' ? 'Blue' : 'Purple'})` 
+              : 'hsl(220 10% 30%)'
+          }
+          strokeWidth={line.isActive ? 4 : 3}
+          strokeLinecap="round"
+          filter={line.isActive ? `url(#glow${line.colorType === 'blue' ? 'Blue' : 'Purple'})` : undefined}
+          className="transition-all duration-300"
         />
       ))}
     </svg>
