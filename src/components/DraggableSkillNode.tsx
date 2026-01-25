@@ -1,11 +1,12 @@
 import React, { useState, useCallback, useRef, forwardRef, useEffect } from 'react';
 import { Skill } from '@/data/skillTreeData';
-import { Unlock } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface DraggableSkillNodeProps {
   skill: Skill;
   isCompleted: boolean;
+  isFavorite: boolean;
   onClick: () => void;
   scale: number;
   isEditMode: boolean;
@@ -38,6 +39,7 @@ const SVG_PATHS = {
 const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>(({
   skill,
   isCompleted,
+  isFavorite,
   onClick,
   scale,
   isEditMode,
@@ -316,10 +318,10 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
         )}
       </div>
 
-      {/* Completion indicator */}
-      {isCompleted && (
+      {/* Favorite star indicator */}
+      {isFavorite && (
         <div className="absolute -top-1 -right-1 w-5 h-5 bg-skill-gold rounded-full flex items-center justify-center z-20 shadow-lg">
-          <Unlock size={12} className="text-background" />
+          <Star size={12} className="text-background fill-background" />
         </div>
       )}
     </div>
