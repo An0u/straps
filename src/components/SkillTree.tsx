@@ -15,6 +15,8 @@ import {
 
 const GRID_SIZE = 30;
 
+const ADMIN_STORAGE_KEY = 'skill-tree-admin';
+
 const SkillTree: React.FC = () => {
   const [scale, setScale] = useState(0.8);
   const [position, setPosition] = useState({ x: -200, y: -100 });
@@ -22,6 +24,9 @@ const SkillTree: React.FC = () => {
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAdminMode, setIsAdminMode] = useState(() => {
+    return localStorage.getItem(ADMIN_STORAGE_KEY) === 'true';
+  });
   
   const containerRef = useRef<HTMLDivElement>(null);
   const { isSkillCompleted, isSkillFavorite, toggleSkillCompletion, toggleSkillFavorite, completedSkills } = useSkillProgress();
@@ -45,9 +50,20 @@ const SkillTree: React.FC = () => {
     clearConnectionSource,
   } = useEditableSkillTree(GRID_SIZE);
 
-  // Keyboard shortcuts for edit mode
+  // Keyboard shortcuts for edit mode and admin toggle
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Ctrl+Shift+E to toggle admin mode (show/hide edit button)
+      if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+        e.preventDefault();
+        setIsAdminMode(prev => {
+          const newValue = !prev;
+          localStorage.setItem(ADMIN_STORAGE_KEY, String(newValue));
+          return newValue;
+        });
+        return;
+      }
+      
       if (!isEditMode) return;
       
       // Ctrl+D or Cmd+D to duplicate
@@ -235,38 +251,43 @@ const SkillTree: React.FC = () => {
             <TooltipContent side="right">Reset View</TooltipContent>
           </Tooltip>
 
-          <div className="h-px bg-border my-1" />
+          {/* Admin-only edit controls */}
+          {isAdminMode && (
+            <>
+              <div className="h-px bg-border my-1" />
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant={isEditMode ? "default" : "ghost"}
-                size="icon"
-                onClick={toggleEditMode}
-                className="h-8 w-8"
-              >
-                {isEditMode ? <Unlock size={18} /> : <Lock size={18} />}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right">
-              {isEditMode ? "Lock Layout (Save)" : "Edit Layout"}
-            </TooltipContent>
-          </Tooltip>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant={isEditMode ? "default" : "ghost"}
+                    size="icon"
+                    onClick={toggleEditMode}
+                    className="h-8 w-8"
+                  >
+                    {isEditMode ? <Unlock size={18} /> : <Lock size={18} />}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="right">
+                  {isEditMode ? "Lock Layout (Save)" : "Edit Layout"}
+                </TooltipContent>
+              </Tooltip>
 
-          {isEditMode && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={resetPositions}
-                  className="h-8 w-8 text-destructive hover:text-destructive"
-                >
-                  <RotateCw size={18} />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">Reset to Default</TooltipContent>
-            </Tooltip>
+              {isEditMode && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={resetPositions}
+                      className="h-8 w-8 text-destructive hover:text-destructive"
+                    >
+                      <RotateCw size={18} />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">Reset to Default</TooltipContent>
+                </Tooltip>
+              )}
+            </>
           )}
         </div>
 
