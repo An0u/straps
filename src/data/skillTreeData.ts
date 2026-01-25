@@ -9,6 +9,7 @@ export interface Skill {
   type: SkillType;
   state: SkillState;
   isGoldBorder?: boolean;
+  isBlue?: boolean;
   x: number;
   y: number;
   connections: string[];
@@ -258,7 +259,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 600,
     y: 120,
-    connections: []
+    connections: [],
+    isBlue: true
   },
 
   // Third row (left)

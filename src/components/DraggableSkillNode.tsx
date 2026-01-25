@@ -63,7 +63,8 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
 
   const getSvgPath = () => {
     // Nodes to the right of "Two Arm" (x > 1020) use blue, left side uses purple
-    const useBlue = skill.x > 1020;
+    // isBlue property can override this for specific nodes
+    const useBlue = skill.isBlue || skill.x > 1020;
     
     if (isCategory) {
       return useBlue ? SVG_PATHS.category.blue : SVG_PATHS.category.purple;
@@ -77,8 +78,8 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
   const getGlowClass = () => {
     if (!isActive) return '';
     if (hasGoldBorder) return 'skill-node-svg-glow-gold';
-    // Use blue glow for right side (x > 1020), purple for left
-    if (skill.x > 1020) return 'skill-node-svg-glow-blue';
+    // Use blue glow for right side (x > 1020) or nodes with isBlue, purple for left
+    if (skill.isBlue || skill.x > 1020) return 'skill-node-svg-glow-blue';
     return 'skill-node-svg-glow';
   };
 
