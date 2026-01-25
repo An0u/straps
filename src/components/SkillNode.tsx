@@ -10,20 +10,17 @@ interface SkillNodeProps {
   scale: number;
 }
 
-// SVG paths for different node types
+// SVG paths for different node types - only full color versions
+// Grayscale filter is applied via CSS for inactive states
 const SVG_PATHS = {
-  category: {
-    active: '/shapes/category-active.svg',
-    inactive: '/shapes/category-inactive.svg',
-  },
+  category: '/shapes/category-active.svg',
   key: {
     blue: '/shapes/key-blue.svg',
     purple: '/shapes/key-purple.svg',
   },
   regular: {
-    blueActive: '/shapes/regular-blue-active.svg',
-    purpleActive: '/shapes/regular-purple-active.svg',
-    inactive: '/shapes/regular-inactive.svg',
+    blue: '/shapes/regular-blue-active.svg',
+    purple: '/shapes/regular-purple-active.svg',
   },
 };
 
@@ -42,25 +39,22 @@ const SkillNode: React.FC<SkillNodeProps> = ({ skill, isCompleted, onClick, scal
 
   const { width, height } = getSize();
 
-  // Determine which SVG to use
+  // Determine which SVG to use - always use full color versions
+  // CSS grayscale filter handles inactive state
   const getSvgPath = () => {
     if (isCategory) {
-      return isActive ? SVG_PATHS.category.active : SVG_PATHS.category.inactive;
+      return SVG_PATHS.category;
     }
     
     if (isKey) {
-      // Use purple for key items, blue as fallback
-      return isActive ? SVG_PATHS.key.purple : SVG_PATHS.regular.inactive;
+      // Alternate between blue and purple for key items
+      const useBlue = (skill.x + skill.y) % 200 < 100;
+      return useBlue ? SVG_PATHS.key.blue : SVG_PATHS.key.purple;
     }
     
-    // Regular items
-    if (!isActive) {
-      return SVG_PATHS.regular.inactive;
-    }
-    
-    // Active regular items - alternate between blue and purple based on position
+    // Regular items - alternate between blue and purple based on position
     const useBlue = (skill.x + skill.y) % 200 < 100;
-    return useBlue ? SVG_PATHS.regular.blueActive : SVG_PATHS.regular.purpleActive;
+    return useBlue ? SVG_PATHS.regular.blue : SVG_PATHS.regular.purple;
   };
 
   // Get glow class based on type
