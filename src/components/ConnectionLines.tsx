@@ -100,8 +100,11 @@ const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills, completedSkil
       style={{ 
         width: treeWidth, 
         height: treeHeight,
-        left: 0,
-        top: 0,
+        // Align the SVG's (0,0) with the same coordinate space used by nodes.
+        // Nodes are positioned using raw skill.x/skill.y within the container,
+        // so we must offset the SVG by the tree's min bounds to match.
+        left: treeBounds.minX,
+        top: treeBounds.minY,
       }}
       viewBox={`${treeBounds.minX} ${treeBounds.minY} ${treeWidth} ${treeHeight}`}
     >
