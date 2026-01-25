@@ -231,121 +231,28 @@ const SkillTree: React.FC = () => {
   return (
     <div className="relative w-full h-full overflow-hidden tree-canvas">
       {/* Controls */}
-      <div className="absolute top-4 left-4 z-20 flex flex-col gap-2 max-w-[calc(100%-2rem)]">
-        <div className="bg-card/80 backdrop-blur-sm rounded-lg p-1.5 md:p-2 flex md:flex-col flex-row gap-1">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleZoom(0.2)}
-                className="h-8 w-8"
-              >
-                <ZoomIn size={18} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right">Zoom In</TooltipContent>
-          </Tooltip>
-          
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleZoom(-0.2)}
-                className="h-8 w-8"
-              >
-                <ZoomOut size={18} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right">Zoom Out</TooltipContent>
-          </Tooltip>
-          
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={resetView}
-                className="h-8 w-8"
-              >
-                <RotateCcw size={18} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right">Reset View</TooltipContent>
-          </Tooltip>
-
-          {/* Admin-only edit controls */}
-          {isAdminMode && (
-            <>
-              <div className="h-px bg-border my-1" />
-
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant={isEditMode ? "default" : "ghost"}
-                    size="icon"
-                    onClick={toggleEditMode}
-                    className="h-8 w-8"
-                  >
-                    {isEditMode ? <Unlock size={18} /> : <Lock size={18} />}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="right">
-                  {isEditMode ? "Lock Layout (Save)" : "Edit Layout"}
-                </TooltipContent>
-              </Tooltip>
-
-              {isEditMode && (
-                <>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={resetPositions}
-                        className="h-8 w-8 text-destructive hover:text-destructive"
-                      >
-                        <RotateCw size={18} />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent side="right">Reset to Default</TooltipContent>
-                  </Tooltip>
-                  
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => {
-                          const exportData = skills.map(s => ({
-                            id: s.id,
-                            name: s.name,
-                            x: s.x,
-                            y: s.y,
-                            connections: s.connections,
-                          }));
-                          navigator.clipboard.writeText(JSON.stringify(exportData, null, 2));
-                          toast.success('Layout copied to clipboard!');
-                          console.log('Skill Tree Layout Export:', JSON.stringify(exportData, null, 2));
-                        }}
-                        className="h-8 w-8"
-                      >
-                        <Download size={18} />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent side="right">Export Layout</TooltipContent>
-                  </Tooltip>
-                </>
-              )}
-            </>
-          )}
+      {/* Progress indicator - top left */}
+      {!isMobile && (
+        <div className="absolute top-4 left-4 z-20 bg-card/80 backdrop-blur-sm rounded-lg px-3 py-2 text-sm">
+          <div className="text-muted-foreground text-xs mb-1">Progress</div>
+          <div className="text-foreground font-medium">
+            {completedCount} / {totalSkills}
+          </div>
+          <div className="w-full h-1.5 bg-muted rounded-full mt-1 overflow-hidden">
+            <div 
+              className="h-full bg-skill-gold rounded-full transition-all duration-300"
+              style={{ width: `${(completedCount / totalSkills) * 100}%` }}
+            />
+          </div>
         </div>
+      )}
 
+      {/* Floating bottom toolbar */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
         {/* Edit mode indicator */}
         {isEditMode && (
-          <div className="bg-primary/90 backdrop-blur-sm rounded-lg px-3 py-2 text-sm text-primary-foreground">
-            <div className="flex items-center gap-2 justify-between">
+          <div className="bg-primary/90 backdrop-blur-sm rounded-lg px-3 py-2 text-sm text-primary-foreground max-w-[90vw]">
+            <div className="flex items-center gap-2 justify-between flex-wrap">
               <div className="flex items-center gap-2">
                 <Grid3X3 size={14} />
                 <span>Grid: {GRID_SIZE}px</span>
@@ -400,25 +307,121 @@ const SkillTree: React.FC = () => {
           </div>
         )}
 
-        {!isMobile && (
-          <div className="bg-card/80 backdrop-blur-sm rounded-lg px-3 py-2 text-sm">
-            <div className="text-muted-foreground text-xs mb-1">Progress</div>
-            <div className="text-foreground font-medium">
-              {completedCount} / {totalSkills}
-            </div>
-            <div className="w-full h-1.5 bg-muted rounded-full mt-1 overflow-hidden">
-              <div 
-                className="h-full bg-skill-gold rounded-full transition-all duration-300"
-                style={{ width: `${(completedCount / totalSkills) * 100}%` }}
-              />
-            </div>
-          </div>
-        )}
+        {/* Main toolbar */}
+        <div className="bg-card/80 backdrop-blur-sm rounded-full p-1.5 flex flex-row gap-1 shadow-lg">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => handleZoom(0.2)}
+                className="h-9 w-9 rounded-full"
+              >
+                <ZoomIn size={18} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="top">Zoom In</TooltipContent>
+          </Tooltip>
+          
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => handleZoom(-0.2)}
+                className="h-9 w-9 rounded-full"
+              >
+                <ZoomOut size={18} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="top">Zoom Out</TooltipContent>
+          </Tooltip>
+          
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={resetView}
+                className="h-9 w-9 rounded-full"
+              >
+                <RotateCcw size={18} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="top">Reset View</TooltipContent>
+          </Tooltip>
+
+          {/* Admin-only edit controls */}
+          {isAdminMode && (
+            <>
+              <div className="w-px h-6 bg-border self-center mx-1" />
+
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant={isEditMode ? "default" : "ghost"}
+                    size="icon"
+                    onClick={toggleEditMode}
+                    className="h-9 w-9 rounded-full"
+                  >
+                    {isEditMode ? <Unlock size={18} /> : <Lock size={18} />}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="top">
+                  {isEditMode ? "Lock Layout (Save)" : "Edit Layout"}
+                </TooltipContent>
+              </Tooltip>
+
+              {isEditMode && (
+                <>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={resetPositions}
+                        className="h-9 w-9 rounded-full text-destructive hover:text-destructive"
+                      >
+                        <RotateCw size={18} />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top">Reset to Default</TooltipContent>
+                  </Tooltip>
+                  
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => {
+                          const exportData = skills.map(s => ({
+                            id: s.id,
+                            name: s.name,
+                            x: s.x,
+                            y: s.y,
+                            connections: s.connections,
+                          }));
+                          navigator.clipboard.writeText(JSON.stringify(exportData, null, 2));
+                          toast.success('Layout copied to clipboard!');
+                          console.log('Skill Tree Layout Export:', JSON.stringify(exportData, null, 2));
+                        }}
+                        className="h-9 w-9 rounded-full"
+                      >
+                        <Download size={18} />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="top">Export Layout</TooltipContent>
+                  </Tooltip>
+                </>
+              )}
+            </>
+          )}
+        </div>
       </div>
       
-      {/* Mobile progress bar - bottom positioned */}
+      {/* Mobile progress bar - top positioned */}
       {isMobile && (
-        <div className="absolute bottom-20 left-4 right-4 z-20 bg-card/80 backdrop-blur-sm rounded-lg px-3 py-2">
+        <div className="absolute top-4 left-4 right-4 z-20 bg-card/80 backdrop-blur-sm rounded-lg px-3 py-2">
           <div className="flex items-center gap-3">
             <span className="text-xs text-muted-foreground">Progress</span>
             <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
