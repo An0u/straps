@@ -18,14 +18,16 @@ interface DraggableSkillNodeProps {
 }
 
 const SVG_PATHS = {
-  category: '/shapes/category.svg',
-  categoryOrnate: '/shapes/category-ornate.svg',
+  category: {
+    purple: '/shapes/category-ornate.svg',
+    blue: '/shapes/category-blue.svg',
+  },
   key: {
-    blue: '/shapes/key-blue.svg',
+    blue: '/shapes/key-blue-new.svg',
     purple: '/shapes/key-purple.svg',
   },
   regular: {
-    blue: '/shapes/regular-blue.svg',
+    blue: '/shapes/regular-blue-new.svg',
     purple: '/shapes/regular-purple.svg',
   },
 };
@@ -60,11 +62,12 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
   const { width, height } = getSize();
 
   const getSvgPath = () => {
-    if (isCategory) return SVG_PATHS.categoryOrnate;
-    
     // Nodes to the right of "Two Arm" (x > 1020) use blue, left side uses purple
     const useBlue = skill.x > 1020;
     
+    if (isCategory) {
+      return useBlue ? SVG_PATHS.category.blue : SVG_PATHS.category.purple;
+    }
     if (isKey) {
       return useBlue ? SVG_PATHS.key.blue : SVG_PATHS.key.purple;
     }
