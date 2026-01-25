@@ -1,16 +1,19 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { skillTreeData, Skill } from '@/data/skillTreeData';
-import SkillNode from './SkillNode';
+import React, { useState, useRef, useCallback } from 'react';
+import { Skill } from '@/data/skillTreeData';
+import DraggableSkillNode from './DraggableSkillNode';
 import ConnectionLines from './ConnectionLines';
 import SkillModal from './SkillModal';
 import { useSkillProgress } from '@/hooks/useSkillProgress';
-import { ZoomIn, ZoomOut, RotateCcw, Move } from 'lucide-react';
+import { useEditableSkillTree } from '@/hooks/useEditableSkillTree';
+import { ZoomIn, ZoomOut, RotateCcw, Move, Lock, Unlock, Grid3X3, RotateCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+
+const GRID_SIZE = 30;
 
 const SkillTree: React.FC = () => {
   const [scale, setScale] = useState(0.8);
@@ -22,13 +25,14 @@ const SkillTree: React.FC = () => {
   
   const containerRef = useRef<HTMLDivElement>(null);
   const { isSkillCompleted, toggleSkillCompletion, completedSkills } = useSkillProgress();
+  const { skills, isEditMode, toggleEditMode, updatePosition, resetPositions } = useEditableSkillTree();
 
   // Calculate tree bounds
   const treeBounds = {
-    minX: Math.min(...skillTreeData.map(s => s.x)) - 100,
-    maxX: Math.max(...skillTreeData.map(s => s.x)) + 100,
-    minY: Math.min(...skillTreeData.map(s => s.y)) - 100,
-    maxY: Math.max(...skillTreeData.map(s => s.y)) + 100,
+    minX: Math.min(...skills.map(s => s.x)) - 100,
+    maxX: Math.max(...skills.map(s => s.x)) + 100,
+    minY: Math.min(...skills.map(s => s.y)) - 100,
+    maxY: Math.max(...skills.map(s => s.y)) + 100,
   };
 
   const treeWidth = treeBounds.maxX - treeBounds.minX;
@@ -48,21 +52,21 @@ const SkillTree: React.FC = () => {
 
   // Handle mouse down for dragging
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    if (e.button === 0) {
+    if (e.button === 0 && !isEditMode) {
       setIsDragging(true);
       setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
     }
-  }, [position]);
+  }, [position, isEditMode]);
 
   // Handle mouse move for dragging
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (isDragging) {
+    if (isDragging && !isEditMode) {
       setPosition({
         x: e.clientX - dragStart.x,
         y: e.clientY - dragStart.y,
       });
     }
-  }, [isDragging, dragStart]);
+  }, [isDragging, dragStart, isEditMode]);
 
   // Handle mouse up
   const handleMouseUp = useCallback(() => {
@@ -71,23 +75,23 @@ const SkillTree: React.FC = () => {
 
   // Handle touch events for mobile
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    if (e.touches.length === 1) {
+    if (e.touches.length === 1 && !isEditMode) {
       setIsDragging(true);
       setDragStart({
         x: e.touches[0].clientX - position.x,
         y: e.touches[0].clientY - position.y,
       });
     }
-  }, [position]);
+  }, [position, isEditMode]);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (isDragging && e.touches.length === 1) {
+    if (isDragging && e.touches.length === 1 && !isEditMode) {
       setPosition({
         x: e.touches[0].clientX - dragStart.x,
         y: e.touches[0].clientY - dragStart.y,
       });
     }
-  }, [isDragging, dragStart]);
+  }, [isDragging, dragStart, isEditMode]);
 
   const handleTouchEnd = useCallback(() => {
     setIsDragging(false);
@@ -101,9 +105,11 @@ const SkillTree: React.FC = () => {
 
   // Handle skill click
   const handleSkillClick = useCallback((skill: Skill) => {
-    setSelectedSkill(skill);
-    setIsModalOpen(true);
-  }, []);
+    if (!isEditMode) {
+      setSelectedSkill(skill);
+      setIsModalOpen(true);
+    }
+  }, [isEditMode]);
 
   // Close modal
   const closeModal = useCallback(() => {
@@ -119,7 +125,7 @@ const SkillTree: React.FC = () => {
   }, [selectedSkill, toggleSkillCompletion]);
 
   // Stats
-  const totalSkills = skillTreeData.length;
+  const totalSkills = skills.length;
   const completedCount = completedSkills.size;
 
   return (
@@ -168,7 +174,49 @@ const SkillTree: React.FC = () => {
             </TooltipTrigger>
             <TooltipContent side="right">Reset View</TooltipContent>
           </Tooltip>
+
+          <div className="h-px bg-border my-1" />
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant={isEditMode ? "default" : "ghost"}
+                size="icon"
+                onClick={toggleEditMode}
+                className="h-8 w-8"
+              >
+                {isEditMode ? <Unlock size={18} /> : <Lock size={18} />}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right">
+              {isEditMode ? "Lock Layout (Save)" : "Edit Layout"}
+            </TooltipContent>
+          </Tooltip>
+
+          {isEditMode && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={resetPositions}
+                  className="h-8 w-8 text-destructive hover:text-destructive"
+                >
+                  <RotateCw size={18} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right">Reset to Default</TooltipContent>
+            </Tooltip>
+          )}
         </div>
+
+        {/* Edit mode indicator */}
+        {isEditMode && (
+          <div className="bg-primary/90 backdrop-blur-sm rounded-lg px-3 py-2 text-sm text-primary-foreground flex items-center gap-2">
+            <Grid3X3 size={14} />
+            <span>Drag nodes • Grid: {GRID_SIZE}px</span>
+          </div>
+        )}
 
         <div className="bg-card/80 backdrop-blur-sm rounded-lg px-3 py-2 text-sm">
           <div className="text-muted-foreground text-xs mb-1">Progress</div>
@@ -187,13 +235,13 @@ const SkillTree: React.FC = () => {
       {/* Drag hint */}
       <div className="absolute top-4 right-4 z-20 bg-card/60 backdrop-blur-sm rounded-lg px-3 py-2 flex items-center gap-2 text-sm text-muted-foreground">
         <Move size={14} />
-        <span>Drag to pan • Scroll to zoom</span>
+        <span>{isEditMode ? "Drag nodes to reposition" : "Drag to pan • Scroll to zoom"}</span>
       </div>
 
       {/* Tree container */}
       <div
         ref={containerRef}
-        className="w-full h-full cursor-grab active:cursor-grabbing"
+        className={`w-full h-full ${isEditMode ? 'cursor-default' : 'cursor-grab active:cursor-grabbing'}`}
         onWheel={handleWheel}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
@@ -213,17 +261,45 @@ const SkillTree: React.FC = () => {
             transition: isDragging ? 'none' : 'transform 0.1s ease-out',
           }}
         >
+          {/* Grid overlay in edit mode */}
+          {isEditMode && (
+            <svg
+              className="absolute inset-0 pointer-events-none opacity-20"
+              style={{ width: treeWidth, height: treeHeight }}
+            >
+              <defs>
+                <pattern
+                  id="grid"
+                  width={GRID_SIZE}
+                  height={GRID_SIZE}
+                  patternUnits="userSpaceOnUse"
+                >
+                  <path
+                    d={`M ${GRID_SIZE} 0 L 0 0 0 ${GRID_SIZE}`}
+                    fill="none"
+                    stroke="hsl(var(--primary))"
+                    strokeWidth="0.5"
+                  />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#grid)" />
+            </svg>
+          )}
+
           {/* Connection lines */}
-          <ConnectionLines skills={skillTreeData} />
+          <ConnectionLines skills={skills} />
 
           {/* Skill nodes */}
-          {skillTreeData.map(skill => (
-            <SkillNode
+          {skills.map(skill => (
+            <DraggableSkillNode
               key={skill.id}
               skill={skill}
               isCompleted={isSkillCompleted(skill.id)}
               onClick={() => handleSkillClick(skill)}
               scale={scale}
+              isEditMode={isEditMode}
+              onPositionChange={updatePosition}
+              gridSize={GRID_SIZE}
             />
           ))}
         </div>
