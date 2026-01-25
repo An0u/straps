@@ -10,7 +10,7 @@ const Index: React.FC = () => {
   const completedCount = completedSkills.size;
 
   return (
-    <div className="min-h-screen w-full bg-background relative overflow-hidden">
+    <div className="min-h-dvh h-dvh w-full bg-background relative overflow-hidden overscroll-none touch-none">
       {/* Header with Progress */}
       <header className="fixed md:absolute top-4 left-4 right-4 md:left-4 md:right-auto z-30 pointer-events-none">
         <div className="bg-card/80 backdrop-blur-sm rounded-lg px-4 py-3 flex flex-col items-center text-center md:items-start md:text-left w-full md:w-auto">

@@ -229,7 +229,7 @@ const SkillTree: React.FC = () => {
   const completedCount = completedSkills.size;
 
   return (
-    <div className="relative w-full h-full overflow-hidden tree-canvas">
+    <div className="relative w-full h-full overflow-hidden tree-canvas overscroll-none touch-pan-x touch-pan-y">
       {/* Controls */}
 
       {/* Floating bottom toolbar */}
