@@ -25,7 +25,19 @@ const SkillTree: React.FC = () => {
   
   const containerRef = useRef<HTMLDivElement>(null);
   const { isSkillCompleted, toggleSkillCompletion, completedSkills } = useSkillProgress();
-  const { skills, isEditMode, toggleEditMode, updatePosition, resetPositions } = useEditableSkillTree();
+  const { 
+    skills, 
+    isEditMode, 
+    selectedIds,
+    toggleEditMode, 
+    selectNode,
+    clearSelection,
+    selectAll,
+    handleDragStart,
+    handleDragMove,
+    handleDragEnd,
+    resetPositions 
+  } = useEditableSkillTree(GRID_SIZE);
 
   // Calculate tree bounds
   const treeBounds = {
@@ -50,13 +62,18 @@ const SkillTree: React.FC = () => {
     handleZoom(delta);
   }, [handleZoom]);
 
-  // Handle mouse down for dragging
+  // Handle mouse down for dragging or clearing selection
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    if (e.button === 0 && !isEditMode) {
-      setIsDragging(true);
-      setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+    if (e.button === 0) {
+      if (isEditMode) {
+        // Click on empty space clears selection
+        clearSelection();
+      } else {
+        setIsDragging(true);
+        setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+      }
     }
-  }, [position, isEditMode]);
+  }, [position, isEditMode, clearSelection]);
 
   // Handle mouse move for dragging
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -212,9 +229,14 @@ const SkillTree: React.FC = () => {
 
         {/* Edit mode indicator */}
         {isEditMode && (
-          <div className="bg-primary/90 backdrop-blur-sm rounded-lg px-3 py-2 text-sm text-primary-foreground flex items-center gap-2">
-            <Grid3X3 size={14} />
-            <span>Drag nodes • Grid: {GRID_SIZE}px</span>
+          <div className="bg-primary/90 backdrop-blur-sm rounded-lg px-3 py-2 text-sm text-primary-foreground">
+            <div className="flex items-center gap-2">
+              <Grid3X3 size={14} />
+              <span>Grid: {GRID_SIZE}px</span>
+            </div>
+            <div className="text-xs opacity-80 mt-1">
+              Click to select • Shift+click for multi • {selectedIds.size} selected
+            </div>
           </div>
         )}
 
@@ -298,7 +320,11 @@ const SkillTree: React.FC = () => {
               onClick={() => handleSkillClick(skill)}
               scale={scale}
               isEditMode={isEditMode}
-              onPositionChange={updatePosition}
+              isSelected={selectedIds.has(skill.id)}
+              onSelect={selectNode}
+              onDragStart={handleDragStart}
+              onDragMove={handleDragMove}
+              onDragEnd={handleDragEnd}
               gridSize={GRID_SIZE}
             />
           ))}

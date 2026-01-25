@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { Skill, skillTreeData as originalData } from '@/data/skillTreeData';
 
 const STORAGE_KEY = 'skillTreePositions';
@@ -9,10 +9,13 @@ interface StoredPosition {
   y: number;
 }
 
-export const useEditableSkillTree = () => {
+export const useEditableSkillTree = (gridSize: number = 30) => {
   const [isEditMode, setIsEditMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const dragStartPositions = useRef<Map<string, { x: number; y: number }>>(new Map());
+  const accumulatedDelta = useRef({ x: 0, y: 0 });
+  
   const [skills, setSkills] = useState<Skill[]>(() => {
-    // Load saved positions from localStorage
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
@@ -29,10 +32,67 @@ export const useEditableSkillTree = () => {
     return originalData;
   });
 
-  const updatePosition = useCallback((id: string, x: number, y: number) => {
-    setSkills(prev => prev.map(skill => 
-      skill.id === id ? { ...skill, x, y } : skill
-    ));
+  const snapToGrid = useCallback((value: number) => {
+    return Math.round(value / gridSize) * gridSize;
+  }, [gridSize]);
+
+  const selectNode = useCallback((id: string, addToSelection: boolean) => {
+    setSelectedIds(prev => {
+      const next = new Set(addToSelection ? prev : []);
+      if (next.has(id) && addToSelection) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }, []);
+
+  const clearSelection = useCallback(() => {
+    setSelectedIds(new Set());
+  }, []);
+
+  const selectAll = useCallback(() => {
+    setSelectedIds(new Set(skills.map(s => s.id)));
+  }, [skills]);
+
+  const handleDragStart = useCallback((id: string) => {
+    // Store starting positions of all selected nodes
+    dragStartPositions.current.clear();
+    accumulatedDelta.current = { x: 0, y: 0 };
+    
+    const idsToMove = selectedIds.has(id) ? selectedIds : new Set([id]);
+    
+    skills.forEach(skill => {
+      if (idsToMove.has(skill.id)) {
+        dragStartPositions.current.set(skill.id, { x: skill.x, y: skill.y });
+      }
+    });
+    
+    // If dragging an unselected node, select only it
+    if (!selectedIds.has(id)) {
+      setSelectedIds(new Set([id]));
+    }
+  }, [selectedIds, skills]);
+
+  const handleDragMove = useCallback((deltaX: number, deltaY: number) => {
+    accumulatedDelta.current.x += deltaX;
+    accumulatedDelta.current.y += deltaY;
+    
+    setSkills(prev => prev.map(skill => {
+      const startPos = dragStartPositions.current.get(skill.id);
+      if (!startPos) return skill;
+      
+      const newX = snapToGrid(startPos.x + accumulatedDelta.current.x);
+      const newY = snapToGrid(startPos.y + accumulatedDelta.current.y);
+      
+      return { ...skill, x: newX, y: newY };
+    }));
+  }, [snapToGrid]);
+
+  const handleDragEnd = useCallback(() => {
+    dragStartPositions.current.clear();
+    accumulatedDelta.current = { x: 0, y: 0 };
   }, []);
 
   const savePositions = useCallback(() => {
@@ -42,16 +102,17 @@ export const useEditableSkillTree = () => {
 
   const toggleEditMode = useCallback(() => {
     if (isEditMode) {
-      // Leaving edit mode - save positions
       savePositions();
+      clearSelection();
     }
     setIsEditMode(prev => !prev);
-  }, [isEditMode, savePositions]);
+  }, [isEditMode, savePositions, clearSelection]);
 
   const resetPositions = useCallback(() => {
     setSkills(originalData);
     localStorage.removeItem(STORAGE_KEY);
-  }, []);
+    clearSelection();
+  }, [clearSelection]);
 
   // Auto-save when positions change in edit mode
   useEffect(() => {
@@ -64,8 +125,14 @@ export const useEditableSkillTree = () => {
   return {
     skills,
     isEditMode,
+    selectedIds,
     toggleEditMode,
-    updatePosition,
+    selectNode,
+    clearSelection,
+    selectAll,
+    handleDragStart,
+    handleDragMove,
+    handleDragEnd,
     resetPositions,
   };
 };

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, forwardRef } from 'react';
 import { Skill } from '@/data/skillTreeData';
 import { Unlock } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -9,7 +9,11 @@ interface DraggableSkillNodeProps {
   onClick: () => void;
   scale: number;
   isEditMode: boolean;
-  onPositionChange: (id: string, x: number, y: number) => void;
+  isSelected: boolean;
+  onSelect: (id: string, addToSelection: boolean) => void;
+  onDragStart: (id: string, startX: number, startY: number) => void;
+  onDragMove: (deltaX: number, deltaY: number) => void;
+  onDragEnd: () => void;
   gridSize: number;
 }
 
@@ -26,17 +30,21 @@ const SVG_PATHS = {
   },
 };
 
-const DraggableSkillNode: React.FC<DraggableSkillNodeProps> = ({
+const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>(({
   skill,
   isCompleted,
   onClick,
   scale,
   isEditMode,
-  onPositionChange,
+  isSelected,
+  onSelect,
+  onDragStart,
+  onDragMove,
+  onDragEnd,
   gridSize,
-}) => {
+}, ref) => {
   const [isDragging, setIsDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const lastMousePos = useRef({ x: 0, y: 0 });
   const nodeRef = useRef<HTMLDivElement>(null);
 
   const isCategory = skill.type === 'category';
@@ -74,44 +82,35 @@ const DraggableSkillNode: React.FC<DraggableSkillNodeProps> = ({
     return 'text-[10px]';
   };
 
-  const snapToGrid = (value: number) => {
-    return Math.round(value / gridSize) * gridSize;
-  };
-
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (!isEditMode) return;
     e.stopPropagation();
     e.preventDefault();
     
-    const rect = nodeRef.current?.getBoundingClientRect();
-    if (rect) {
-      setDragOffset({
-        x: e.clientX - rect.left - rect.width / 2,
-        y: e.clientY - rect.top - rect.height / 2,
-      });
-    }
+    // Select this node (shift adds to selection)
+    onSelect(skill.id, e.shiftKey);
+    
+    lastMousePos.current = { x: e.clientX, y: e.clientY };
     setIsDragging(true);
-  }, [isEditMode]);
+    onDragStart(skill.id, e.clientX, e.clientY);
+  }, [isEditMode, skill.id, onSelect, onDragStart]);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (!isDragging || !isEditMode || !nodeRef.current) return;
+    if (!isDragging || !isEditMode) return;
     
-    const parent = nodeRef.current.parentElement;
-    if (!parent) return;
+    const deltaX = (e.clientX - lastMousePos.current.x) / scale;
+    const deltaY = (e.clientY - lastMousePos.current.y) / scale;
     
-    const parentRect = parent.getBoundingClientRect();
-    const newX = (e.clientX - parentRect.left - dragOffset.x) / scale;
-    const newY = (e.clientY - parentRect.top - dragOffset.y) / scale;
-    
-    const snappedX = snapToGrid(newX);
-    const snappedY = snapToGrid(newY);
-    
-    onPositionChange(skill.id, snappedX, snappedY);
-  }, [isDragging, isEditMode, scale, dragOffset, gridSize, skill.id, onPositionChange]);
+    lastMousePos.current = { x: e.clientX, y: e.clientY };
+    onDragMove(deltaX, deltaY);
+  }, [isDragging, isEditMode, scale, onDragMove]);
 
   const handleMouseUp = useCallback(() => {
-    setIsDragging(false);
-  }, []);
+    if (isDragging) {
+      setIsDragging(false);
+      onDragEnd();
+    }
+  }, [isDragging, onDragEnd]);
 
   React.useEffect(() => {
     if (isDragging) {
@@ -151,9 +150,14 @@ const DraggableSkillNode: React.FC<DraggableSkillNodeProps> = ({
       onMouseDown={handleMouseDown}
       onClick={handleClick}
     >
-      {/* Edit mode indicator */}
-      {isEditMode && (
-        <div className="absolute -inset-2 border-2 border-dashed border-primary/50 rounded pointer-events-none z-30" />
+      {/* Selection indicator */}
+      {isEditMode && isSelected && (
+        <div className="absolute -inset-3 border-2 border-primary rounded bg-primary/10 pointer-events-none z-30" />
+      )}
+      
+      {/* Edit mode hover indicator */}
+      {isEditMode && !isSelected && (
+        <div className="absolute -inset-2 border-2 border-dashed border-muted-foreground/30 rounded pointer-events-none z-30" />
       )}
 
       {/* SVG Shape */}
@@ -210,6 +214,8 @@ const DraggableSkillNode: React.FC<DraggableSkillNodeProps> = ({
       )}
     </div>
   );
-};
+});
+
+DraggableSkillNode.displayName = 'DraggableSkillNode';
 
 export default DraggableSkillNode;
