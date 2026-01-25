@@ -6,23 +6,62 @@ interface ConnectionLinesProps {
 }
 
 const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills }) => {
-  const getSkillPosition = (skillId: string) => {
-    const skill = skills.find(s => s.id === skillId);
-    return skill ? { x: skill.x, y: skill.y } : null;
+  const getSkillById = (skillId: string) => {
+    return skills.find(s => s.id === skillId);
   };
 
-  const lines: { from: { x: number; y: number }; to: { x: number; y: number }; isActive: boolean }[] = [];
+  const getNodeRadius = (skill: Skill) => {
+    // Return approximate radius based on node type
+    if (skill.type === 'category') return 50;
+    return 40;
+  };
+
+  const shortenLine = (
+    fromX: number, 
+    fromY: number, 
+    toX: number, 
+    toY: number, 
+    fromRadius: number, 
+    toRadius: number
+  ) => {
+    const dx = toX - fromX;
+    const dy = toY - fromY;
+    const length = Math.sqrt(dx * dx + dy * dy);
+    
+    if (length === 0) return { x1: fromX, y1: fromY, x2: toX, y2: toY };
+    
+    // Normalize direction
+    const nx = dx / length;
+    const ny = dy / length;
+    
+    // Shorten from both ends
+    return {
+      x1: fromX + nx * fromRadius,
+      y1: fromY + ny * fromRadius,
+      x2: toX - nx * toRadius,
+      y2: toY - ny * toRadius,
+    };
+  };
+
+  const lines: { x1: number; y1: number; x2: number; y2: number; isActive: boolean }[] = [];
 
   skills.forEach(skill => {
     skill.connections.forEach(connectionId => {
-      const toPos = getSkillPosition(connectionId);
-      const toSkill = skills.find(s => s.id === connectionId);
+      const toSkill = getSkillById(connectionId);
       
-      if (toPos && toSkill) {
+      if (toSkill) {
         const isActive = skill.state === 'active' && toSkill.state === 'active';
+        const fromRadius = getNodeRadius(skill);
+        const toRadius = getNodeRadius(toSkill);
+        
+        const shortened = shortenLine(
+          skill.x, skill.y,
+          toSkill.x, toSkill.y,
+          fromRadius, toRadius
+        );
+        
         lines.push({
-          from: { x: skill.x, y: skill.y },
-          to: toPos,
+          ...shortened,
           isActive,
         });
       }
@@ -51,10 +90,10 @@ const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills }) => {
       {lines.map((line, index) => (
         <line
           key={index}
-          x1={line.from.x}
-          y1={line.from.y}
-          x2={line.to.x}
-          y2={line.to.y}
+          x1={line.x1}
+          y1={line.y1}
+          x2={line.x2}
+          y2={line.y2}
           className={line.isActive ? 'connection-line' : 'connection-line-inactive'}
           filter={line.isActive ? 'url(#glow)' : undefined}
         />
