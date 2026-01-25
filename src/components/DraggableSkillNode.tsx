@@ -10,10 +10,12 @@ interface DraggableSkillNodeProps {
   scale: number;
   isEditMode: boolean;
   isSelected: boolean;
+  isConnectionSource: boolean;
   onSelect: (id: string, addToSelection: boolean) => Set<string>;
   onDragStart: (id: string, newSelection: Set<string>) => void;
   onDragMove: (deltaX: number, deltaY: number) => void;
   onDragEnd: () => void;
+  onConnectionClick: (id: string, isCtrlShift: boolean) => boolean;
   gridSize: number;
   onNameChange?: (id: string, newName: string) => void;
 }
@@ -40,10 +42,12 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
   scale,
   isEditMode,
   isSelected,
+  isConnectionSource,
   onSelect,
   onDragStart,
   onDragMove,
   onDragEnd,
+  onConnectionClick,
   gridSize,
   onNameChange,
 }, ref) => {
@@ -111,6 +115,15 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (!isEditMode) return;
+    
+    // Ctrl+Shift+click starts a connection
+    if (e.ctrlKey && e.shiftKey) {
+      e.stopPropagation();
+      e.preventDefault();
+      onConnectionClick(skill.id, true);
+      return;
+    }
+    
     e.stopPropagation();
     e.preventDefault();
     
@@ -120,7 +133,7 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
     lastMousePos.current = { x: e.clientX, y: e.clientY };
     setIsDragging(true);
     onDragStart(skill.id, newSelection);
-  }, [isEditMode, skill.id, onSelect, onDragStart]);
+  }, [isEditMode, skill.id, onSelect, onDragStart, onConnectionClick]);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isDragging || !isEditMode) return;
@@ -151,12 +164,21 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
   const handleClick = useCallback((e: React.MouseEvent) => {
-    if (isEditMode || isEditing) {
+    if (isEditing) {
       e.stopPropagation();
       return;
     }
+    
+    // In edit mode, check if we're completing a connection
+    if (isEditMode) {
+      e.stopPropagation();
+      // Try to complete a connection (if source is set)
+      onConnectionClick(skill.id, false);
+      return;
+    }
+    
     onClick();
-  }, [isEditMode, isEditing, onClick]);
+  }, [isEditMode, isEditing, onClick, onConnectionClick, skill.id]);
 
   const handleDoubleClick = useCallback((e: React.MouseEvent) => {
     if (!isEditMode) return;
@@ -209,13 +231,18 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
         <div className="absolute -inset-3 border-2 border-primary rounded bg-primary/10 pointer-events-none z-30" />
       )}
       
+      {/* Connection source indicator */}
+      {isConnectionSource && (
+        <div className="absolute -inset-3 border-2 border-accent rounded bg-accent/20 pointer-events-none z-30 animate-pulse" />
+      )}
+      
       {/* Editing indicator */}
       {isEditing && (
         <div className="absolute -inset-3 border-2 border-skill-gold rounded bg-skill-gold/10 pointer-events-none z-30" />
       )}
       
       {/* Edit mode hover indicator */}
-      {isEditMode && !isSelected && !isEditing && (
+      {isEditMode && !isSelected && !isEditing && !isConnectionSource && (
         <div className="absolute -inset-2 border-2 border-dashed border-muted-foreground/30 rounded pointer-events-none z-30" />
       )}
 

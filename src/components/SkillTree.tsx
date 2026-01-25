@@ -29,6 +29,7 @@ const SkillTree: React.FC = () => {
     skills, 
     isEditMode, 
     selectedIds,
+    connectionSource,
     toggleEditMode, 
     selectNode,
     clearSelection,
@@ -40,6 +41,8 @@ const SkillTree: React.FC = () => {
     updateNodeName,
     duplicateSelected,
     deleteSelected,
+    handleConnectionClick,
+    clearConnectionSource,
   } = useEditableSkillTree(GRID_SIZE);
 
   // Keyboard shortcuts for edit mode
@@ -96,12 +99,13 @@ const SkillTree: React.FC = () => {
       setIsDragging(true);
       setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
       
-      // In edit mode, also clear selection when clicking empty space
+      // In edit mode, also clear selection and connection source when clicking empty space
       if (isEditMode) {
         clearSelection();
+        clearConnectionSource();
       }
     }
-  }, [position, isEditMode, clearSelection]);
+  }, [position, isEditMode, clearSelection, clearConnectionSource]);
 
   // Handle mouse move for dragging (panning works in both modes)
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -129,9 +133,10 @@ const SkillTree: React.FC = () => {
       
       if (isEditMode) {
         clearSelection();
+        clearConnectionSource();
       }
     }
-  }, [position, isEditMode, clearSelection]);
+  }, [position, isEditMode, clearSelection, clearConnectionSource]);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (isDragging && e.touches.length === 1) {
@@ -304,6 +309,14 @@ const SkillTree: React.FC = () => {
               Click to select • Shift+click for multi • Double-click to rename
             </div>
             <div className="text-xs opacity-80">
+              Ctrl+Shift+click to start connection, then click target
+            </div>
+            {connectionSource && (
+              <div className="text-xs text-accent mt-1">
+                ✓ Connection source selected - click target node
+              </div>
+            )}
+            <div className="text-xs opacity-80">
               {selectedIds.size} selected
             </div>
           </div>
@@ -390,10 +403,12 @@ const SkillTree: React.FC = () => {
               scale={scale}
               isEditMode={isEditMode}
               isSelected={selectedIds.has(skill.id)}
+              isConnectionSource={connectionSource === skill.id}
               onSelect={selectNode}
               onDragStart={handleDragStart}
               onDragMove={handleDragMove}
               onDragEnd={handleDragEnd}
+              onConnectionClick={handleConnectionClick}
               gridSize={GRID_SIZE}
               onNameChange={updateNodeName}
             />
