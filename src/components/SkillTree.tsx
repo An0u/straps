@@ -5,7 +5,7 @@ import ConnectionLines from './ConnectionLines';
 import SkillModal from './SkillModal';
 import { useSkillProgress } from '@/hooks/useSkillProgress';
 import { useEditableSkillTree } from '@/hooks/useEditableSkillTree';
-import { ZoomIn, ZoomOut, RotateCcw, Move, Lock, Unlock, Grid3X3, RotateCw, Copy } from 'lucide-react';
+import { ZoomIn, ZoomOut, RotateCcw, Move, Lock, Unlock, Grid3X3, RotateCw, Copy, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
@@ -39,6 +39,7 @@ const SkillTree: React.FC = () => {
     resetPositions,
     updateNodeName,
     duplicateSelected,
+    deleteSelected,
   } = useEditableSkillTree(GRID_SIZE);
 
   // Keyboard shortcuts for edit mode
@@ -51,11 +52,19 @@ const SkillTree: React.FC = () => {
         e.preventDefault();
         duplicateSelected();
       }
+      
+      // Delete or Backspace to remove
+      if (e.key === 'Delete' || e.key === 'Backspace') {
+        // Don't delete if user is typing in an input
+        if ((e.target as HTMLElement).tagName === 'INPUT') return;
+        e.preventDefault();
+        deleteSelected();
+      }
     };
     
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isEditMode, duplicateSelected]);
+  }, [isEditMode, duplicateSelected, deleteSelected]);
 
   // Calculate tree bounds
   const treeBounds = {
@@ -259,27 +268,43 @@ const SkillTree: React.FC = () => {
                 <span>Grid: {GRID_SIZE}px</span>
               </div>
               {selectedIds.size > 0 && (
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={duplicateSelected}
-                      className="h-6 px-2 text-xs"
-                    >
-                      <Copy size={12} className="mr-1" />
-                      Duplicate
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>Ctrl+D</TooltipContent>
-                </Tooltip>
+                <div className="flex gap-1">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={duplicateSelected}
+                        className="h-6 px-2 text-xs"
+                      >
+                        <Copy size={12} className="mr-1" />
+                        Duplicate
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Ctrl+D</TooltipContent>
+                  </Tooltip>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={deleteSelected}
+                        className="h-6 px-2 text-xs text-destructive hover:text-destructive"
+                      >
+                        <Trash2 size={12} className="mr-1" />
+                        Delete
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Delete / Backspace</TooltipContent>
+                  </Tooltip>
+                </div>
               )}
             </div>
             <div className="text-xs opacity-80 mt-1">
               Click to select • Shift+click for multi • Double-click to rename
             </div>
             <div className="text-xs opacity-80">
-              {selectedIds.size} selected • Ctrl+D to duplicate
+              {selectedIds.size} selected
             </div>
           </div>
         )}

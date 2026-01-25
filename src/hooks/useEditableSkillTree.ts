@@ -172,6 +172,13 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
     setSelectedIds(new Set(newIds)); // Select the new duplicates
   }, [selectedIds, skills, snapToGrid]);
 
+  const deleteSelected = useCallback(() => {
+    if (selectedIds.size === 0) return;
+    
+    setSkills(prev => prev.filter(skill => !selectedIds.has(skill.id)));
+    clearSelection();
+  }, [selectedIds, clearSelection]);
+
   const toggleEditMode = useCallback(() => {
     if (isEditMode) {
       savePositions();
@@ -213,5 +220,6 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
     resetPositions,
     updateNodeName,
     duplicateSelected,
+    deleteSelected,
   };
 };
