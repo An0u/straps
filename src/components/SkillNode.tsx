@@ -10,17 +10,18 @@ interface SkillNodeProps {
   scale: number;
 }
 
-// SVG paths for different node types - only full color versions
-// Grayscale filter is applied via CSS for inactive states
+// SVG paths for different node types - full color versions only
+// CSS grayscale filter is applied for inactive states
 const SVG_PATHS = {
-  category: '/shapes/category-active.svg',
+  category: '/shapes/category.svg',
+  categoryOrnate: '/shapes/category-ornate.svg',
   key: {
     blue: '/shapes/key-blue.svg',
     purple: '/shapes/key-purple.svg',
   },
   regular: {
-    blue: '/shapes/regular-blue-active.svg',
-    purple: '/shapes/regular-purple-active.svg',
+    blue: '/shapes/regular-blue.svg',
+    purple: '/shapes/regular-purple.svg',
   },
 };
 
@@ -32,8 +33,7 @@ const SkillNode: React.FC<SkillNodeProps> = ({ skill, isCompleted, onClick, scal
 
   // Size based on type - matching SVG dimensions
   const getSize = () => {
-    if (isCategory) return { width: 107, height: 111 };
-    if (isKey) return { width: 89, height: 92 };
+    if (isCategory) return { width: 101, height: 101 };
     return { width: 80, height: 80 };
   };
 
@@ -43,7 +43,8 @@ const SkillNode: React.FC<SkillNodeProps> = ({ skill, isCompleted, onClick, scal
   // CSS grayscale filter handles inactive state
   const getSvgPath = () => {
     if (isCategory) {
-      return SVG_PATHS.category;
+      // Use ornate frame for categories
+      return SVG_PATHS.categoryOrnate;
     }
     
     if (isKey) {
