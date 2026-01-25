@@ -25,8 +25,8 @@ const Index: React.FC = () => {
       {/* Feedback button */}
       <FeedbackButton />
 
-      {/* Legend */}
-      <div className="absolute bottom-4 left-4 z-20 bg-card/80 backdrop-blur-sm rounded-lg p-3">
+      {/* Legend - hidden on mobile */}
+      <div className="hidden md:block absolute bottom-4 left-4 z-20 bg-card/80 backdrop-blur-sm rounded-lg p-3">
         <h3 className="text-xs font-medium text-foreground mb-2">Legend</h3>
         <div className="space-y-1.5 text-xs">
           <div className="flex items-center gap-2">
