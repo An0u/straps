@@ -29,7 +29,8 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
   const accumulatedDelta = useRef({ x: 0, y: 0 });
   
   const [skills, setSkills] = useState<Skill[]>(() => {
-    let result = [...originalData].map(skill => ({ ...skill, connections: [] as string[] }));
+    // Start with original data including its connections
+    let result = [...originalData].map(skill => ({ ...skill, connections: [...skill.connections] }));
     
     // Load saved positions
     const savedPositions = localStorage.getItem(STORAGE_KEY);
@@ -61,22 +62,24 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
       }
     }
     
-    // Load saved connections
+    // Load saved connections - only override if there are saved connections
     const savedConnections = localStorage.getItem(CONNECTIONS_STORAGE_KEY);
     if (savedConnections) {
       try {
         const connections: StoredConnection[] = JSON.parse(savedConnections);
-        const connectionMap = new Map<string, string[]>();
-        connections.forEach(c => {
-          if (!connectionMap.has(c.from)) {
-            connectionMap.set(c.from, []);
-          }
-          connectionMap.get(c.from)!.push(c.to);
-        });
-        result = result.map(skill => ({
-          ...skill,
-          connections: connectionMap.get(skill.id) || []
-        }));
+        if (connections.length > 0) {
+          const connectionMap = new Map<string, string[]>();
+          connections.forEach(c => {
+            if (!connectionMap.has(c.from)) {
+              connectionMap.set(c.from, []);
+            }
+            connectionMap.get(c.from)!.push(c.to);
+          });
+          result = result.map(skill => ({
+            ...skill,
+            connections: connectionMap.get(skill.id) || []
+          }));
+        }
       } catch {
         // Ignore parse errors
       }
@@ -265,7 +268,7 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
   }, [isEditMode, savePositions, saveNames, saveConnections, clearSelection]);
 
   const resetPositions = useCallback(() => {
-    setSkills(originalData.map(s => ({ ...s, connections: [] })));
+    setSkills(originalData.map(s => ({ ...s, connections: [...s.connections] })));
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(NAMES_STORAGE_KEY);
     localStorage.removeItem(CONNECTIONS_STORAGE_KEY);

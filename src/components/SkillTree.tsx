@@ -461,7 +461,7 @@ const SkillTree: React.FC = () => {
           )}
 
           {/* Connection lines */}
-          <ConnectionLines skills={skills} completedSkills={completedSkills} />
+          <ConnectionLines skills={skills} completedSkills={completedSkills} treeBounds={treeBounds} />
 
           {/* Skill nodes */}
           {skills.map(skill => (
