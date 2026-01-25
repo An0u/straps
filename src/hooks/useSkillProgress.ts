@@ -1,14 +1,21 @@
 import { useState, useEffect, useCallback } from 'react';
 
 const STORAGE_KEY = 'skill-tree-progress';
+const FAVORITES_KEY = 'skill-tree-favorites';
 
 interface SkillProgress {
   completedSkills: string[];
   lastUpdated: string;
 }
 
+interface SkillFavorites {
+  favoriteSkills: string[];
+  lastUpdated: string;
+}
+
 export const useSkillProgress = () => {
   const [completedSkills, setCompletedSkills] = useState<Set<string>>(new Set());
+  const [favoriteSkills, setFavoriteSkills] = useState<Set<string>>(new Set());
 
   // Load progress from localStorage on mount
   useEffect(() => {
@@ -20,6 +27,16 @@ export const useSkillProgress = () => {
       }
     } catch (error) {
       console.error('Failed to load skill progress:', error);
+    }
+
+    try {
+      const storedFavorites = localStorage.getItem(FAVORITES_KEY);
+      if (storedFavorites) {
+        const favorites: SkillFavorites = JSON.parse(storedFavorites);
+        setFavoriteSkills(new Set(favorites.favoriteSkills));
+      }
+    } catch (error) {
+      console.error('Failed to load skill favorites:', error);
     }
   }, []);
 
@@ -36,6 +53,18 @@ export const useSkillProgress = () => {
     }
   }, []);
 
+  const saveFavorites = useCallback((skills: Set<string>) => {
+    try {
+      const favorites: SkillFavorites = {
+        favoriteSkills: Array.from(skills),
+        lastUpdated: new Date().toISOString(),
+      };
+      localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
+    } catch (error) {
+      console.error('Failed to save skill favorites:', error);
+    }
+  }, []);
+
   const toggleSkillCompletion = useCallback((skillId: string) => {
     setCompletedSkills(prev => {
       const newSet = new Set(prev);
@@ -49,13 +78,32 @@ export const useSkillProgress = () => {
     });
   }, [saveProgress]);
 
+  const toggleSkillFavorite = useCallback((skillId: string) => {
+    setFavoriteSkills(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(skillId)) {
+        newSet.delete(skillId);
+      } else {
+        newSet.add(skillId);
+      }
+      saveFavorites(newSet);
+      return newSet;
+    });
+  }, [saveFavorites]);
+
   const isSkillCompleted = useCallback((skillId: string) => {
     return completedSkills.has(skillId);
   }, [completedSkills]);
 
+  const isSkillFavorite = useCallback((skillId: string) => {
+    return favoriteSkills.has(skillId);
+  }, [favoriteSkills]);
+
   const resetProgress = useCallback(() => {
     setCompletedSkills(new Set());
+    setFavoriteSkills(new Set());
     localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(FAVORITES_KEY);
   }, []);
 
   const getCompletionStats = useCallback(() => {
@@ -67,8 +115,11 @@ export const useSkillProgress = () => {
 
   return {
     completedSkills,
+    favoriteSkills,
     toggleSkillCompletion,
+    toggleSkillFavorite,
     isSkillCompleted,
+    isSkillFavorite,
     resetProgress,
     getCompletionStats,
   };

@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Check, Lock, X, ChevronRight } from 'lucide-react';
+import { Check, Lock, X, ChevronRight, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface SkillModalProps {
@@ -17,7 +17,9 @@ interface SkillModalProps {
   isOpen: boolean;
   onClose: () => void;
   isCompleted: boolean;
+  isFavorite: boolean;
   onToggleComplete: () => void;
+  onToggleFavorite: () => void;
 }
 
 const SkillModal: React.FC<SkillModalProps> = ({
@@ -25,7 +27,9 @@ const SkillModal: React.FC<SkillModalProps> = ({
   isOpen,
   onClose,
   isCompleted,
+  isFavorite,
   onToggleComplete,
+  onToggleFavorite,
 }) => {
   if (!skill) return null;
 
@@ -77,6 +81,21 @@ const SkillModal: React.FC<SkillModalProps> = ({
                 {skill.name}
               </DialogTitle>
             </div>
+            {/* Favorite button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onToggleFavorite}
+              className={cn(
+                'h-8 w-8 shrink-0',
+                isFavorite && 'text-skill-gold'
+              )}
+            >
+              <Star 
+                size={20} 
+                className={cn(isFavorite && 'fill-skill-gold')} 
+              />
+            </Button>
           </div>
           <DialogDescription className="text-muted-foreground mt-3">
             {skill.description}

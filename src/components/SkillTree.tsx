@@ -24,7 +24,7 @@ const SkillTree: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   
   const containerRef = useRef<HTMLDivElement>(null);
-  const { isSkillCompleted, toggleSkillCompletion, completedSkills } = useSkillProgress();
+  const { isSkillCompleted, isSkillFavorite, toggleSkillCompletion, toggleSkillFavorite, completedSkills } = useSkillProgress();
   const { 
     skills, 
     isEditMode, 
@@ -177,6 +177,12 @@ const SkillTree: React.FC = () => {
       toggleSkillCompletion(selectedSkill.id);
     }
   }, [selectedSkill, toggleSkillCompletion]);
+
+  const handleToggleFavorite = useCallback(() => {
+    if (selectedSkill) {
+      toggleSkillFavorite(selectedSkill.id);
+    }
+  }, [selectedSkill, toggleSkillFavorite]);
 
   // Stats
   const totalSkills = skills.length;
@@ -399,6 +405,7 @@ const SkillTree: React.FC = () => {
               key={skill.id}
               skill={skill}
               isCompleted={isSkillCompleted(skill.id)}
+              isFavorite={isSkillFavorite(skill.id)}
               onClick={() => handleSkillClick(skill)}
               scale={scale}
               isEditMode={isEditMode}
@@ -422,7 +429,9 @@ const SkillTree: React.FC = () => {
         isOpen={isModalOpen}
         onClose={closeModal}
         isCompleted={selectedSkill ? isSkillCompleted(selectedSkill.id) : false}
+        isFavorite={selectedSkill ? isSkillFavorite(selectedSkill.id) : false}
         onToggleComplete={handleToggleComplete}
+        onToggleFavorite={handleToggleFavorite}
       />
     </div>
   );
