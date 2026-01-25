@@ -133,22 +133,32 @@ const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills, completedSkil
         </filter>
       </defs>
       
-      {lines.map((line, index) => (
+      {/* Render inactive lines first (below) */}
+      {lines.filter(l => !l.isActive).map((line, index) => (
         <line
-          key={index}
+          key={`inactive-${index}`}
           x1={line.x1}
           y1={line.y1}
           x2={line.x2}
           y2={line.y2}
-          stroke={
-            line.isActive 
-              ? `url(#lineGradient${line.colorType === 'blue' ? 'Blue' : 'Purple'})` 
-              : 'hsl(220 15% 45%)'
-          }
-          strokeWidth={line.isActive ? 4 : 3}
+          stroke="hsl(220 15% 35%)"
+          strokeWidth={3}
           strokeLinecap="round"
-          filter={line.isActive ? `url(#glow${line.colorType === 'blue' ? 'Blue' : 'Purple'})` : undefined}
-          className="transition-all duration-300"
+          opacity={0.6}
+        />
+      ))}
+      {/* Render active lines on top */}
+      {lines.filter(l => l.isActive).map((line, index) => (
+        <line
+          key={`active-${index}`}
+          x1={line.x1}
+          y1={line.y1}
+          x2={line.x2}
+          y2={line.y2}
+          stroke={line.colorType === 'blue' ? 'hsl(220 70% 55%)' : 'hsl(270 70% 55%)'}
+          strokeWidth={4}
+          strokeLinecap="round"
+          filter={`url(#glow${line.colorType === 'blue' ? 'Blue' : 'Purple'})`}
         />
       ))}
     </svg>
