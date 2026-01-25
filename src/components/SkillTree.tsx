@@ -5,6 +5,7 @@ import ConnectionLines from './ConnectionLines';
 import SkillModal from './SkillModal';
 import { useSkillProgress } from '@/hooks/useSkillProgress';
 import { useEditableSkillTree } from '@/hooks/useEditableSkillTree';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { ZoomIn, ZoomOut, RotateCcw, Move, Lock, Unlock, Grid3X3, RotateCw, Copy, Trash2, Download } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -19,12 +20,14 @@ const GRID_SIZE = 30;
 const ADMIN_STORAGE_KEY = 'skill-tree-admin';
 
 const SkillTree: React.FC = () => {
-  const [scale, setScale] = useState(0.8);
-  const [position, setPosition] = useState({ x: -200, y: -100 });
+  const isMobile = useIsMobile();
+  const [scale, setScale] = useState(isMobile ? 0.5 : 0.8);
+  const [position, setPosition] = useState({ x: isMobile ? 50 : -200, y: isMobile ? 50 : -100 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pinchDistance, setPinchDistance] = useState<number | null>(null);
   const [isAdminMode, setIsAdminMode] = useState(() => {
     return localStorage.getItem(ADMIN_STORAGE_KEY) === 'true';
   });
@@ -139,9 +142,20 @@ const SkillTree: React.FC = () => {
     setIsDragging(false);
   }, []);
 
+  // Get pinch distance
+  const getPinchDistance = useCallback((touches: React.TouchList) => {
+    if (touches.length < 2) return null;
+    const dx = touches[0].clientX - touches[1].clientX;
+    const dy = touches[0].clientY - touches[1].clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }, []);
+
   // Handle touch events for mobile
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    if (e.touches.length === 1) {
+    if (e.touches.length === 2) {
+      // Pinch zoom start
+      setPinchDistance(getPinchDistance(e.touches));
+    } else if (e.touches.length === 1) {
       setIsDragging(true);
       setDragStart({
         x: e.touches[0].clientX - position.x,
@@ -153,26 +167,35 @@ const SkillTree: React.FC = () => {
         clearConnectionSource();
       }
     }
-  }, [position, isEditMode, clearSelection, clearConnectionSource]);
+  }, [position, isEditMode, clearSelection, clearConnectionSource, getPinchDistance]);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (isDragging && e.touches.length === 1) {
+    if (e.touches.length === 2) {
+      // Pinch zoom
+      const newDistance = getPinchDistance(e.touches);
+      if (pinchDistance && newDistance) {
+        const delta = (newDistance - pinchDistance) * 0.005;
+        setScale(prev => Math.min(Math.max(0.3, prev + delta), 2));
+        setPinchDistance(newDistance);
+      }
+    } else if (isDragging && e.touches.length === 1) {
       setPosition({
         x: e.touches[0].clientX - dragStart.x,
         y: e.touches[0].clientY - dragStart.y,
       });
     }
-  }, [isDragging, dragStart]);
+  }, [isDragging, dragStart, pinchDistance, getPinchDistance]);
 
   const handleTouchEnd = useCallback(() => {
     setIsDragging(false);
+    setPinchDistance(null);
   }, []);
 
   // Reset view
   const resetView = useCallback(() => {
-    setScale(0.8);
-    setPosition({ x: -200, y: -100 });
-  }, []);
+    setScale(isMobile ? 0.5 : 0.8);
+    setPosition({ x: isMobile ? 50 : -200, y: isMobile ? 50 : -100 });
+  }, [isMobile]);
 
   // Handle skill click
   const handleSkillClick = useCallback((skill: Skill) => {
@@ -208,8 +231,8 @@ const SkillTree: React.FC = () => {
   return (
     <div className="relative w-full h-full overflow-hidden tree-canvas">
       {/* Controls */}
-      <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
-        <div className="bg-card/80 backdrop-blur-sm rounded-lg p-2 flex flex-col gap-1">
+      <div className="absolute top-4 left-4 z-20 flex flex-col gap-2 max-w-[calc(100%-2rem)]">
+        <div className="bg-card/80 backdrop-blur-sm rounded-lg p-1.5 md:p-2 flex md:flex-col flex-row gap-1">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
@@ -377,25 +400,45 @@ const SkillTree: React.FC = () => {
           </div>
         )}
 
-        <div className="bg-card/80 backdrop-blur-sm rounded-lg px-3 py-2 text-sm">
-          <div className="text-muted-foreground text-xs mb-1">Progress</div>
-          <div className="text-foreground font-medium">
-            {completedCount} / {totalSkills}
+        {!isMobile && (
+          <div className="bg-card/80 backdrop-blur-sm rounded-lg px-3 py-2 text-sm">
+            <div className="text-muted-foreground text-xs mb-1">Progress</div>
+            <div className="text-foreground font-medium">
+              {completedCount} / {totalSkills}
+            </div>
+            <div className="w-full h-1.5 bg-muted rounded-full mt-1 overflow-hidden">
+              <div 
+                className="h-full bg-skill-gold rounded-full transition-all duration-300"
+                style={{ width: `${(completedCount / totalSkills) * 100}%` }}
+              />
+            </div>
           </div>
-          <div className="w-full h-1.5 bg-muted rounded-full mt-1 overflow-hidden">
-            <div 
-              className="h-full bg-skill-gold rounded-full transition-all duration-300"
-              style={{ width: `${(completedCount / totalSkills) * 100}%` }}
-            />
+        )}
+      </div>
+      
+      {/* Mobile progress bar - bottom positioned */}
+      {isMobile && (
+        <div className="absolute bottom-20 left-4 right-4 z-20 bg-card/80 backdrop-blur-sm rounded-lg px-3 py-2">
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-muted-foreground">Progress</span>
+            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-skill-gold rounded-full transition-all duration-300"
+                style={{ width: `${(completedCount / totalSkills) * 100}%` }}
+              />
+            </div>
+            <span className="text-xs font-medium text-foreground">{completedCount}/{totalSkills}</span>
           </div>
         </div>
-      </div>
+      )}
 
-      {/* Drag hint */}
-      <div className="absolute top-4 right-4 z-20 bg-card/60 backdrop-blur-sm rounded-lg px-3 py-2 flex items-center gap-2 text-sm text-muted-foreground">
-        <Move size={14} />
-        <span>{isEditMode ? "Drag nodes to reposition" : "Drag to pan • Scroll to zoom"}</span>
-      </div>
+      {/* Drag hint - hidden on mobile */}
+      {!isMobile && (
+        <div className="absolute top-4 right-4 z-20 bg-card/60 backdrop-blur-sm rounded-lg px-3 py-2 flex items-center gap-2 text-sm text-muted-foreground">
+          <Move size={14} />
+          <span>{isEditMode ? "Drag nodes to reposition" : "Drag to pan • Scroll to zoom"}</span>
+        </div>
+      )}
 
       {/* Tree container */}
       <div
