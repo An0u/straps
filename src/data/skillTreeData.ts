@@ -572,9 +572,9 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'flare-to-takeoff',
-    name: 'Flare to Takeoff',
-    description: 'Flare into takeoff.',
+    id: 'flare-to-lockoff',
+    name: 'Flare to Lockoff',
+    description: 'Flare into lockoff.',
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
