@@ -579,7 +579,6 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isGoldBorder: true,
-    isBlue: true,
     x: 300,
     y: 600,
     connections: []
