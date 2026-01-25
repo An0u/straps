@@ -174,7 +174,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 510,
     y: -120,
-    connections: []
+    connections: ['rotating-left']
   },
   {
     id: 'splits',
@@ -1177,6 +1177,19 @@ export const skillTreeData: Skill[] = [
     x: 1770,
     y: 990,
     connections: []
+  },
+
+  // New node: Bent arm to handstand
+  {
+    id: 'front-balance-copy-1769358407899-puhwc',
+    name: 'Bent arm to handstand',
+    description: 'Bent arm press to handstand.',
+    prerequisites: ['support'],
+    type: 'regular',
+    state: 'inactive',
+    x: 1440,
+    y: 300,
+    connections: ['support']
   },
 ];
 
