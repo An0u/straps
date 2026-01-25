@@ -21,6 +21,7 @@ export interface SkillTreeSection {
 }
 
 // Main central tree structure
+// Coordinates scaled 1.5x for proper spacing between nodes
 export const skillTreeData: Skill[] = [
   // Central spine - One Arm / Two Arm
   {
@@ -30,8 +31,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'category',
     state: 'active',
-    x: 800,
-    y: 400,
+    x: 1200,
+    y: 600,
     connections: ['hanging-left', 'static-center', 'rotating-top']
   },
   {
@@ -41,8 +42,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['one-arm'],
     type: 'category',
     state: 'active',
-    x: 1000,
-    y: 400,
+    x: 1500,
+    y: 600,
     connections: ['static-right', 'support', 'hanging-right', 'rotating-right']
   },
 
@@ -54,8 +55,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['one-arm'],
     type: 'category',
     state: 'active',
-    x: 650,
-    y: 400,
+    x: 975,
+    y: 600,
     connections: ['normal-hang', 'reverse-hang', 'spin-hang']
   },
   {
@@ -65,8 +66,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['one-arm'],
     type: 'category',
     state: 'active',
-    x: 750,
-    y: 400,
+    x: 1125,
+    y: 600,
     connections: ['swing', 'basics']
   },
   {
@@ -76,8 +77,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['one-arm'],
     type: 'category',
     state: 'active',
-    x: 700,
-    y: 150,
+    x: 1050,
+    y: 225,
     connections: ['twisting-top', 'swing-top']
   },
 
@@ -89,8 +90,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['two-arm'],
     type: 'category',
     state: 'active',
-    x: 1050,
-    y: 400,
+    x: 1575,
+    y: 600,
     connections: ['hanging-right-sub']
   },
   {
@@ -100,8 +101,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['two-arm'],
     type: 'category',
     state: 'active',
-    x: 1150,
-    y: 320,
+    x: 1725,
+    y: 480,
     connections: ['front-balance', 'side-balance', 'butterfly']
   },
   {
@@ -111,8 +112,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['two-arm'],
     type: 'key',
     state: 'active',
-    x: 1100,
-    y: 480,
+    x: 1650,
+    y: 720,
     connections: ['center', 'split-right', 'reverse-right']
   },
   {
@@ -122,8 +123,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['two-arm'],
     type: 'category',
     state: 'active',
-    x: 1200,
-    y: 150,
+    x: 1800,
+    y: 225,
     connections: ['sitting', 'twisting-right']
   },
 
@@ -135,8 +136,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['hanging-left'],
     type: 'category',
     state: 'active',
-    x: 550,
-    y: 500,
+    x: 825,
+    y: 750,
     connections: ['meathook', 'scorpion', 'dragon']
   },
   {
@@ -146,8 +147,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['hanging-left'],
     type: 'category',
     state: 'active',
-    x: 600,
-    y: 560,
+    x: 900,
+    y: 840,
     connections: ['split-grip-flag', 'cruiser']
   },
   {
@@ -157,8 +158,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['hanging-left'],
     type: 'category',
     state: 'active',
-    x: 650,
-    y: 500,
+    x: 975,
+    y: 750,
     connections: ['cruiser']
   },
 
@@ -170,8 +171,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['reverse-hang', 'spin-hang'],
     type: 'category',
     state: 'active',
-    x: 550,
-    y: 650,
+    x: 825,
+    y: 975,
     connections: ['cruiser-spin']
   },
 
@@ -183,8 +184,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['static-center'],
     type: 'category',
     state: 'active',
-    x: 700,
-    y: 280,
+    x: 1050,
+    y: 420,
     connections: ['inside-pirouette', 'reverse-swing']
   },
   {
@@ -194,8 +195,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['static-center'],
     type: 'category',
     state: 'active',
-    x: 700,
-    y: 340,
+    x: 1050,
+    y: 510,
     connections: ['front-to-side', 'front-to-front', 'straddle-invert-flag']
   },
 
@@ -207,8 +208,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['rotating-top'],
     type: 'category',
     state: 'active',
-    x: 650,
-    y: 200,
+    x: 975,
+    y: 300,
     connections: ['kick', 'sailor']
   },
   {
@@ -218,8 +219,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['rotating-top'],
     type: 'key',
     state: 'active',
-    x: 750,
-    y: 200,
+    x: 1125,
+    y: 300,
     connections: []
   },
 
@@ -231,8 +232,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['twisting-top'],
     type: 'regular',
     state: 'inactive',
-    x: 600,
-    y: 80,
+    x: 900,
+    y: 120,
     connections: []
   },
   {
@@ -242,8 +243,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['twisting-top'],
     type: 'regular',
     state: 'inactive',
-    x: 650,
-    y: 80,
+    x: 975,
+    y: 120,
     connections: ['splits']
   },
   {
@@ -253,8 +254,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['sailor'],
     type: 'regular',
     state: 'inactive',
-    x: 700,
-    y: 80,
+    x: 1050,
+    y: 120,
     connections: []
   },
   {
@@ -264,8 +265,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['swing'],
     type: 'regular',
     state: 'inactive',
-    x: 650,
-    y: 250,
+    x: 975,
+    y: 375,
     connections: []
   },
   {
@@ -275,8 +276,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['swing'],
     type: 'regular',
     state: 'inactive',
-    x: 600,
-    y: 280,
+    x: 900,
+    y: 420,
     connections: []
   },
 
@@ -288,8 +289,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['basics'],
     type: 'regular',
     state: 'inactive',
-    x: 620,
-    y: 340,
+    x: 930,
+    y: 510,
     connections: []
   },
   {
@@ -299,8 +300,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['basics'],
     type: 'regular',
     state: 'inactive',
-    x: 620,
-    y: 380,
+    x: 930,
+    y: 570,
     connections: []
   },
   {
@@ -311,8 +312,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isGoldBorder: true,
-    x: 650,
-    y: 420,
+    x: 975,
+    y: 630,
     connections: []
   },
 
@@ -324,8 +325,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['normal-hang'],
     type: 'regular',
     state: 'inactive',
-    x: 500,
-    y: 560,
+    x: 750,
+    y: 840,
     connections: []
   },
   {
@@ -335,8 +336,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['normal-hang'],
     type: 'regular',
     state: 'inactive',
-    x: 450,
-    y: 600,
+    x: 675,
+    y: 900,
     connections: []
   },
   {
@@ -346,8 +347,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['normal-hang'],
     type: 'regular',
     state: 'inactive',
-    x: 400,
-    y: 560,
+    x: 600,
+    y: 840,
     connections: []
   },
 
@@ -360,8 +361,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isGoldBorder: true,
-    x: 550,
-    y: 600,
+    x: 825,
+    y: 900,
     connections: []
   },
 
@@ -373,8 +374,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['cruiser'],
     type: 'regular',
     state: 'inactive',
-    x: 500,
-    y: 700,
+    x: 750,
+    y: 1050,
     connections: []
   },
 
@@ -386,8 +387,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 350,
-    y: 380,
+    x: 525,
+    y: 570,
     connections: ['inversion-meathook']
   },
   {
@@ -398,8 +399,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isGoldBorder: true,
-    x: 400,
-    y: 380,
+    x: 600,
+    y: 570,
     connections: ['inversion']
   },
   {
@@ -409,8 +410,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['inversion-meathook'],
     type: 'regular',
     state: 'inactive',
-    x: 450,
-    y: 380,
+    x: 675,
+    y: 570,
     connections: ['high-switch']
   },
   {
@@ -420,8 +421,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['inversion'],
     type: 'regular',
     state: 'inactive',
-    x: 500,
-    y: 380,
+    x: 750,
+    y: 570,
     connections: []
   },
 
@@ -433,8 +434,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 100,
-    y: 520,
+    x: 150,
+    y: 780,
     connections: []
   },
   {
@@ -444,8 +445,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 150,
-    y: 520,
+    x: 225,
+    y: 780,
     connections: []
   },
   {
@@ -455,8 +456,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 200,
-    y: 520,
+    x: 300,
+    y: 780,
     connections: []
   },
   {
@@ -466,8 +467,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 250,
-    y: 520,
+    x: 375,
+    y: 780,
     connections: []
   },
   {
@@ -477,8 +478,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 300,
-    y: 520,
+    x: 450,
+    y: 780,
     connections: []
   },
   {
@@ -488,8 +489,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 350,
-    y: 520,
+    x: 525,
+    y: 780,
     connections: []
   },
   {
@@ -499,8 +500,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 400,
-    y: 520,
+    x: 600,
+    y: 780,
     connections: []
   },
   {
@@ -510,8 +511,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 450,
-    y: 520,
+    x: 675,
+    y: 780,
     connections: []
   },
   {
@@ -521,8 +522,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 500,
-    y: 520,
+    x: 750,
+    y: 780,
     connections: []
   },
   {
@@ -532,8 +533,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 550,
-    y: 520,
+    x: 825,
+    y: 780,
     connections: []
   },
 
@@ -545,8 +546,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 100,
-    y: 580,
+    x: 150,
+    y: 870,
     connections: []
   },
   {
@@ -556,8 +557,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 150,
-    y: 580,
+    x: 225,
+    y: 870,
     connections: []
   },
   {
@@ -567,8 +568,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 200,
-    y: 580,
+    x: 300,
+    y: 870,
     connections: []
   },
   {
@@ -578,8 +579,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 250,
-    y: 580,
+    x: 375,
+    y: 870,
     connections: []
   },
   {
@@ -590,8 +591,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isGoldBorder: true,
-    x: 300,
-    y: 580,
+    x: 450,
+    y: 870,
     connections: []
   },
   {
@@ -602,8 +603,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isGoldBorder: true,
-    x: 350,
-    y: 580,
+    x: 525,
+    y: 870,
     connections: []
   },
 
@@ -615,8 +616,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['support'],
     type: 'regular',
     state: 'inactive',
-    x: 1200,
-    y: 280,
+    x: 1800,
+    y: 420,
     connections: []
   },
   {
@@ -626,8 +627,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['support'],
     type: 'regular',
     state: 'inactive',
-    x: 1250,
-    y: 320,
+    x: 1875,
+    y: 480,
     connections: []
   },
   {
@@ -637,8 +638,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['support'],
     type: 'regular',
     state: 'inactive',
-    x: 1300,
-    y: 360,
+    x: 1950,
+    y: 540,
     connections: ['pull-to-full']
   },
   {
@@ -648,8 +649,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['butterfly'],
     type: 'regular',
     state: 'inactive',
-    x: 1350,
-    y: 400,
+    x: 2025,
+    y: 600,
     connections: []
   },
 
@@ -661,8 +662,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['rotating-right'],
     type: 'category',
     state: 'active',
-    x: 1150,
-    y: 100,
+    x: 1725,
+    y: 150,
     connections: ['ball-twists']
   },
   {
@@ -672,8 +673,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['rotating-right'],
     type: 'category',
     state: 'active',
-    x: 1250,
-    y: 100,
+    x: 1875,
+    y: 150,
     connections: ['pull-to-hips', 'swing-to-meathook']
   },
   {
@@ -683,8 +684,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['sitting'],
     type: 'regular',
     state: 'inactive',
-    x: 1150,
-    y: 50,
+    x: 1725,
+    y: 75,
     connections: []
   },
   {
@@ -694,8 +695,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['twisting-right'],
     type: 'regular',
     state: 'inactive',
-    x: 1250,
-    y: 50,
+    x: 1875,
+    y: 75,
     connections: []
   },
   {
@@ -705,8 +706,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['twisting-right'],
     type: 'regular',
     state: 'inactive',
-    x: 1300,
-    y: 50,
+    x: 1950,
+    y: 75,
     connections: []
   },
 
@@ -718,8 +719,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 1150,
-    y: 30,
+    x: 1725,
+    y: 45,
     connections: []
   },
   {
@@ -729,8 +730,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 1200,
-    y: 30,
+    x: 1800,
+    y: 45,
     connections: []
   },
   {
@@ -740,8 +741,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 1250,
-    y: 30,
+    x: 1875,
+    y: 45,
     connections: []
   },
   {
@@ -751,8 +752,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 1300,
-    y: 30,
+    x: 1950,
+    y: 45,
     connections: []
   },
   {
@@ -762,8 +763,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 1350,
-    y: 30,
+    x: 2025,
+    y: 45,
     connections: []
   },
   {
@@ -773,8 +774,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 1400,
-    y: 30,
+    x: 2100,
+    y: 45,
     connections: []
   },
   {
@@ -784,8 +785,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 1450,
-    y: 30,
+    x: 2175,
+    y: 45,
     connections: []
   },
   {
@@ -795,8 +796,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 1500,
-    y: 30,
+    x: 2250,
+    y: 45,
     connections: []
   },
 
@@ -809,8 +810,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isGoldBorder: true,
-    x: 1200,
-    y: 80,
+    x: 1800,
+    y: 120,
     connections: []
   },
   {
@@ -820,8 +821,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 1250,
-    y: 80,
+    x: 1875,
+    y: 120,
     connections: []
   },
   {
@@ -831,8 +832,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 1300,
-    y: 80,
+    x: 1950,
+    y: 120,
     connections: []
   },
   {
@@ -842,8 +843,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 1350,
-    y: 80,
+    x: 2025,
+    y: 120,
     connections: []
   },
   {
@@ -853,8 +854,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 1400,
-    y: 80,
+    x: 2100,
+    y: 120,
     connections: []
   },
 
@@ -866,8 +867,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['hanging-right'],
     type: 'category',
     state: 'active',
-    x: 1100,
-    y: 550,
+    x: 1650,
+    y: 825,
     connections: ['spinning-meathook']
   },
   {
@@ -877,8 +878,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['hanging-right'],
     type: 'category',
     state: 'active',
-    x: 1050,
-    y: 620,
+    x: 1575,
+    y: 930,
     connections: ['reverse-bottom']
   },
   {
@@ -888,8 +889,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['hanging-right'],
     type: 'category',
     state: 'active',
-    x: 1150,
-    y: 620,
+    x: 1725,
+    y: 930,
     connections: ['meathook-right', 'straightstar']
   },
   {
@@ -899,8 +900,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['center'],
     type: 'regular',
     state: 'inactive',
-    x: 1150,
-    y: 550,
+    x: 1725,
+    y: 825,
     connections: []
   },
 
@@ -912,8 +913,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['split-right'],
     type: 'category',
     state: 'active',
-    x: 1050,
-    y: 700,
+    x: 1575,
+    y: 1050,
     connections: ['normal-bottom']
   },
   {
@@ -923,8 +924,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['reverse-bottom'],
     type: 'category',
     state: 'active',
-    x: 1100,
-    y: 760,
+    x: 1650,
+    y: 1140,
     connections: ['flare-bottom', 'barswrecker-bottom', 'meathook-bottom']
   },
   {
@@ -934,8 +935,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['normal-bottom'],
     type: 'regular',
     state: 'inactive',
-    x: 1150,
-    y: 760,
+    x: 1725,
+    y: 1140,
     connections: []
   },
   {
@@ -945,8 +946,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['normal-bottom'],
     type: 'regular',
     state: 'inactive',
-    x: 1200,
-    y: 760,
+    x: 1800,
+    y: 1140,
     connections: []
   },
   {
@@ -956,8 +957,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['normal-bottom'],
     type: 'regular',
     state: 'inactive',
-    x: 1250,
-    y: 760,
+    x: 1875,
+    y: 1140,
     connections: []
   },
 
@@ -969,8 +970,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['reverse-right'],
     type: 'regular',
     state: 'inactive',
-    x: 1200,
-    y: 620,
+    x: 1800,
+    y: 930,
     connections: []
   },
   {
@@ -980,8 +981,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['reverse-right'],
     type: 'regular',
     state: 'inactive',
-    x: 1250,
-    y: 660,
+    x: 1875,
+    y: 990,
     connections: []
   },
   {
@@ -991,8 +992,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 1300,
-    y: 700,
+    x: 1950,
+    y: 1050,
     connections: []
   },
   {
@@ -1002,8 +1003,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 1350,
-    y: 760,
+    x: 2025,
+    y: 1140,
     connections: []
   },
   {
@@ -1013,8 +1014,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 1400,
-    y: 760,
+    x: 2100,
+    y: 1140,
     connections: []
   },
 
@@ -1026,8 +1027,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 1200,
-    y: 480,
+    x: 1800,
+    y: 720,
     connections: ['inversion-meathook-right']
   },
   {
@@ -1037,8 +1038,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['two-arm-inversion'],
     type: 'regular',
     state: 'inactive',
-    x: 1250,
-    y: 480,
+    x: 1875,
+    y: 720,
     connections: ['back-flag']
   },
   {
@@ -1049,8 +1050,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isGoldBorder: true,
-    x: 1300,
-    y: 480,
+    x: 1950,
+    y: 720,
     connections: []
   },
 
@@ -1062,8 +1063,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'key',
     state: 'active',
-    x: 1200,
-    y: 250,
+    x: 1800,
+    y: 375,
     connections: ['front-armstand']
   },
   {
@@ -1073,8 +1074,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['roll-ups'],
     type: 'regular',
     state: 'inactive',
-    x: 1250,
-    y: 250,
+    x: 1875,
+    y: 375,
     connections: ['starliar']
   },
   {
@@ -1084,8 +1085,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['front-armstand'],
     type: 'regular',
     state: 'inactive',
-    x: 1300,
-    y: 250,
+    x: 1950,
+    y: 375,
     connections: []
   },
 
@@ -1097,8 +1098,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 500,
-    y: 60,
+    x: 750,
+    y: 90,
     connections: []
   },
   {
@@ -1108,8 +1109,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 550,
-    y: 100,
+    x: 825,
+    y: 150,
     connections: []
   },
   {
@@ -1119,8 +1120,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 550,
-    y: 150,
+    x: 825,
+    y: 225,
     connections: []
   },
 
@@ -1132,8 +1133,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 100,
-    y: 150,
+    x: 150,
+    y: 225,
     connections: []
   },
   {
@@ -1143,8 +1144,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 150,
-    y: 150,
+    x: 225,
+    y: 225,
     connections: []
   },
   {
@@ -1154,8 +1155,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 100,
-    y: 200,
+    x: 150,
+    y: 300,
     connections: []
   },
   {
@@ -1165,8 +1166,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 150,
-    y: 200,
+    x: 225,
+    y: 300,
     connections: []
   },
   {
@@ -1176,8 +1177,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 200,
-    y: 200,
+    x: 300,
+    y: 300,
     connections: []
   },
   {
@@ -1187,8 +1188,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: [],
     type: 'regular',
     state: 'inactive',
-    x: 250,
-    y: 200,
+    x: 375,
+    y: 300,
     connections: []
   },
 ];
