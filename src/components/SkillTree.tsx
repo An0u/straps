@@ -65,25 +65,26 @@ const SkillTree: React.FC = () => {
   // Handle mouse down for dragging or clearing selection
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (e.button === 0) {
+      // Always allow panning
+      setIsDragging(true);
+      setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+      
+      // In edit mode, also clear selection when clicking empty space
       if (isEditMode) {
-        // Click on empty space clears selection
         clearSelection();
-      } else {
-        setIsDragging(true);
-        setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
       }
     }
   }, [position, isEditMode, clearSelection]);
 
-  // Handle mouse move for dragging
+  // Handle mouse move for dragging (panning works in both modes)
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (isDragging && !isEditMode) {
+    if (isDragging) {
       setPosition({
         x: e.clientX - dragStart.x,
         y: e.clientY - dragStart.y,
       });
     }
-  }, [isDragging, dragStart, isEditMode]);
+  }, [isDragging, dragStart]);
 
   // Handle mouse up
   const handleMouseUp = useCallback(() => {
@@ -92,23 +93,27 @@ const SkillTree: React.FC = () => {
 
   // Handle touch events for mobile
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    if (e.touches.length === 1 && !isEditMode) {
+    if (e.touches.length === 1) {
       setIsDragging(true);
       setDragStart({
         x: e.touches[0].clientX - position.x,
         y: e.touches[0].clientY - position.y,
       });
+      
+      if (isEditMode) {
+        clearSelection();
+      }
     }
-  }, [position, isEditMode]);
+  }, [position, isEditMode, clearSelection]);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (isDragging && e.touches.length === 1 && !isEditMode) {
+    if (isDragging && e.touches.length === 1) {
       setPosition({
         x: e.touches[0].clientX - dragStart.x,
         y: e.touches[0].clientY - dragStart.y,
       });
     }
-  }, [isDragging, dragStart, isEditMode]);
+  }, [isDragging, dragStart]);
 
   const handleTouchEnd = useCallback(() => {
     setIsDragging(false);
