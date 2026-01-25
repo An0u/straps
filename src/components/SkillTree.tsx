@@ -231,21 +231,6 @@ const SkillTree: React.FC = () => {
   return (
     <div className="relative w-full h-full overflow-hidden tree-canvas">
       {/* Controls */}
-      {/* Progress indicator - top left */}
-      {!isMobile && (
-        <div className="absolute top-4 left-4 z-20 bg-card/80 backdrop-blur-sm rounded-lg px-3 py-2 text-sm">
-          <div className="text-muted-foreground text-xs mb-1">Progress</div>
-          <div className="text-foreground font-medium">
-            {completedCount} / {totalSkills}
-          </div>
-          <div className="w-full h-1.5 bg-muted rounded-full mt-1 overflow-hidden">
-            <div 
-              className="h-full bg-skill-gold rounded-full transition-all duration-300"
-              style={{ width: `${(completedCount / totalSkills) * 100}%` }}
-            />
-          </div>
-        </div>
-      )}
 
       {/* Floating bottom toolbar */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
@@ -418,22 +403,6 @@ const SkillTree: React.FC = () => {
           )}
         </div>
       </div>
-      
-      {/* Mobile progress bar - top positioned */}
-      {isMobile && (
-        <div className="absolute top-4 left-4 right-4 z-20 bg-card/80 backdrop-blur-sm rounded-lg px-3 py-2">
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-muted-foreground">Progress</span>
-            <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-skill-gold rounded-full transition-all duration-300"
-                style={{ width: `${(completedCount / totalSkills) * 100}%` }}
-              />
-            </div>
-            <span className="text-xs font-medium text-foreground">{completedCount}/{totalSkills}</span>
-          </div>
-        </div>
-      )}
 
       {/* Drag hint - hidden on mobile */}
       {!isMobile && (
