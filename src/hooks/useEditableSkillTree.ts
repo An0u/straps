@@ -146,6 +146,32 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
     ));
   }, []);
 
+  const duplicateSelected = useCallback(() => {
+    if (selectedIds.size === 0) return;
+    
+    const newNodes: Skill[] = [];
+    const newIds: string[] = [];
+    
+    skills.forEach(skill => {
+      if (selectedIds.has(skill.id)) {
+        const newId = `${skill.id}-copy-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
+        newIds.push(newId);
+        newNodes.push({
+          ...skill,
+          id: newId,
+          name: `${skill.name} (copy)`,
+          x: snapToGrid(skill.x + 60),
+          y: snapToGrid(skill.y + 60),
+          connections: [], // Clear connections for duplicates
+          prerequisites: [],
+        });
+      }
+    });
+    
+    setSkills(prev => [...prev, ...newNodes]);
+    setSelectedIds(new Set(newIds)); // Select the new duplicates
+  }, [selectedIds, skills, snapToGrid]);
+
   const toggleEditMode = useCallback(() => {
     if (isEditMode) {
       savePositions();
@@ -186,5 +212,6 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
     handleDragEnd,
     resetPositions,
     updateNodeName,
+    duplicateSelected,
   };
 };

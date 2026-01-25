@@ -1,11 +1,11 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { Skill } from '@/data/skillTreeData';
 import DraggableSkillNode from './DraggableSkillNode';
 import ConnectionLines from './ConnectionLines';
 import SkillModal from './SkillModal';
 import { useSkillProgress } from '@/hooks/useSkillProgress';
 import { useEditableSkillTree } from '@/hooks/useEditableSkillTree';
-import { ZoomIn, ZoomOut, RotateCcw, Move, Lock, Unlock, Grid3X3, RotateCw } from 'lucide-react';
+import { ZoomIn, ZoomOut, RotateCcw, Move, Lock, Unlock, Grid3X3, RotateCw, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
@@ -38,7 +38,24 @@ const SkillTree: React.FC = () => {
     handleDragEnd,
     resetPositions,
     updateNodeName,
+    duplicateSelected,
   } = useEditableSkillTree(GRID_SIZE);
+
+  // Keyboard shortcuts for edit mode
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isEditMode) return;
+      
+      // Ctrl+D or Cmd+D to duplicate
+      if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+        e.preventDefault();
+        duplicateSelected();
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isEditMode, duplicateSelected]);
 
   // Calculate tree bounds
   const treeBounds = {
@@ -236,15 +253,33 @@ const SkillTree: React.FC = () => {
         {/* Edit mode indicator */}
         {isEditMode && (
           <div className="bg-primary/90 backdrop-blur-sm rounded-lg px-3 py-2 text-sm text-primary-foreground">
-            <div className="flex items-center gap-2">
-              <Grid3X3 size={14} />
-              <span>Grid: {GRID_SIZE}px</span>
+            <div className="flex items-center gap-2 justify-between">
+              <div className="flex items-center gap-2">
+                <Grid3X3 size={14} />
+                <span>Grid: {GRID_SIZE}px</span>
+              </div>
+              {selectedIds.size > 0 && (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={duplicateSelected}
+                      className="h-6 px-2 text-xs"
+                    >
+                      <Copy size={12} className="mr-1" />
+                      Duplicate
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Ctrl+D</TooltipContent>
+                </Tooltip>
+              )}
             </div>
             <div className="text-xs opacity-80 mt-1">
               Click to select • Shift+click for multi • Double-click to rename
             </div>
             <div className="text-xs opacity-80">
-              {selectedIds.size} selected
+              {selectedIds.size} selected • Ctrl+D to duplicate
             </div>
           </div>
         )}
