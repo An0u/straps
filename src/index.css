@@ -199,13 +199,13 @@
 
   .connection-line {
     stroke: hsl(var(--skill-line));
-    stroke-width: 2;
+    stroke-width: 4;
     filter: drop-shadow(0 0 4px hsl(var(--skill-line) / 0.5));
   }
 
   .connection-line-inactive {
     stroke: hsl(var(--skill-line-inactive));
-    stroke-width: 2;
+    stroke-width: 3;
   }
 }
 
