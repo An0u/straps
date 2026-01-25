@@ -65,7 +65,7 @@ export const skillTreeData: Skill[] = [
     state: 'active',
     x: 780,
     y: 240,
-    connections: ['rotating-left', 'inside-pirouette', 'kick'] // Level 2 → Level 3
+    connections: ['rotating-left'] // Level 2 → Level 3 only
   },
   {
     id: 'static-left',
@@ -100,7 +100,7 @@ export const skillTreeData: Skill[] = [
     state: 'active',
     x: 720,
     y: 150,
-    connections: ['twisting-left', 'double-twist', 'soleil', 'bucket'] // Level 3 → Level 4
+    connections: ['twisting-left', 'bucket'] // Only horizontally adjacent Level 4
   },
   {
     id: 'twisting-left',
@@ -111,7 +111,7 @@ export const skillTreeData: Skill[] = [
     state: 'active',
     x: 660,
     y: 240,
-    connections: ['front-to-side', 'front-to-front', 'reverse-swing'] // Level 3 → Level 4
+    connections: ['reverse-swing'] // Only horizontally adjacent Level 4
   },
   {
     id: 'basics',
@@ -122,7 +122,7 @@ export const skillTreeData: Skill[] = [
     state: 'active',
     x: 720,
     y: 330,
-    connections: ['straddle-invert-flag', 'high-switch'] // Level 3 → Level 4
+    connections: ['front-to-front'] // Only horizontally adjacent Level 4
   },
   {
     id: 'hanging-left',
@@ -133,7 +133,7 @@ export const skillTreeData: Skill[] = [
     state: 'active',
     x: 660,
     y: 450,
-    connections: ['normal-hang', 'reverse-hang'] // Level 3 → Level 3 sub-branches
+    connections: ['normal-hang', 'reverse-hang', 'straddle-invert-flag'] // Level 3 connections + adjacent Level 4
   },
   {
     id: 'normal-hang',
@@ -144,7 +144,7 @@ export const skillTreeData: Skill[] = [
     state: 'active',
     x: 600,
     y: 540,
-    connections: ['meathook', 'scorpion', 'dragon', 'flare', 'barswrecker', 'reverse-meathook'] // Level 3 → Level 4
+    connections: ['meathook'] // Only horizontally adjacent Level 4
   },
   {
     id: 'reverse-hang',
@@ -155,7 +155,7 @@ export const skillTreeData: Skill[] = [
     state: 'active',
     x: 660,
     y: 630,
-    connections: ['split-grip-flag', 'cruiser', 'flare-to-lockoff', 'split-grip-full'] // Level 3 → Level 4
+    connections: ['cruiser', 'split-grip-flag'] // Level 3 + horizontally adjacent Level 4
   },
   {
     id: 'cruiser',
@@ -166,12 +166,12 @@ export const skillTreeData: Skill[] = [
     state: 'active',
     x: 660,
     y: 720,
-    connections: ['cruiser-spin', 'scorpion', 'dragon'] // Level 3 → Level 4
+    connections: ['cruiser-spin'] // Only horizontally adjacent Level 4
   },
 
-  // LEVEL 4: All other skills (connect from Level 3)
+  // LEVEL 4: All other skills - HORIZONTAL connections only
   
-  // Top rows - connected from Rotating
+  // Row y=60 (top row) - horizontal chain
   {
     id: 'double-twist',
     name: 'Double Twist',
@@ -181,7 +181,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 540,
     y: 60,
-    connections: ['double-salta', 'sailor']
+    connections: ['soleil'] // horizontal only
   },
   {
     id: 'soleil',
@@ -192,7 +192,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 600,
     y: 60,
-    connections: ['splits']
+    connections: ['bucket'] // horizontal only
   },
   {
     id: 'bucket',
@@ -203,111 +203,100 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 660,
     y: 60,
-    connections: []
+    connections: [] // end of row
   },
-  {
-    id: 'kick',
-    name: 'Kick',
-    description: 'Kick movement. Dynamic power move.',
-    prerequisites: ['swing-left'],
-    type: 'regular',
-    state: 'inactive',
-    x: 780,
-    y: 150,
-    connections: []
-  },
-
-  // Second row from top - connected from double-twist
+  
+  // Row y=120 - horizontal chain
   {
     id: 'double-salta',
     name: 'Double Salta',
     description: 'Double salta technique.',
-    prerequisites: ['double-twist'],
+    prerequisites: ['rotating-left'],
     type: 'regular',
     state: 'inactive',
     x: 300,
     y: 120,
-    connections: ['swing-in-armtie']
+    connections: ['1-5-arm-salta'] // horizontal only
   },
   {
     id: '1-5-arm-salta',
     name: '1.5 Arm Salta',
     description: 'One and a half arm salta.',
-    prerequisites: ['double-salta'],
+    prerequisites: ['rotating-left'],
     type: 'regular',
     state: 'inactive',
     x: 360,
     y: 120,
-    connections: ['swing-to-flag']
+    connections: ['sailor'] // horizontal only
   },
   {
     id: 'sailor',
     name: 'Sailor',
     description: 'Sailor position.',
-    prerequisites: ['double-twist'],
+    prerequisites: ['rotating-left'],
     type: 'regular',
     state: 'inactive',
     x: 540,
     y: 120,
-    connections: ['soleil-2']
+    connections: ['splits'] // horizontal only
   },
   {
     id: 'splits',
     name: 'Splits',
     description: 'Split position.',
-    prerequisites: ['soleil'],
+    prerequisites: ['rotating-left'],
     type: 'regular',
     state: 'inactive',
     x: 600,
     y: 120,
-    connections: ['reverse-swing'],
+    connections: [], // end of row
     isBlue: true
   },
 
-  // Third row - connected from row above
+  // Row y=180 - horizontal chain with Swing and Twisting as parents
   {
     id: 'swing-in-armtie',
     name: 'Swing in Armtie',
     description: 'Swing with arm tie.',
-    prerequisites: ['double-salta'],
+    prerequisites: ['swing-left'],
     type: 'regular',
     state: 'inactive',
     x: 300,
     y: 180,
-    connections: []
+    connections: ['swing-to-flag'] // horizontal only
   },
   {
     id: 'swing-to-flag',
     name: 'Swing to Flag',
     description: 'Swing transition to flag.',
-    prerequisites: ['1-5-arm-salta'],
+    prerequisites: ['swing-left'],
     type: 'regular',
     state: 'inactive',
     x: 360,
     y: 180,
-    connections: ['shoulder-pirouette']
+    connections: ['shoulder-pirouette'] // horizontal only
   },
   {
     id: 'shoulder-pirouette',
     name: 'Shoulder Pirouette',
     description: 'Pirouette from shoulder.',
-    prerequisites: ['swing-to-flag'],
+    prerequisites: ['swing-left'],
     type: 'regular',
     state: 'inactive',
     x: 420,
     y: 180,
-    connections: []
+    connections: ['soleil-2'] // horizontal only
   },
   {
     id: 'soleil-2',
     name: 'Soleil',
     description: 'Soleil variation.',
-    prerequisites: ['sailor'],
+    prerequisites: ['swing-left'],
     type: 'regular',
     state: 'inactive',
     x: 480,
     y: 180,
-    connections: []
+    connections: ['reverse-swing'] // horizontal only
   },
   {
     id: 'reverse-swing',
@@ -318,7 +307,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 600,
     y: 180,
-    connections: []
+    connections: ['inside-pirouette'] // horizontal to parent-adjacent
   },
   {
     id: 'inside-pirouette',
@@ -329,10 +318,21 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 720,
     y: 180,
-    connections: []
+    connections: ['kick'] // horizontal only
+  },
+  {
+    id: 'kick',
+    name: 'Kick',
+    description: 'Kick movement. Dynamic power move.',
+    prerequisites: ['swing-left'],
+    type: 'regular',
+    state: 'inactive',
+    x: 780,
+    y: 150,
+    connections: [] // end, adjacent to Swing parent
   },
 
-  // Fourth row (below twisting)
+  // Row y=300 - horizontal chain below Twisting/Basics
   {
     id: 'front-to-side',
     name: 'Front to Side',
@@ -342,80 +342,80 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 600,
     y: 300,
-    connections: []
+    connections: ['front-to-front'] // horizontal only
   },
   {
     id: 'front-to-front',
     name: 'Front to Front',
     description: 'Front position maintenance.',
-    prerequisites: ['twisting-left'],
+    prerequisites: ['basics'],
     type: 'regular',
     state: 'inactive',
     x: 660,
     y: 300,
-    connections: []
+    connections: [] // connects to Basics parent
   },
 
-  // Inversion row (left side) - connected from Normal hang chain
+  // Row y=420 - horizontal chain (Hanging is adjacent parent)
   {
     id: 'inversion-flag',
     name: 'Inversion to Flag',
     description: 'Invert into flag position.',
-    prerequisites: ['normal-hang'],
+    prerequisites: ['hanging-left'],
     type: 'regular',
     state: 'inactive',
     x: 300,
     y: 420,
-    connections: ['inversion-meathook']
+    connections: ['inversion-meathook'] // horizontal only
   },
   {
     id: 'inversion-meathook',
     name: 'Inversion to Meathook',
     description: 'Invert directly to meathook.',
-    prerequisites: ['inversion-flag'],
+    prerequisites: ['hanging-left'],
     type: 'regular',
     state: 'inactive',
     isGoldBorder: true,
     x: 360,
     y: 420,
-    connections: ['inversion']
+    connections: ['inversion'] // horizontal only
   },
   {
     id: 'inversion',
     name: 'Inversion',
     description: 'Basic inversion technique.',
-    prerequisites: ['inversion-meathook'],
+    prerequisites: ['hanging-left'],
     type: 'regular',
     state: 'inactive',
     x: 420,
     y: 420,
-    connections: ['high-switch']
+    connections: ['high-switch'] // horizontal only
   },
   {
     id: 'high-switch',
     name: 'High Switch',
     description: 'High position switch.',
-    prerequisites: ['inversion', 'basics'],
+    prerequisites: ['hanging-left'],
     type: 'regular',
     state: 'inactive',
     x: 480,
     y: 420,
-    connections: ['straddle-invert-flag']
+    connections: ['straddle-invert-flag'] // horizontal only
   },
   {
     id: 'straddle-invert-flag',
     name: 'Straddle Invert Flag',
     description: 'Straddle into inverted flag.',
-    prerequisites: ['basics'],
+    prerequisites: ['hanging-left'],
     type: 'regular',
     state: 'inactive',
     isGoldBorder: true,
     x: 540,
     y: 420,
-    connections: []
+    connections: [] // end of row, adjacent to Hanging
   },
 
-  // Bottom left rows - connected from Normal hang
+  // Row y=540 - horizontal chain (Normal is adjacent parent at x=600)
   {
     id: 'double-full',
     name: 'Double Full',
@@ -425,7 +425,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 60,
     y: 540,
-    connections: ['reverse-blanks']
+    connections: ['blanks'] // horizontal only
   },
   {
     id: 'blanks',
@@ -436,7 +436,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 120,
     y: 540,
-    connections: ['reverse-full']
+    connections: ['full'] // horizontal only
   },
   {
     id: 'full',
@@ -447,7 +447,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 180,
     y: 540,
-    connections: ['reverse-flag']
+    connections: ['high-switch-left'] // horizontal only
   },
   {
     id: 'high-switch-left',
@@ -458,7 +458,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 240,
     y: 540,
-    connections: ['front-3-arm']
+    connections: ['barswrecker-switch'] // horizontal only
   },
   {
     id: 'barswrecker-switch',
@@ -469,7 +469,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 300,
     y: 540,
-    connections: ['flare-to-lockoff']
+    connections: ['low-switch'] // horizontal only
   },
   {
     id: 'low-switch',
@@ -480,7 +480,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 360,
     y: 540,
-    connections: ['split-grip-full']
+    connections: ['flare-to-flag'] // horizontal only
   },
   {
     id: 'flare-to-flag',
@@ -491,7 +491,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 420,
     y: 540,
-    connections: ['split-grip-flag']
+    connections: ['reverse-meathook'] // horizontal only
   },
   {
     id: 'reverse-meathook',
@@ -502,7 +502,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 480,
     y: 540,
-    connections: []
+    connections: ['barswrecker'] // horizontal only
   },
   {
     id: 'barswrecker',
@@ -513,7 +513,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 540,
     y: 540,
-    connections: []
+    connections: ['flare'] // horizontal only
   },
   {
     id: 'flare',
@@ -524,53 +524,53 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 600,
     y: 540,
-    connections: ['meathook']
+    connections: ['meathook'] // horizontal to parent-adjacent
   },
 
-  // Second bottom row - connected from row above
+  // Row y=600 - horizontal chain (Reverse is adjacent parent at x=660)
   {
     id: 'reverse-blanks',
     name: 'Reverse Blanks',
     description: 'Reverse blanks position.',
-    prerequisites: ['double-full'],
+    prerequisites: ['reverse-hang'],
     type: 'regular',
     state: 'inactive',
     x: 60,
     y: 600,
-    connections: []
+    connections: ['reverse-full'] // horizontal only
   },
   {
     id: 'reverse-full',
     name: 'Reverse Full',
     description: 'Reverse full rotation.',
-    prerequisites: ['blanks'],
+    prerequisites: ['reverse-hang'],
     type: 'regular',
     state: 'inactive',
     x: 120,
     y: 600,
-    connections: []
+    connections: ['reverse-flag'] // horizontal only
   },
   {
     id: 'reverse-flag',
     name: 'Reverse Flag',
     description: 'Reverse flag position.',
-    prerequisites: ['full'],
+    prerequisites: ['reverse-hang'],
     type: 'regular',
     state: 'inactive',
     x: 180,
     y: 600,
-    connections: []
+    connections: ['front-3-arm'] // horizontal only
   },
   {
     id: 'front-3-arm',
     name: 'Front 3 Arm',
     description: 'Front position with three arm contact.',
-    prerequisites: ['high-switch-left'],
+    prerequisites: ['reverse-hang'],
     type: 'regular',
     state: 'inactive',
     x: 240,
     y: 600,
-    connections: []
+    connections: ['flare-to-lockoff'] // horizontal only
   },
   {
     id: 'flare-to-lockoff',
@@ -582,7 +582,7 @@ export const skillTreeData: Skill[] = [
     isGoldBorder: true,
     x: 300,
     y: 600,
-    connections: []
+    connections: ['split-grip-full'] // horizontal only
   },
   {
     id: 'split-grip-full',
@@ -594,45 +594,10 @@ export const skillTreeData: Skill[] = [
     isGoldBorder: true,
     x: 360,
     y: 600,
-    connections: []
+    connections: ['split-grip-flag'] // horizontal only
   },
 
-  // Meathook row
-  {
-    id: 'meathook',
-    name: 'Meathook',
-    description: 'Meathook position.',
-    prerequisites: ['normal-hang'],
-    type: 'regular',
-    state: 'inactive',
-    x: 660,
-    y: 540,
-    connections: []
-  },
-
-  // Bottom skills
-  {
-    id: 'scorpion',
-    name: 'Scorpion',
-    description: 'Scorpion position.',
-    prerequisites: ['normal-hang'],
-    type: 'regular',
-    state: 'inactive',
-    x: 480,
-    y: 720,
-    connections: []
-  },
-  {
-    id: 'dragon',
-    name: 'Dragon',
-    description: 'Dragon position.',
-    prerequisites: ['normal-hang'],
-    type: 'regular',
-    state: 'inactive',
-    x: 540,
-    y: 720,
-    connections: []
-  },
+  // Row y=660 - single node adjacent to Reverse
   {
     id: 'split-grip-flag',
     name: 'Split Grip Flag',
@@ -643,7 +608,44 @@ export const skillTreeData: Skill[] = [
     isGoldBorder: true,
     x: 420,
     y: 660,
-    connections: []
+    connections: [] // end, adjacent to Reverse
+  },
+
+  // Row y=540 continued - Meathook (adjacent to Normal)
+  {
+    id: 'meathook',
+    name: 'Meathook',
+    description: 'Meathook position.',
+    prerequisites: ['normal-hang'],
+    type: 'regular',
+    state: 'inactive',
+    x: 660,
+    y: 540,
+    connections: [] // end, adjacent to Normal/Spin
+  },
+
+  // Row y=720 - horizontal chain (Cruiser is adjacent parent at x=660)
+  {
+    id: 'scorpion',
+    name: 'Scorpion',
+    description: 'Scorpion position.',
+    prerequisites: ['cruiser'],
+    type: 'regular',
+    state: 'inactive',
+    x: 480,
+    y: 720,
+    connections: ['dragon'] // horizontal only
+  },
+  {
+    id: 'dragon',
+    name: 'Dragon',
+    description: 'Dragon position.',
+    prerequisites: ['cruiser'],
+    type: 'regular',
+    state: 'inactive',
+    x: 540,
+    y: 720,
+    connections: ['cruiser-spin'] // horizontal only
   },
   {
     id: 'cruiser-spin',
@@ -654,7 +656,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 600,
     y: 720,
-    connections: []
+    connections: [] // end, adjacent to Cruiser
   },
 
   // ============ RIGHT SIDE - TWO ARM BRANCH ============
