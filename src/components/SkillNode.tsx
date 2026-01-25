@@ -58,12 +58,12 @@ const SkillNode: React.FC<SkillNodeProps> = ({ skill, isCompleted, onClick, scal
     return useBlue ? SVG_PATHS.regular.blue : SVG_PATHS.regular.purple;
   };
 
-  // Get glow class based on type
+  // Get glow class based on type - no pulse animation
   const getGlowClass = () => {
     if (!isActive) return '';
-    if (hasGoldBorder) return 'skill-node-svg-glow-gold skill-glow-pulse';
-    if (isKey) return 'skill-node-svg-glow-blue skill-glow-pulse';
-    return 'skill-node-svg-glow skill-glow-pulse';
+    if (hasGoldBorder) return 'skill-node-svg-glow-gold';
+    if (isKey) return 'skill-node-svg-glow-blue';
+    return 'skill-node-svg-glow';
   };
 
   // Text size based on node type
