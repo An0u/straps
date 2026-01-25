@@ -10,8 +10,8 @@ interface DraggableSkillNodeProps {
   scale: number;
   isEditMode: boolean;
   isSelected: boolean;
-  onSelect: (id: string, addToSelection: boolean) => void;
-  onDragStart: (id: string, startX: number, startY: number) => void;
+  onSelect: (id: string, addToSelection: boolean) => Set<string>;
+  onDragStart: (id: string, newSelection: Set<string>) => void;
   onDragMove: (deltaX: number, deltaY: number) => void;
   onDragEnd: () => void;
   gridSize: number;
@@ -87,12 +87,12 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
     e.stopPropagation();
     e.preventDefault();
     
-    // Select this node (shift adds to selection)
-    onSelect(skill.id, e.shiftKey);
+    // Select this node (shift adds to selection) and get the new selection
+    const newSelection = onSelect(skill.id, e.shiftKey);
     
     lastMousePos.current = { x: e.clientX, y: e.clientY };
     setIsDragging(true);
-    onDragStart(skill.id, e.clientX, e.clientY);
+    onDragStart(skill.id, newSelection);
   }, [isEditMode, skill.id, onSelect, onDragStart]);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
