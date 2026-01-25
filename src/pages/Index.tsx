@@ -1,11 +1,55 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import React from 'react';
+import SkillTree from '@/components/SkillTree';
+import FeedbackButton from '@/components/FeedbackButton';
 
-const Index = () => {
+const Index: React.FC = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="min-h-screen w-full bg-background relative overflow-hidden">
+      {/* Header */}
+      <header className="absolute top-0 left-0 right-0 z-30 pointer-events-none">
+        <div className="container mx-auto px-6 py-4">
+          <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground tracking-wide">
+            Skill Tree
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Track your progress and master new skills
+          </p>
+        </div>
+      </header>
+
+      {/* Main skill tree area */}
+      <main className="w-full h-screen">
+        <SkillTree />
+      </main>
+
+      {/* Feedback button */}
+      <FeedbackButton />
+
+      {/* Legend */}
+      <div className="absolute bottom-4 left-4 z-20 bg-card/80 backdrop-blur-sm rounded-lg p-3">
+        <h3 className="text-xs font-medium text-foreground mb-2">Legend</h3>
+        <div className="space-y-1.5 text-xs">
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 skill-node-diamond skill-node-category" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
+            <span className="text-muted-foreground">Category</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 skill-node-diamond skill-node-key" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
+            <span className="text-muted-foreground">Key Skill</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 skill-node-diamond skill-node-active" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
+            <span className="text-muted-foreground">Active</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 skill-node-diamond skill-node-inactive" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
+            <span className="text-muted-foreground">Inactive</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 skill-node-diamond skill-node-inactive border-2 border-skill-gold" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
+            <span className="text-muted-foreground">Gold Tier</span>
+          </div>
+        </div>
       </div>
     </div>
   );
