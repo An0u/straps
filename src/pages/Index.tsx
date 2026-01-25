@@ -14,7 +14,7 @@ const Index: React.FC = () => {
       {/* Header with Progress */}
       <header className="fixed md:absolute top-4 left-4 right-4 md:left-4 md:right-auto z-30 pointer-events-none">
         <div className="bg-card/80 backdrop-blur-sm rounded-lg px-4 py-3 flex flex-col items-center text-center md:items-start md:text-left w-full md:w-auto">
-          <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground tracking-wide">
+          <h1 className="font-display text-2xl md:text-3xl text-foreground tracking-wide">
             Skill Tree
           </h1>
           <p className="text-sm text-muted-foreground mt-2">
