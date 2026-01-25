@@ -206,7 +206,7 @@ export const skillTreeData: Skill[] = [
     connections: [] // end of row
   },
   
-  // Row y=120 - horizontal chain
+  // Row y=120 - horizontal chain (fill gaps with continuous chain)
   {
     id: 'double-salta',
     name: 'Double Salta',
@@ -227,7 +227,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 360,
     y: 120,
-    connections: ['sailor'] // horizontal only
+    connections: ['sailor'] // horizontal - jumps gap to next node
   },
   {
     id: 'sailor',
@@ -296,7 +296,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 480,
     y: 180,
-    connections: ['reverse-swing'] // horizontal only
+    connections: ['reverse-swing'] // horizontal - jumps gap
   },
   {
     id: 'reverse-swing',
@@ -307,7 +307,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 600,
     y: 180,
-    connections: ['inside-pirouette'] // horizontal to parent-adjacent
+    connections: ['inside-pirouette'] // horizontal only
   },
   {
     id: 'inside-pirouette',
@@ -318,8 +318,10 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 720,
     y: 180,
-    connections: ['kick'] // horizontal only
+    connections: [] // end of row
   },
+
+  // Row y=150 - Kick adjacent to Swing
   {
     id: 'kick',
     name: 'Kick',
@@ -329,7 +331,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 780,
     y: 150,
-    connections: [] // end, adjacent to Swing parent
+    connections: [] // single node adjacent to Swing parent
   },
 
   // Row y=300 - horizontal chain below Twisting/Basics
@@ -594,10 +596,10 @@ export const skillTreeData: Skill[] = [
     isGoldBorder: true,
     x: 360,
     y: 600,
-    connections: ['split-grip-flag'] // horizontal only
+    connections: [] // end of row
   },
 
-  // Row y=660 - single node adjacent to Reverse
+  // Row y=660 - horizontal chain
   {
     id: 'split-grip-flag',
     name: 'Split Grip Flag',
@@ -608,7 +610,7 @@ export const skillTreeData: Skill[] = [
     isGoldBorder: true,
     x: 420,
     y: 660,
-    connections: [] // end, adjacent to Reverse
+    connections: [] // single node in this row
   },
 
   // Row y=540 continued - Meathook (adjacent to Normal)
@@ -814,7 +816,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1260,
     y: 60,
-    connections: ['giants'] // horizontal only
+    connections: ['giants'] // horizontal - jumps gap
   },
   {
     id: 'giants',
