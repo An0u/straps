@@ -4,9 +4,17 @@ import { Skill } from '@/data/skillTreeData';
 interface ConnectionLinesProps {
   skills: Skill[];
   completedSkills: Set<string>;
+  treeBounds: {
+    minX: number;
+    maxX: number;
+    minY: number;
+    maxY: number;
+  };
 }
 
-const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills, completedSkills }) => {
+const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills, completedSkills, treeBounds }) => {
+  const treeWidth = treeBounds.maxX - treeBounds.minX;
+  const treeHeight = treeBounds.maxY - treeBounds.minY;
   const getSkillById = (skillId: string) => {
     return skills.find(s => s.id === skillId);
   };
@@ -88,8 +96,14 @@ const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills, completedSkil
 
   return (
     <svg 
-      className="absolute inset-0 pointer-events-none"
-      style={{ width: '100%', height: '100%' }}
+      className="absolute pointer-events-none"
+      style={{ 
+        width: treeWidth, 
+        height: treeHeight,
+        left: 0,
+        top: 0,
+      }}
+      viewBox={`${treeBounds.minX} ${treeBounds.minY} ${treeWidth} ${treeHeight}`}
     >
       <defs>
         <linearGradient id="lineGradientPurple" x1="0%" y1="0%" x2="100%" y2="100%">
