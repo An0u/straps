@@ -49,28 +49,20 @@ const Index: React.FC = () => {
         <h3 className="text-xs font-medium text-foreground mb-2">Legend</h3>
         <div className="space-y-1.5 text-xs">
           <div className="flex items-center gap-2">
-            <img src="/shapes/category-ornate.svg" alt="Category" className="w-5 h-5" />
-            <span className="text-muted-foreground">Category</span>
+            <img src="/shapes/category-ornate.svg" alt="Skill Category" className="w-5 h-5" />
+            <span className="text-muted-foreground">Skill Category</span>
           </div>
           <div className="flex items-center gap-2">
-            <img src="/shapes/key-blue.svg" alt="Key Skill" className="w-5 h-5" />
+            <div className="w-5 h-5 rounded-sm bg-skill-gold shadow-[0_0_8px_hsl(45_100%_55%/0.7)]" />
             <span className="text-muted-foreground">Key Skill</span>
           </div>
           <div className="flex items-center gap-2">
-            <img src="/shapes/regular-purple-active.svg" alt="Skill" className="w-5 h-5" />
-            <span className="text-muted-foreground">Skill</span>
+            <img src="/shapes/regular-inactive.svg" alt="Straps Skill" className="w-5 h-5 grayscale" />
+            <span className="text-muted-foreground">Straps Skill</span>
           </div>
           <div className="flex items-center gap-2">
-            <img src="/shapes/regular-inactive.svg" alt="Inactive" className="w-5 h-5 grayscale opacity-60" />
-            <span className="text-muted-foreground">Inactive</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full bg-skill-active" />
-            <span className="text-muted-foreground">One Arm (Purple)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-4 h-4 rounded-full bg-skill-key" />
-            <span className="text-muted-foreground">Two Arm (Blue)</span>
+            <img src="/shapes/regular-inactive.svg" alt="Skill Not Started" className="w-5 h-5 grayscale opacity-50" />
+            <span className="text-muted-foreground">Skill Not Started</span>
           </div>
         </div>
       </div>
