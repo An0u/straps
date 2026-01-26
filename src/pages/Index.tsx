@@ -18,7 +18,10 @@ const Index: React.FC = () => {
             Straps Skill Tree
           </h1>
           <p className="text-sm text-muted-foreground mt-2">
-            Complete skill tree of all existing strap skills. Missing something? Use the feedback button!
+            Your complete guide to mastering aerial straps. Track your journey from foundational holds to advanced dynamic skills.
+          </p>
+          <p className="text-xs text-muted-foreground/70 mt-1">
+            Missing a skill? Hit the feedback button to suggest additions!
           </p>
           <div className="flex items-center gap-3 mt-4 w-full min-w-[200px]">
             <span className="text-xs text-muted-foreground whitespace-nowrap">Progress</span>
