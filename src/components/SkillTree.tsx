@@ -386,9 +386,10 @@ const SkillTree: React.FC = () => {
                             x: s.x,
                             y: s.y,
                             connections: s.connections,
+                            ...(s.type === 'key' ? { type: 'key' } : {}),
                           }));
                           navigator.clipboard.writeText(JSON.stringify(exportData, null, 2));
-                          toast.success('Layout copied to clipboard!');
+                          toast.success('Layout exported (includes key skills)!');
                           console.log('Skill Tree Layout Export:', JSON.stringify(exportData, null, 2));
                         }}
                         className="h-9 w-9 rounded-full"
