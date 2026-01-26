@@ -57,8 +57,12 @@ const Index: React.FC = () => {
             <span className="text-muted-foreground">Key Skill</span>
           </div>
           <div className="flex items-center gap-2">
-            <img src="/shapes/regular-inactive.svg" alt="Straps Skill" className="w-5 h-5 grayscale" />
-            <span className="text-muted-foreground">Straps Skill</span>
+            <img src="/shapes/regular-blue.svg" alt="Two Arm Straps Skill" className="w-5 h-5" />
+            <span className="text-muted-foreground">Two Arm Straps Skill</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <img src="/shapes/regular-purple.svg" alt="One Arm Straps Skill" className="w-5 h-5" />
+            <span className="text-muted-foreground">One Arm Straps Skill</span>
           </div>
           <div className="flex items-center gap-2">
             <img src="/shapes/regular-inactive.svg" alt="Skill Not Started" className="w-5 h-5 grayscale opacity-50" />
