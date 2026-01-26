@@ -15,10 +15,10 @@ const Index: React.FC = () => {
       <header className="fixed md:absolute top-4 left-4 right-4 md:left-4 md:right-auto z-30 pointer-events-none">
         <div className="bg-card/80 backdrop-blur-sm rounded-lg px-4 py-3 flex flex-col items-center text-center md:items-start md:text-left w-full md:w-auto">
           <h1 className="font-display text-2xl md:text-3xl text-foreground tracking-wide">
-            Skill Tree
+            Straps Skill Tree
           </h1>
           <p className="text-sm text-muted-foreground mt-2">
-            Track your progress and master new skills
+            Complete skill tree of all existing strap skills. Missing something? Use the feedback button!
           </p>
           <div className="flex items-center gap-3 mt-4 w-full min-w-[200px]">
             <span className="text-xs text-muted-foreground whitespace-nowrap">Progress</span>
@@ -55,15 +55,19 @@ const Index: React.FC = () => {
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 skill-node-diamond skill-node-active" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
-            <span className="text-muted-foreground">Active</span>
+            <span className="text-muted-foreground">Skill</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 skill-node-diamond skill-node-inactive" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
             <span className="text-muted-foreground">Inactive</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 skill-node-diamond skill-node-inactive border-2 border-skill-gold" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
-            <span className="text-muted-foreground">Gold Tier</span>
+            <div className="w-4 h-4 skill-node-diamond skill-node-active" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
+            <span className="text-muted-foreground">One Arm (Purple)</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 skill-node-diamond skill-node-key" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
+            <span className="text-muted-foreground">Two Arm (Blue)</span>
           </div>
         </div>
       </div>
