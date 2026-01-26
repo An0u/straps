@@ -49,12 +49,12 @@ const Index: React.FC = () => {
         <h3 className="text-xs font-medium text-foreground mb-2">Legend</h3>
         <div className="space-y-1.5 text-xs">
           <div className="flex items-center gap-2">
-            <img src="/shapes/category-blue.svg" alt="Two Arm Skill Category" className="w-5 h-5" />
-            <span className="text-muted-foreground">Two Arm Skill Category</span>
+            <img src="/shapes/category-blue.svg" alt="Two Arm Category" className="w-5 h-5" />
+            <span className="text-muted-foreground">Two Arm Category</span>
           </div>
           <div className="flex items-center gap-2">
-            <img src="/shapes/category-ornate.svg" alt="One Arm Skill Category" className="w-5 h-5" />
-            <span className="text-muted-foreground">One Arm Skill Category</span>
+            <img src="/shapes/category-ornate.svg" alt="One Arm Category" className="w-5 h-5" />
+            <span className="text-muted-foreground">One Arm Category</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-5 h-5 rounded-sm bg-skill-gold shadow-[0_0_8px_hsl(45_100%_55%/0.7)]" />
