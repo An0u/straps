@@ -58,7 +58,7 @@ const Index: React.FC = () => {
             <span className="text-muted-foreground">Skill</span>
           </div>
           <div className="flex items-center gap-2">
-            <img src="/shapes/regular-inactive.svg" alt="Inactive" className="w-5 h-5" />
+            <img src="/shapes/regular-inactive.svg" alt="Inactive" className="w-5 h-5 grayscale opacity-60" />
             <span className="text-muted-foreground">Inactive</span>
           </div>
           <div className="flex items-center gap-2">
