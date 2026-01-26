@@ -320,14 +320,11 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
         ) : (
           <span 
             className={cn(
-              'skill-text font-display font-normal leading-tight',
-              getTextSize(),
-              isActive ? 'text-primary-foreground' : 'text-muted-foreground'
+              'skill-text font-display font-normal leading-tight text-white',
+              getTextSize()
             )}
             style={{
-              textShadow: isActive 
-                ? '1px 1px 3px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.5)' 
-                : '1px 1px 2px rgba(0,0,0,0.8)',
+              textShadow: '1px 1px 3px rgba(0,0,0,0.9), 0 0 10px rgba(0,0,0,0.5)',
             }}
           >
             {skill.name}
