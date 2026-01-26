@@ -23,6 +23,7 @@ const SVG_PATHS = {
     blue: '/shapes/regular-blue.svg',
     purple: '/shapes/regular-purple.svg',
   },
+  inactive: '/shapes/regular-inactive.svg',
 };
 
 const SkillNode: React.FC<SkillNodeProps> = ({ skill, isCompleted, onClick, scale }) => {
@@ -40,7 +41,7 @@ const SkillNode: React.FC<SkillNodeProps> = ({ skill, isCompleted, onClick, scal
   const { width, height } = getSize();
 
   // Determine which SVG to use - always use full color versions
-  // CSS grayscale filter handles inactive state
+  // CSS grayscale filter handles inactive state for non-key items
   const getSvgPath = () => {
     if (isCategory) {
       // Use ornate frame for categories
@@ -48,7 +49,11 @@ const SkillNode: React.FC<SkillNodeProps> = ({ skill, isCompleted, onClick, scal
     }
     
     if (isKey) {
-      // Alternate between blue and purple for key items
+      // Key skills use inactive SVG when inactive, colored when active
+      if (!isActive) {
+        return SVG_PATHS.inactive;
+      }
+      // Alternate between blue and purple for active key items
       const useBlue = (skill.x + skill.y) % 200 < 100;
       return useBlue ? SVG_PATHS.key.blue : SVG_PATHS.key.purple;
     }
@@ -102,9 +107,8 @@ const SkillNode: React.FC<SkillNodeProps> = ({ skill, isCompleted, onClick, scal
         alt=""
         className={cn(
           'absolute inset-0 w-full h-full object-contain transition-all duration-300',
-          // Key skills: grayscale with gold glow when inactive, just gold glow when active
-          isKey && !isActive && 'skill-node-grayscale-gold-glow opacity-70',
-          isKey && isActive && 'skill-node-svg-glow-gold',
+          // Key skills: gold glow always (inactive SVG handles grey look)
+          isKey && 'skill-node-svg-glow-gold',
           // Non-key skills: grayscale when inactive, colored glow when active
           !isKey && !isActive && 'skill-node-grayscale opacity-70',
           !isKey && isActive && getGlowClass()
