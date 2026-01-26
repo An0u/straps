@@ -521,8 +521,8 @@ export const skillTreeData: Skill[] = [
   // Row y=840
   {
     id: 'reverse-blanks',
-    name: 'Reverse Blanks',
-    description: 'Reverse blanks position.',
+    name: 'Reverse Mushu',
+    description: 'Reverse mushu position.',
     prerequisites: ['reverse-hang'],
     type: 'regular',
     state: 'inactive',
@@ -635,7 +635,7 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'cruiser-spin',
-    name: 'Cruiser Spin',
+    name: 'Center Spin',
     description: 'Spinning cruiser variation.',
     prerequisites: ['cruiser'],
     type: 'regular',
