@@ -35,6 +35,7 @@ const SVG_PATHS = {
     blue: '/shapes/regular-blue-new.svg',
     purple: '/shapes/regular-purple.svg',
   },
+  inactive: '/shapes/regular-inactive.svg',
 };
 
 const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>(({
@@ -98,9 +99,15 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
     if (isCategory) {
       return useBlue ? SVG_PATHS.category.blue : SVG_PATHS.category.purple;
     }
+    
+    // Key skills use inactive SVG when not completed, colored when completed
     if (isKey) {
+      if (!isCompleted) {
+        return SVG_PATHS.inactive;
+      }
       return useBlue ? SVG_PATHS.key.blue : SVG_PATHS.key.purple;
     }
+    
     return useBlue ? SVG_PATHS.regular.blue : SVG_PATHS.regular.purple;
   };
 
