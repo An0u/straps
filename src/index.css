@@ -129,6 +129,12 @@
     filter: grayscale(100%);
   }
 
+  .skill-node-grayscale-gold-glow {
+    filter: grayscale(100%) 
+            drop-shadow(0 0 10px hsl(var(--skill-gold-glow) / 0.8)) 
+            drop-shadow(0 0 20px hsl(var(--skill-gold-glow) / 0.5));
+  }
+
   .skill-node-svg-glow {
     filter: drop-shadow(0 0 8px hsl(var(--skill-active-glow) / 0.7)) 
             drop-shadow(0 0 16px hsl(var(--skill-active-glow) / 0.4));
