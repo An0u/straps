@@ -52,6 +52,7 @@ const SkillTree: React.FC = () => {
     deleteSelected,
     handleConnectionClick,
     clearConnectionSource,
+    toggleKeySkill,
   } = useEditableSkillTree(GRID_SIZE);
 
   // Keyboard shortcuts for edit mode and admin toggle
@@ -279,7 +280,7 @@ const SkillTree: React.FC = () => {
               Click to select • Shift+click for multi • Double-click to rename
             </div>
             <div className="text-xs opacity-80">
-              Ctrl+Shift+click to start connection, then click target
+              Ctrl+Shift+click to start connection • Alt+click to toggle key skill
             </div>
             {connectionSource && (
               <div className="text-xs text-accent mt-1">
@@ -482,6 +483,7 @@ const SkillTree: React.FC = () => {
               onConnectionClick={handleConnectionClick}
               gridSize={GRID_SIZE}
               onNameChange={updateNodeName}
+              onToggleKeySkill={toggleKeySkill}
             />
           ))}
         </div>

@@ -19,6 +19,7 @@ interface DraggableSkillNodeProps {
   onConnectionClick: (id: string, isCtrlShift: boolean) => boolean;
   gridSize: number;
   onNameChange?: (id: string, newName: string) => void;
+  onToggleKeySkill?: (id: string) => void;
 }
 
 const SVG_PATHS = {
@@ -52,6 +53,7 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
   onConnectionClick,
   gridSize,
   onNameChange,
+  onToggleKeySkill,
 }, ref) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -121,6 +123,14 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (!isEditMode) return;
     
+    // Alt+click toggles key skill status
+    if (e.altKey && !e.ctrlKey && !e.shiftKey) {
+      e.stopPropagation();
+      e.preventDefault();
+      onToggleKeySkill?.(skill.id);
+      return;
+    }
+    
     // Ctrl+Shift+click starts a connection
     if (e.ctrlKey && e.shiftKey) {
       e.stopPropagation();
@@ -138,7 +148,7 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
     lastMousePos.current = { x: e.clientX, y: e.clientY };
     setIsDragging(true);
     onDragStart(skill.id, newSelection);
-  }, [isEditMode, skill.id, onSelect, onDragStart, onConnectionClick]);
+  }, [isEditMode, skill.id, onSelect, onDragStart, onConnectionClick, onToggleKeySkill]);
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!isDragging || !isEditMode) return;

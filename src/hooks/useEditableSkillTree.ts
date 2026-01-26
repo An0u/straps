@@ -4,6 +4,7 @@ import { Skill, skillTreeData as originalData } from '@/data/skillTreeData';
 const STORAGE_KEY = 'skillTreePositions';
 const NAMES_STORAGE_KEY = 'skillTreeNames';
 const CONNECTIONS_STORAGE_KEY = 'skillTreeConnections';
+const KEY_SKILLS_STORAGE_KEY = 'skillTreeKeySkills';
 
 interface StoredPosition {
   id: string;
@@ -80,6 +81,29 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
             connections: connectionMap.get(skill.id) || []
           }));
         }
+      } catch {
+        // Ignore parse errors
+      }
+    }
+    
+    // Load saved key skills
+    const savedKeySkills = localStorage.getItem(KEY_SKILLS_STORAGE_KEY);
+    if (savedKeySkills) {
+      try {
+        const keySkillIds: string[] = JSON.parse(savedKeySkills);
+        const keySkillSet = new Set(keySkillIds);
+        result = result.map(skill => {
+          // Apply key skill overrides - set to 'key' if in saved list, or revert to original type if not
+          const originalSkill = originalData.find(o => o.id === skill.id);
+          const originalType = originalSkill?.type || 'regular';
+          
+          if (keySkillSet.has(skill.id)) {
+            return { ...skill, type: 'key' as const };
+          } else if (skill.type === 'key' && originalType !== 'key') {
+            return { ...skill, type: originalType };
+          }
+          return skill;
+        });
       } catch {
         // Ignore parse errors
       }
@@ -181,10 +205,31 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
     localStorage.setItem(CONNECTIONS_STORAGE_KEY, JSON.stringify(connections));
   }, [skills]);
 
+  const saveKeySkills = useCallback(() => {
+    // Save skills that are marked as 'key' but weren't originally, or vice versa
+    const keySkillIds = skills
+      .filter(s => s.type === 'key')
+      .map(s => s.id);
+    localStorage.setItem(KEY_SKILLS_STORAGE_KEY, JSON.stringify(keySkillIds));
+  }, [skills]);
+
   const updateNodeName = useCallback((id: string, newName: string) => {
     setSkills(prev => prev.map(skill => 
       skill.id === id ? { ...skill, name: newName } : skill
     ));
+  }, []);
+
+  const toggleKeySkill = useCallback((id: string) => {
+    setSkills(prev => prev.map(skill => {
+      if (skill.id !== id) return skill;
+      // Don't allow toggling category nodes to key
+      if (skill.type === 'category') return skill;
+      // Toggle between 'key' and 'regular'
+      return {
+        ...skill,
+        type: skill.type === 'key' ? 'regular' : 'key'
+      };
+    }));
   }, []);
 
   // Connection editing: Ctrl+Shift+click on first node, then click second node
@@ -261,32 +306,35 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
       savePositions();
       saveNames();
       saveConnections();
+      saveKeySkills();
       clearSelection();
       setConnectionSource(null);
     }
     setIsEditMode(prev => !prev);
-  }, [isEditMode, savePositions, saveNames, saveConnections, clearSelection]);
+  }, [isEditMode, savePositions, saveNames, saveConnections, saveKeySkills, clearSelection]);
 
   const resetPositions = useCallback(() => {
     setSkills(originalData.map(s => ({ ...s, connections: [...s.connections] })));
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(NAMES_STORAGE_KEY);
     localStorage.removeItem(CONNECTIONS_STORAGE_KEY);
+    localStorage.removeItem(KEY_SKILLS_STORAGE_KEY);
     clearSelection();
     setConnectionSource(null);
   }, [clearSelection]);
 
-  // Auto-save when positions, names, or connections change in edit mode
+  // Auto-save when positions, names, connections, or key skills change in edit mode
   useEffect(() => {
     if (isEditMode) {
       const timeout = setTimeout(() => {
         savePositions();
         saveNames();
         saveConnections();
+        saveKeySkills();
       }, 500);
       return () => clearTimeout(timeout);
     }
-  }, [skills, isEditMode, savePositions, saveNames, saveConnections]);
+  }, [skills, isEditMode, savePositions, saveNames, saveConnections, saveKeySkills]);
 
   return {
     skills,
@@ -306,5 +354,6 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
     deleteSelected,
     handleConnectionClick,
     clearConnectionSource,
+    toggleKeySkill,
   };
 };
