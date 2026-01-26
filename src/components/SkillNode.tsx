@@ -60,9 +60,9 @@ const SkillNode: React.FC<SkillNodeProps> = ({ skill, isCompleted, onClick, scal
 
   // Get glow class based on type - no pulse animation
   const getGlowClass = () => {
+    if (isKey) return 'skill-node-svg-glow-gold'; // Key skills always have gold glow
     if (!isActive) return '';
     if (hasGoldBorder) return 'skill-node-svg-glow-gold';
-    if (isKey) return 'skill-node-svg-glow-blue';
     return 'skill-node-svg-glow';
   };
 
@@ -84,6 +84,18 @@ const SkillNode: React.FC<SkillNodeProps> = ({ skill, isCompleted, onClick, scal
       }}
       onClick={onClick}
     >
+      {/* Golden border for key skills */}
+      {isKey && (
+        <div 
+          className="absolute inset-0 pointer-events-none z-5"
+          style={{
+            border: '2px solid hsl(45 90% 55%)',
+            borderRadius: '8px',
+            boxShadow: '0 0 12px hsl(45 90% 55% / 0.6), inset 0 0 8px hsl(45 90% 55% / 0.3)',
+          }}
+        />
+      )}
+
       {/* SVG Shape */}
       <img
         src={getSvgPath()}
@@ -91,7 +103,7 @@ const SkillNode: React.FC<SkillNodeProps> = ({ skill, isCompleted, onClick, scal
         className={cn(
           'absolute inset-0 w-full h-full object-contain transition-all duration-300',
           !isActive && 'skill-node-grayscale opacity-70',
-          isActive && getGlowClass()
+          getGlowClass()
         )}
         draggable={false}
       />
