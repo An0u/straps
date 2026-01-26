@@ -220,16 +220,27 @@ export const useEditableSkillTree = (gridSize: number = 30) => {
   }, []);
 
   const toggleKeySkill = useCallback((id: string) => {
-    setSkills(prev => prev.map(skill => {
-      if (skill.id !== id) return skill;
-      // Don't allow toggling category nodes to key
-      if (skill.type === 'category') return skill;
-      // Toggle between 'key' and 'regular'
-      return {
-        ...skill,
-        type: skill.type === 'key' ? 'regular' : 'key'
-      };
-    }));
+    setSkills(prev => {
+      const updated = prev.map(skill => {
+        if (skill.id !== id) return skill;
+        // Don't allow toggling category nodes to key
+        if (skill.type === 'category') return skill;
+        // Toggle between 'key' and 'regular'
+        const newType = skill.type === 'key' ? 'regular' as const : 'key' as const;
+        return {
+          ...skill,
+          type: newType
+        };
+      });
+      
+      // Save key skills immediately
+      const keySkillIds = updated
+        .filter(s => s.type === 'key')
+        .map(s => s.id);
+      localStorage.setItem(KEY_SKILLS_STORAGE_KEY, JSON.stringify(keySkillIds));
+      
+      return updated;
+    });
   }, []);
 
   // Connection editing: Ctrl+Shift+click on first node, then click second node
