@@ -46,7 +46,7 @@ const Index: React.FC = () => {
         <h3 className="text-xs font-medium text-foreground mb-2">Legend</h3>
         <div className="space-y-1.5 text-xs">
           <div className="flex items-center gap-2">
-            <img src="/shapes/category-active.svg" alt="Category" className="w-5 h-5" />
+            <img src="/shapes/category-ornate.svg" alt="Category" className="w-5 h-5" />
             <span className="text-muted-foreground">Category</span>
           </div>
           <div className="flex items-center gap-2">
