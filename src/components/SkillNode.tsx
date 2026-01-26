@@ -102,8 +102,12 @@ const SkillNode: React.FC<SkillNodeProps> = ({ skill, isCompleted, onClick, scal
         alt=""
         className={cn(
           'absolute inset-0 w-full h-full object-contain transition-all duration-300',
-          !isActive && 'skill-node-grayscale opacity-70',
-          getGlowClass()
+          // Key skills: grayscale with gold glow when inactive, just gold glow when active
+          isKey && !isActive && 'skill-node-grayscale-gold-glow opacity-70',
+          isKey && isActive && 'skill-node-svg-glow-gold',
+          // Non-key skills: grayscale when inactive, colored glow when active
+          !isKey && !isActive && 'skill-node-grayscale opacity-70',
+          !isKey && isActive && getGlowClass()
         )}
         draggable={false}
       />
