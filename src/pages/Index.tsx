@@ -46,27 +46,27 @@ const Index: React.FC = () => {
         <h3 className="text-xs font-medium text-foreground mb-2">Legend</h3>
         <div className="space-y-1.5 text-xs">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 skill-node-diamond skill-node-category" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
+            <img src="/shapes/category-active.svg" alt="Category" className="w-5 h-5" />
             <span className="text-muted-foreground">Category</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 skill-node-diamond skill-node-key" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
+            <img src="/shapes/key-blue.svg" alt="Key Skill" className="w-5 h-5" />
             <span className="text-muted-foreground">Key Skill</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 skill-node-diamond skill-node-active" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
+            <img src="/shapes/regular-purple-active.svg" alt="Skill" className="w-5 h-5" />
             <span className="text-muted-foreground">Skill</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 skill-node-diamond skill-node-inactive" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
+            <img src="/shapes/regular-inactive.svg" alt="Inactive" className="w-5 h-5" />
             <span className="text-muted-foreground">Inactive</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 skill-node-diamond skill-node-active" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
+            <img src="/shapes/regular-purple.svg" alt="One Arm" className="w-5 h-5" />
             <span className="text-muted-foreground">One Arm (Purple)</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 skill-node-diamond skill-node-key" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
+            <img src="/shapes/regular-blue.svg" alt="Two Arm" className="w-5 h-5" />
             <span className="text-muted-foreground">Two Arm (Blue)</span>
           </div>
         </div>
