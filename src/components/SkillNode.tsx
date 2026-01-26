@@ -49,11 +49,11 @@ const SkillNode: React.FC<SkillNodeProps> = ({ skill, isCompleted, onClick, scal
     }
     
     if (isKey) {
-      // Key skills use inactive SVG when inactive, colored when active
-      if (!isActive) {
+      // Key skills use inactive SVG until completed, colored when completed
+      if (!isCompleted) {
         return SVG_PATHS.inactive;
       }
-      // Alternate between blue and purple for active key items
+      // Alternate between blue and purple for completed key items
       const useBlue = (skill.x + skill.y) % 200 < 100;
       return useBlue ? SVG_PATHS.key.blue : SVG_PATHS.key.purple;
     }
