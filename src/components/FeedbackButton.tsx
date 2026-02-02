@@ -12,7 +12,7 @@ interface FeedbackButtonProps {
 }
 
 const FeedbackButton: React.FC<FeedbackButtonProps> = ({ 
-  formUrl = 'https://forms.example.com/feedback' // Placeholder URL
+  formUrl = 'https://forms.gle/6kP8pTbYaP9XhAv89'
 }) => {
   const handleClick = () => {
     window.open(formUrl, '_blank', 'noopener,noreferrer');
