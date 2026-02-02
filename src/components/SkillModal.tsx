@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Skill, getPrerequisiteSkills } from '@/data/skillTreeData';
 import {
   Dialog,
@@ -12,6 +12,8 @@ import { Badge } from '@/components/ui/badge';
 import { Check, Lock, X, ChevronRight, Star, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { useIsMobile } from '@/hooks/use-mobile';
+import FullscreenVideoPlayer from './FullscreenVideoPlayer';
 
 const getYouTubeEmbedUrl = (url: string): string | null => {
   // Handle YouTube Shorts
@@ -48,12 +50,16 @@ const SkillModal: React.FC<SkillModalProps> = ({
   onToggleComplete,
   onToggleFavorite,
 }) => {
+  const [isVideoFullscreen, setIsVideoFullscreen] = useState(false);
+  const isMobile = useIsMobile();
+  
   if (!skill) return null;
 
   const prerequisites = getPrerequisiteSkills(skill);
   const isCategory = skill.type === 'category';
   const isKey = skill.type === 'key';
   const isActive = skill.state === 'active';
+  const embedUrl = skill.videoUrl ? getYouTubeEmbedUrl(skill.videoUrl) : null;
 
   const getTypeLabel = () => {
     if (isCategory) return 'Category';
@@ -121,24 +127,56 @@ const SkillModal: React.FC<SkillModalProps> = ({
 
         <div className="space-y-4 mt-4">
           {/* Video embed section */}
-          {skill.videoUrl && getYouTubeEmbedUrl(skill.videoUrl) && (
-            <div>
-              <h4 className="text-sm font-medium text-foreground mb-2 flex items-center gap-2">
-                <Play size={14} className="text-muted-foreground" />
-                Video Tutorial
-              </h4>
-              <div className="w-56 mx-auto">
-                <AspectRatio ratio={9 / 16} className="overflow-hidden rounded-lg bg-muted">
-                  <iframe
-                    src={getYouTubeEmbedUrl(skill.videoUrl)!}
-                    title={`${skill.name} video tutorial`}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full"
-                  />
-                </AspectRatio>
+          {embedUrl && (
+            <>
+              <div>
+                <h4 className="text-sm font-medium text-foreground mb-2 flex items-center gap-2">
+                  <Play size={14} className="text-muted-foreground" />
+                  Video Tutorial
+                </h4>
+                {isMobile ? (
+                  /* Mobile: Thumbnail that opens fullscreen */
+                  <button
+                    onClick={() => setIsVideoFullscreen(true)}
+                    className="relative w-full overflow-hidden rounded-lg bg-muted group"
+                  >
+                    <AspectRatio ratio={16 / 9} className="bg-muted">
+                      <img
+                        src={`https://img.youtube.com/vi/${embedUrl.split('/').pop()}/hqdefault.jpg`}
+                        alt={`${skill.name} video thumbnail`}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/40 transition-colors">
+                        <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center">
+                          <Play size={24} className="text-background ml-1" fill="currentColor" />
+                        </div>
+                      </div>
+                    </AspectRatio>
+                  </button>
+                ) : (
+                  /* Desktop: Inline embed */
+                  <div className="w-56 mx-auto">
+                    <AspectRatio ratio={9 / 16} className="overflow-hidden rounded-lg bg-muted">
+                      <iframe
+                        src={embedUrl}
+                        title={`${skill.name} video tutorial`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        className="w-full h-full"
+                      />
+                    </AspectRatio>
+                  </div>
+                )}
               </div>
-            </div>
+
+              {/* Fullscreen video player for mobile */}
+              <FullscreenVideoPlayer
+                videoUrl={embedUrl}
+                title={`${skill.name} video tutorial`}
+                isOpen={isVideoFullscreen}
+                onClose={() => setIsVideoFullscreen(false)}
+              />
+            </>
           )}
 
           {/* Prerequisites section */}
