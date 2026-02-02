@@ -127,15 +127,17 @@ const SkillModal: React.FC<SkillModalProps> = ({
                 <Play size={14} className="text-muted-foreground" />
                 Video Tutorial
               </h4>
-              <AspectRatio ratio={9 / 16} className="overflow-hidden rounded-lg bg-muted">
-                <iframe
-                  src={getYouTubeEmbedUrl(skill.videoUrl)!}
-                  title={`${skill.name} video tutorial`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="w-full h-full"
-                />
-              </AspectRatio>
+              <div className="w-32 mx-auto">
+                <AspectRatio ratio={9 / 16} className="overflow-hidden rounded-lg bg-muted">
+                  <iframe
+                    src={getYouTubeEmbedUrl(skill.videoUrl)!}
+                    title={`${skill.name} video tutorial`}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="w-full h-full"
+                  />
+                </AspectRatio>
+              </div>
             </div>
           )}
 
