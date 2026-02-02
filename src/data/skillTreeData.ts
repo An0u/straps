@@ -13,6 +13,7 @@ export interface Skill {
   x: number;
   y: number;
   connections: string[];
+  videoUrl?: string;
 }
 
 export interface SkillTreeSection {
@@ -1071,7 +1072,8 @@ export const skillTreeData: Skill[] = [
     isGoldBorder: true,
     x: 1620,
     y: 510,
-    connections: []
+    connections: [],
+    videoUrl: 'https://www.youtube.com/shorts/gOJ4kMs5St8'
   },
 
   // Row y=750
