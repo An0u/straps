@@ -77,48 +77,44 @@ const SkillModal: React.FC<SkillModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="modal-glass sm:max-w-md border-0">
         <DialogHeader>
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <Badge className={cn('text-xs', getTypeColor())}>
-                  {getTypeLabel()}
-                </Badge>
-                {skill.isGoldBorder && (
-                  <Badge className="bg-skill-gold text-background text-xs">
-                    Gold Tier
-                  </Badge>
-                )}
-                <Badge 
-                  variant={isActive ? 'default' : 'secondary'}
-                  className={cn(
-                    'text-xs',
-                    isActive 
-                      ? 'bg-skill-active/20 text-skill-active-glow border-skill-active/30' 
-                      : 'bg-muted text-muted-foreground'
-                  )}
-                >
-                  {isActive ? 'Active' : 'Locked'}
-                </Badge>
-              </div>
-              <DialogTitle className="font-sans text-2xl text-foreground flex items-center gap-2">
-                {skill.name}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={onToggleFavorite}
-                  className={cn(
-                    'h-8 w-8 shrink-0',
-                    isFavorite && 'text-skill-gold'
-                  )}
-                >
-                  <Star 
-                    size={20} 
-                    className={cn(isFavorite && 'fill-skill-gold')} 
-                  />
-                </Button>
-              </DialogTitle>
-            </div>
+          <div className="flex items-center gap-2 mb-2">
+            <Badge className={cn('text-xs', getTypeColor())}>
+              {getTypeLabel()}
+            </Badge>
+            {skill.isGoldBorder && (
+              <Badge className="bg-skill-gold text-background text-xs">
+                Gold Tier
+              </Badge>
+            )}
+            <Badge 
+              variant={isActive ? 'default' : 'secondary'}
+              className={cn(
+                'text-xs',
+                isActive 
+                  ? 'bg-skill-active/20 text-skill-active-glow border-skill-active/30' 
+                  : 'bg-muted text-muted-foreground'
+              )}
+            >
+              {isActive ? 'Active' : 'Locked'}
+            </Badge>
           </div>
+          <DialogTitle className="font-sans text-2xl text-foreground flex items-center gap-2">
+            {skill.name}
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onToggleFavorite}
+              className={cn(
+                'h-7 w-7 shrink-0',
+                isFavorite && 'text-skill-gold'
+              )}
+            >
+              <Star 
+                size={18} 
+                className={cn(isFavorite && 'fill-skill-gold')} 
+              />
+            </Button>
+          </DialogTitle>
           <DialogDescription className="text-muted-foreground mt-3">
             {skill.description}
           </DialogDescription>
