@@ -180,7 +180,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'splits',
     name: 'Inloc',
-    description: 'Inloc position.',
+    description: 'Opposite of dislocate - forward shoulder rotation (inlocate). Brings body from back position through to front, maintaining control through rotation. Body passes forward through arms rather than backward, requiring opposite shoulder mechanics.',
     prerequisites: ['rotating-left'],
     type: 'regular',
     state: 'inactive',
@@ -215,7 +215,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'bucket',
     name: 'Disloc',
-    description: 'Dislocation technique.',
+    description: 'Dislocate - shoulder rotation through backward range passing behind body. Can be performed with straight or bent arms. From inverted hanging position, begin same as straight arm dislocation. During pelvis descent, bend arms and clench hands. Pass vertical point with straight body, continue toward inverted position while straightening arms. Continuous wrist rotation accompanies shoulder opening.',
     prerequisites: ['rotating-left'],
     type: 'key',
     state: 'inactive',
@@ -365,7 +365,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'low-switch',
     name: 'Inversion to meathook',
-    description: 'Invert directly to meathook.',
+    description: 'Transition from two-arm inverted position into meathook position. From vertical inversion with pelvis stretched and feet to ceiling, tuck one arm tight to body while bringing feet to side. Return by lowering pelvis and raising feet toward straps before lowering legs.',
     prerequisites: ['hanging-left'],
     type: 'regular',
     state: 'inactive',
@@ -455,7 +455,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'barswrecker-switch',
     name: 'Nutcracker',
-    description: 'Nutcracker technique.',
+    description: 'Inverted position with legs separated and turned out, outer leg resembling hooked meathook shape. Back stretched upward pushing hips toward wrist. Legs stay separated and turned out while rotating. The pelvis goes up and down keeping closed position with legs staying close to arm.',
     prerequisites: ['normal-hang'],
     type: 'regular',
     state: 'inactive',
@@ -477,7 +477,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'straddle-invert-flag',
     name: 'Flare to flag',
-    description: 'Flare transition to flag.',
+    description: 'Transition from flare position into flag while maintaining rotation. Continuous arm rotation creates twist initiated by wrist through elbow, shoulder and entire body. Horizontal stretched body hooks onto suspended arm with continuous external rotation of upper body.',
     prerequisites: ['normal-hang'],
     type: 'key',
     state: 'inactive',
@@ -500,7 +500,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'inversion',
     name: 'Nutcracker',
-    description: 'Nutcracker technique.',
+    description: 'Inverted position with legs separated and turned out, outer leg resembling hooked meathook shape. Back stretched upward pushing hips toward wrist. Legs stay separated and turned out while rotating. The pelvis goes up and down keeping closed position with legs staying close to arm.',
     prerequisites: ['normal-hang'],
     type: 'regular',
     state: 'inactive',
@@ -511,7 +511,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'flare',
     name: 'Flare',
-    description: 'Flare movement.',
+    description: 'One-arm flag position performed in rotation. Body tilted horizontally to one side with arm tucked to back near pelvis, free arm extended as extension of trunk. Body slightly extended with open pelvis, back and shoulders. The suspended arm is an extension of the straps while hips conceal the arm.',
     prerequisites: ['normal-hang'],
     type: 'key',
     state: 'inactive',
@@ -603,7 +603,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'meathook',
     name: 'Meathook',
-    description: 'Meathook position.',
+    description: 'Hanging position with closed legs raised, then pelvis lifted with feet toward the side. Hanging arm held tight to body, stretched free arm next to ear constantly lined up with body length. Suspended arm is extension of straps, hips cover and conceal the arm. Weight of free arm and legs accentuate body hook effect.',
     prerequisites: ['normal-hang'],
     type: 'key',
     state: 'inactive',
@@ -769,7 +769,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'bengal-loops',
     name: 'Armpit beats',
-    description: 'Armpit beat technique.',
+    description: 'Swinging movements with straps positioned in armpit area rather than hands, creating different rotation axis and momentum pattern. Requires different body mechanics and control compared to hand-grip swinging.',
     prerequisites: ['rotating-right'],
     type: 'regular',
     state: 'inactive',
@@ -780,7 +780,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'shaker',
     name: 'Disloc',
-    description: 'Dislocation technique.',
+    description: 'Dislocate - shoulder rotation through backward range passing behind body. Can be performed with straight or bent arms. From inverted hanging position, begin same as straight arm dislocation. During pelvis descent, bend arms and clench hands. Pass vertical point with straight body, continue toward inverted position while straightening arms. Continuous wrist rotation accompanies shoulder opening.',
     prerequisites: ['rotating-right'],
     type: 'key',
     state: 'inactive',
@@ -791,7 +791,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'staller',
     name: 'Inloc',
-    description: 'Inloc position.',
+    description: 'Opposite of dislocate - forward shoulder rotation (inlocate). Brings body from back position through to front, maintaining control through rotation. Body passes forward through arms rather than backward, requiring opposite shoulder mechanics.',
     prerequisites: ['rotating-right'],
     type: 'regular',
     state: 'inactive',
@@ -803,7 +803,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'giants',
     name: 'Giants',
-    description: 'Giant swing movement.',
+    description: 'Full 360-degree rotations around the straps axis. Continuous circular swinging movement requiring significant momentum and precise timing. Body maintains extended position while rotating completely around attachment point.',
     prerequisites: ['rotating-right'],
     type: 'regular',
     state: 'inactive',
@@ -815,7 +815,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'astro-plants',
     name: 'Inloc Giants',
-    description: 'Inloc giants technique.',
+    description: 'Giant swings performed with inlocate (forward) shoulder rotation pattern. Combines full 360-degree rotation with forward shoulder movement, creating continuous forward-rotating circles around straps axis.',
     prerequisites: ['rotating-right'],
     type: 'regular',
     state: 'inactive',
@@ -827,7 +827,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'back-staller',
     name: 'Back Salto',
-    description: 'Back salto technique.',
+    description: 'Backward somersault/flip movement, likely released from straps or performed in loose grip. Acrobatic element requiring sufficient height from swing and rotation control. May involve release and re-catch or maintained contact throughout.',
     prerequisites: ['rotating-right'],
     type: 'key',
     state: 'inactive',
@@ -851,7 +851,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'tamazuki',
     name: 'Yamawaki',
-    description: 'Yamawaki skill.',
+    description: 'Named gymnastics skill from rings/high bar adapted to aerial straps. Involves specific rotation or release pattern characteristic of the original element. Requires advanced technical skill and precise execution of rotation mechanics.',
     prerequisites: ['rotating-right'],
     type: 'regular',
     state: 'inactive',
@@ -865,7 +865,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'ball-twists',
     name: 'Bell beats',
-    description: 'Bell beat technique.',
+    description: 'Rhythmic swinging movements similar to rings gymnastics. Swing position slightly arched with open back and shoulders, arms slightly apart looking forward. Keep stretched position into vertical, then close body in dish position with feet going up. Arms slightly separated pushing backward, looking down at feet. Lead movement with stretched pelvis and elbows.',
     prerequisites: ['sitting-right'],
     type: 'regular',
     state: 'inactive',
@@ -877,7 +877,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'tap-plank',
     name: 'To plank',
-    description: 'Tap into plank position.',
+    description: 'Swing movement transitioning to horizontal plank/planche position. Related to planche work, using momentum to achieve and hold horizontal body position. Requires timing to convert swing energy into static hold.',
     prerequisites: ['sitting-right'],
     type: 'regular',
     state: 'inactive',
@@ -890,7 +890,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'side-pull-push',
     name: 'Side Pull Push',
-    description: 'Side pulling and pushing.',
+    description: 'Lateral swinging movement with pushing and pulling actions. Combines side-to-side momentum with coordinated arm work. Creates diagonal or lateral swing patterns rather than forward-backward.',
     prerequisites: ['rotating-right'],
     type: 'regular',
     state: 'inactive',
@@ -902,7 +902,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'ball-turn',
     name: 'Half Turn',
-    description: 'Half turn technique.',
+    description: '180-degree rotation during swing. At top of swing, extended body position creates greater distance between free hand and feet. Half turn initiated by feet at furthest point from floor causes change of axis of entire body, retracing circle drawn by feet during upward swing phase.',
     prerequisites: ['rotating-right'],
     type: 'regular',
     state: 'inactive',
@@ -914,7 +914,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'pirouette',
     name: 'Pirouette',
-    description: 'Pirouette spin.',
+    description: 'Full 360-degree rotation or spinning movement during swing phase. Complete turn with body control maintained throughout. Requires precise timing and coordination to execute full rotation while maintaining swing momentum.',
     prerequisites: ['rotating-right'],
     type: 'regular',
     state: 'inactive',
@@ -926,7 +926,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'swing-to-handstand',
     name: 'Swing to Handstand',
-    description: 'Swing into handstand.',
+    description: 'Using swing momentum to transition into handstand position. Timing and alignment crucial for successful entry to inverted balance. Convert horizontal swing energy into vertical press, finishing in stable handstand with arms extended and locked.',
     prerequisites: ['rotating-right'],
     type: 'key',
     state: 'inactive',
@@ -940,7 +940,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'pull-to-hips',
     name: 'Pull to Hips',
-    description: 'Pull to hip position.',
+    description: 'Swinging movement where body pulls toward hips position. Involves hip-level roll or rotation using swing momentum. Likely transition from hanging swing into hip-wrapped or supported position using dynamic energy.',
     prerequisites: ['twisting-right'],
     type: 'regular',
     state: 'inactive',
@@ -952,7 +952,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'swing-to-meathook',
     name: 'Swing to Meathook',
-    description: 'Swing into meathook.',
+    description: 'Using forward or backward swing momentum to transition into meathook position. In backward part of swing, clench hands to achieve position. Timing and body positioning crucial for smooth entry - raise closed legs then continue to raise pelvis putting feet toward side.',
     prerequisites: ['twisting-right'],
     type: 'regular',
     state: 'inactive',
@@ -964,7 +964,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'swing-to-full',
     name: 'Swing to Full',
-    description: 'Swing to full rotation.',
+    description: 'Forward or backward swing leading to fully extended position. Uses swing energy to achieve stretched body alignment. Momentum carries body into complete extension with control maintained throughout.',
     prerequisites: ['twisting-right'],
     type: 'key',
     state: 'inactive',
@@ -978,7 +978,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'roll-ups',
     name: 'Roll Ups',
-    description: 'Roll up technique.',
+    description: 'Rolling movement from tucked position, lifting pelvis to place straps above elbows. Arms slightly apart in back position, closed when raising back. Perform roll-up while remaining piked, turn wrists and shoulders. Finish upward in crucifix, inverted crucifix or handstand. Maintain gaze at waist to create rounded shape. Contact with straps right below elbows provides rotational force.',
     prerequisites: ['support'],
     type: 'key',
     state: 'active',
@@ -989,7 +989,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'front-armstand',
     name: 'Press Handstand',
-    description: 'Press to handstand.',
+    description: 'Controlled press from lower position to handstand. Raise pelvis above shoulders whilst keeping shoulders open. Can press with legs together or separated. Do not engage shoulders immediately - keep slightly closed to engage at right moment. Arms remain extended and locked out in final position.',
     prerequisites: ['support'],
     type: 'regular',
     state: 'inactive',
@@ -1000,7 +1000,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'starliar',
     name: 'Azarian',
-    description: 'Azarian technique.',
+    description: 'Advanced static strength position named after gymnast Albert Azarian. Typically involves maltese or iron cross position variations on straps, requiring exceptional shoulder and arm strength. One of the most demanding static holds in aerial straps.',
     prerequisites: ['support'],
     type: 'regular',
     state: 'inactive',
@@ -1014,7 +1014,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'front-balance',
     name: 'Front Balance',
-    description: 'Front balance position.',
+    description: 'Horizontal support position executed with locked grip, shoulders slightly set back, bent arms with palms up rested on pelvis. Find horizontal balance point with open back and steady support below center of gravity. Practice initially with feet on ground, then raise heels off floor to find balance.',
     prerequisites: ['support'],
     type: 'key',
     state: 'inactive',
@@ -1025,7 +1025,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'side-balance',
     name: 'Side Balance',
-    description: 'Side balance position.',
+    description: 'Support position balanced to one side, similar to flag in support position. Transfer weight to one arm, turn pelvis and point foot backward with straight leg while stretching support arm. Line up free arm next to head. Laying down in arched shape with lower back in straps, pelvis and shoulders in open position.',
     prerequisites: ['support'],
     type: 'regular',
     state: 'inactive',
@@ -1036,7 +1036,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'butterfly',
     name: 'Butterfly',
-    description: 'Butterfly position.',
+    description: 'Support position variation with specific body shape involving open shoulder position and extended body line. Related to front balance family of moves requiring balance and control in horizontal plane with distinctive wing-like aesthetic.',
     prerequisites: ['support'],
     type: 'regular',
     state: 'inactive',
@@ -1047,7 +1047,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'pull-to-full',
     name: 'Full to full',
-    description: 'Full to full transition.',
+    description: 'Transition between two fully extended support positions, maintaining straight body alignment throughout. Requires strength and control to maintain both positions and smoothly transition between them without loss of form.',
     prerequisites: ['support'],
     type: 'regular',
     state: 'inactive',
@@ -1060,7 +1060,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'two-arm-inversion',
     name: '2 Arm Inversion',
-    description: 'Two arm inversion.',
+    description: 'Inverted hanging position using both arms. From meathook position, stretch pelvis with arm pointing to floor and feet to ceiling. Keep suspended hand close to pelvis. Head straight looking at feet. Upper body doesn\'t move in relation to suspended arm - just legs dropping down and lifting in line with trunk.',
     prerequisites: ['hanging-right'],
     type: 'key',
     state: 'inactive',
@@ -1071,7 +1071,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'inversion-meathook-right',
     name: 'Inversion to Meathook',
-    description: 'Invert into meathook.',
+    description: 'Transition from two-arm inverted position into meathook position. From vertical inversion with pelvis stretched and feet to ceiling, tuck one arm tight to body while bringing feet to side. Return by lowering pelvis and raising feet toward straps before lowering legs.',
     prerequisites: ['hanging-right'],
     type: 'regular',
     state: 'inactive',
@@ -1083,7 +1083,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'back-flag',
     name: 'Back Flag',
-    description: 'Back flag position.',
+    description: 'Two-arm back planche - body goes downward lined up into horizontal position behind the straps. Keep angle between trunk and arms quite shallow. Head straight looking slightly forward. Different leg positions possible: one bent leg, legs separated, aligned and fully extended.',
     prerequisites: ['hanging-right'],
     type: 'key',
     state: 'inactive',
@@ -1098,7 +1098,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'spinning-meathook',
     name: 'Spinning muscle up',
-    description: 'Meathook with spin.',
+    description: 'Muscle-up (transition from hanging to support position) performed while rotating around central axis of straps. Begin with flexed wrists in support position, hoist up until hands in front of chest, turn wrists and push into support. Combines vertical strength movement with rotational momentum.',
     prerequisites: ['center'],
     type: 'key',
     state: 'inactive',
@@ -1111,7 +1111,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'meathook-right',
     name: 'Meathook',
-    description: 'Right side meathook.',
+    description: 'Hanging position with closed legs raised, then pelvis lifted with feet toward the side. Hanging arm held tight to body, stretched free arm next to ear constantly lined up with body length. Suspended arm is extension of straps, hips cover and conceal the arm. Weight of free arm and legs accentuate body hook effect.',
     prerequisites: ['reverse-right'],
     type: 'regular',
     state: 'inactive',
@@ -1122,7 +1122,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'straightstar',
     name: 'Straightjacket',
-    description: 'Straightjacket position.',
+    description: 'Two-arm position with arms crossed or wrapped in restrictive position while maintaining rotation. Body control maintained while spinning with limited arm mobility. Creates constraining aesthetic while rotating around vertical axis.',
     prerequisites: ['reverse-right'],
     type: 'key',
     state: 'inactive',
@@ -1136,7 +1136,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'flare-bottom',
     name: 'Flare',
-    description: 'Flare from bottom.',
+    description: 'One-arm flag position performed in rotation. Body tilted horizontally to one side with arm tucked to back near pelvis, free arm extended as extension of trunk. Body slightly extended with open pelvis, back and shoulders. The suspended arm is an extension of the straps while hips conceal the arm.',
     prerequisites: ['normal-bottom'],
     type: 'key',
     state: 'inactive',
@@ -1148,7 +1148,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'barswrecker-bottom',
     name: 'Nutcracker',
-    description: 'Nutcracker from bottom.',
+    description: 'Inverted position with legs separated and turned out, outer leg resembling hooked meathook shape. Back stretched upward pushing hips toward wrist. Legs stay separated and turned out while rotating. The pelvis goes up and down keeping closed position with legs staying close to arm.',
     prerequisites: ['normal-bottom'],
     type: 'regular',
     state: 'inactive',
@@ -1160,7 +1160,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'meathook-bottom',
     name: 'Meathook',
-    description: 'Meathook from bottom.',
+    description: 'Hanging position with closed legs raised, then pelvis lifted with feet toward the side. Hanging arm held tight to body, stretched free arm next to ear constantly lined up with body length. Suspended arm is extension of straps, hips cover and conceal the arm. Weight of free arm and legs accentuate body hook effect.',
     prerequisites: ['normal-bottom'],
     type: 'regular',
     state: 'inactive',
@@ -1171,7 +1171,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'straightstar-flag',
     name: 'Straightjacket',
-    description: 'Straightjacket into flag.',
+    description: 'Two-arm position with arms crossed or wrapped in restrictive position while maintaining rotation. Body control maintained while spinning with limited arm mobility. Creates constraining aesthetic while rotating around vertical axis.',
     prerequisites: ['normal-bottom'],
     type: 'regular',
     state: 'inactive',
@@ -1183,7 +1183,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'flare-to-flag-right',
     name: 'Flare to Flag',
-    description: 'Flare to flag.',
+    description: 'Transition from flare position into flag while maintaining rotation. Continuous arm rotation creates twist initiated by wrist through elbow, shoulder and entire body. Horizontal stretched body hooks onto suspended arm with continuous external rotation of upper body.',
     prerequisites: ['normal-bottom'],
     type: 'key',
     state: 'inactive',
@@ -1195,7 +1195,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'flare-to-full',
     name: 'Flare to Full',
-    description: 'Flare into full.',
+    description: 'Transition from flare position to fully extended position (likely inverted or complete extension) while rotating. Maintains continuous momentum throughout movement with body control during position change.',
     prerequisites: ['normal-bottom'],
     type: 'regular',
     state: 'inactive',
@@ -1209,7 +1209,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'front-balance-copy-1769358407899-puhwc',
     name: 'Bent arm to handstand',
-    description: 'Bent arm press to handstand.',
+    description: 'Press to handstand starting from bent arm position. Raise pelvis above shoulders while keeping shoulders open. Option to go up with legs together or separated. Don\'t engage shoulders immediately - keep slightly closed to engage at right moment. Eventually balance with legs on straps.',
     prerequisites: ['support'],
     type: 'regular',
     state: 'inactive',
