@@ -807,7 +807,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1710,
     y: -60,
-    connections: []
+    connections: [],
+    videoUrl: 'https://youtube.com/shorts/CSCpzHYiBqA?si=d3td_sI2NW6nMx5c'
   },
   {
     id: 'astro-plants',
@@ -840,7 +841,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1980,
     y: -60,
-    connections: []
+    connections: [],
+    videoUrl: 'https://youtube.com/shorts/ggkSz6urQko?si=b77McRYXk1niVMXp'
   },
   {
     id: 'tamazuki',
@@ -864,7 +866,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1440,
     y: 60,
-    connections: []
+    connections: [],
+    videoUrl: 'https://www.youtube.com/watch?v=py7b6Q04-nQ'
   },
   {
     id: 'tap-plank',
@@ -876,7 +879,8 @@ export const skillTreeData: Skill[] = [
     isGoldBorder: true,
     x: 1530,
     y: 60,
-    connections: []
+    connections: [],
+    videoUrl: 'https://www.youtube.com/watch?v=aoJzgNtjdjQ'
   },
   {
     id: 'side-pull-push',
@@ -887,7 +891,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1620,
     y: 60,
-    connections: []
+    connections: [],
+    videoUrl: 'https://youtube.com/shorts/aoJzgNtjdjQ'
   },
   {
     id: 'ball-turn',
@@ -898,7 +903,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1710,
     y: 60,
-    connections: []
+    connections: [],
+    videoUrl: 'https://www.youtube.com/watch?v=UQ0fme2tGIo'
   },
   {
     id: 'pirouette',
@@ -909,7 +915,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1800,
     y: 60,
-    connections: []
+    connections: [],
+    videoUrl: 'https://youtube.com/shorts/cxdtl4LmyeY?si=d2DZsl8ll79fUTOt'
   },
   {
     id: 'swing-to-handstand',
@@ -920,7 +927,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1890,
     y: 60,
-    connections: []
+    connections: [],
+    videoUrl: 'https://www.youtube.com/watch?v=CmCYdpXLccM'
   },
 
   // Row y=150
@@ -933,7 +941,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1440,
     y: 150,
-    connections: []
+    connections: [],
+    videoUrl: 'https://youtube.com/shorts/aoJzgNtjdjQ'
   },
   {
     id: 'swing-to-meathook',
@@ -944,7 +953,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1530,
     y: 150,
-    connections: []
+    connections: [],
+    videoUrl: 'https://www.youtube.com/watch?v=PHtBZWcp0Gg'
   },
   {
     id: 'swing-to-full',
@@ -955,7 +965,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1620,
     y: 150,
-    connections: []
+    connections: [],
+    videoUrl: 'https://youtube.com/shorts/aCkpDVtMdzM?si=-f0jfaHafW56R9he'
   },
 
   // Row y=300
@@ -990,7 +1001,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1710,
     y: 300,
-    connections: []
+    connections: [],
+    videoUrl: 'https://www.youtube.com/watch?v=30fUEKLW74M'
   },
 
   // Row y=390
@@ -1060,7 +1072,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1530,
     y: 510,
-    connections: []
+    connections: [],
+    videoUrl: 'https://youtube.com/shorts/MsLbJOZAW9M'
   },
   {
     id: 'back-flag',
@@ -1110,7 +1123,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1410,
     y: 870,
-    connections: []
+    connections: [],
+    videoUrl: 'https://youtube.com/shorts/tDNdHqBcsOo?si=Z5XAhNpg1BZ36ylZ'
   },
 
   // Row y=990
@@ -1123,7 +1137,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1320,
     y: 990,
-    connections: []
+    connections: [],
+    videoUrl: 'https://youtube.com/shorts/LngeQfLsL3c'
   },
   {
     id: 'barswrecker-bottom',
@@ -1134,7 +1149,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1410,
     y: 990,
-    connections: []
+    connections: [],
+    videoUrl: 'https://youtube.com/shorts/zKKMrqKPJWY'
   },
   {
     id: 'meathook-bottom',
@@ -1156,7 +1172,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1590,
     y: 990,
-    connections: []
+    connections: [],
+    videoUrl: 'https://youtube.com/shorts/tDNdHqBcsOo?si=Z5XAhNpg1BZ36ylZ'
   },
   {
     id: 'flare-to-flag-right',
@@ -1167,7 +1184,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1680,
     y: 990,
-    connections: []
+    connections: [],
+    videoUrl: 'https://youtube.com/shorts/Rbs7Kw9xKU0'
   },
   {
     id: 'flare-to-full',
@@ -1178,7 +1196,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1770,
     y: 990,
-    connections: []
+    connections: [],
+    videoUrl: 'https://youtube.com/shorts/Un6PkAhavGQ?si=sqvqQGeKlo5Un5nk'
   },
 
   // New node: Bent arm to handstand
