@@ -127,7 +127,7 @@ const SkillModal: React.FC<SkillModalProps> = ({
                 <Play size={14} className="text-muted-foreground" />
                 Video Tutorial
               </h4>
-              <div className="w-32 mx-auto">
+              <div className="w-56 mx-auto">
                 <AspectRatio ratio={9 / 16} className="overflow-hidden rounded-lg bg-muted">
                   <iframe
                     src={getYouTubeEmbedUrl(skill.videoUrl)!}
