@@ -179,15 +179,14 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'splits',
-    name: '1 arm inloc',
+    name: 'Inloc',
     description: 'Inloc position.',
     prerequisites: ['rotating-left'],
     type: 'regular',
     state: 'inactive',
     x: 420,
     y: -120,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=AGgargIWLX4'
+    connections: []
   },
   {
     id: 'inside-pirouette',
@@ -204,27 +203,25 @@ export const skillTreeData: Skill[] = [
   // Row y=-30
   {
     id: 'soleil',
-    name: 'Salto to back',
+    name: 'Salto',
     description: 'Salto technique.',
     prerequisites: ['rotating-left'],
     type: 'regular',
     state: 'inactive',
     x: 330,
     y: -30,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=VUaH667dkxU'
+    connections: []
   },
   {
     id: 'bucket',
-    name: '1 arm disloc',
+    name: 'Disloc',
     description: 'Dislocation technique.',
     prerequisites: ['rotating-left'],
     type: 'key',
     state: 'inactive',
     x: 420,
     y: -30,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=8NfijlpC99A'
+    connections: []
   },
   {
     id: 'double-salta',
@@ -263,15 +260,14 @@ export const skillTreeData: Skill[] = [
   // Row y=90
   {
     id: 'sailor',
-    name: '1 arm inside pirouette',
+    name: 'Inside pirouette',
     description: 'Inside pirouette spin.',
     prerequisites: ['rotating-left'],
     type: 'regular',
     state: 'inactive',
     x: 510,
     y: 90,
-    connections: ['twisting-left'],
-    videoUrl: 'https://www.youtube.com/watch?v=jkp_BVnO4vA'
+    connections: ['twisting-left']
   },
   {
     id: 'swing-in-armtie',
@@ -282,20 +278,18 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 60,
     y: 90,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=0MIC8dm4Rvo'
+    connections: []
   },
   {
     id: 'swing-to-flag',
-    name: '2 arm swing to flag',
+    name: 'Swing to Flag',
     description: 'Swing transition to flag.',
     prerequisites: ['swing-left'],
     type: 'regular',
     state: 'inactive',
     x: 150,
     y: 90,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=qzoISsV5-Zc'
+    connections: []
   },
   {
     id: 'shoulder-pirouette',
@@ -310,15 +304,14 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'soleil-2',
-    name: 'Soliels',
+    name: 'Soleil',
     description: 'Soleil variation.',
     prerequisites: ['swing-left'],
     type: 'regular',
     state: 'inactive',
     x: 330,
     y: 90,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=u8FwOq0WFXc'
+    connections: []
   },
   {
     id: 'reverse-swing',
@@ -329,8 +322,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 420,
     y: 90,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=BJDNpk6f0BM'
+    connections: []
   },
 
   // Row y=210
@@ -347,41 +339,38 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'front-to-front',
-    name: '1 arm front to front (pull)',
+    name: 'Front to Front',
     description: 'Front position maintenance.',
     prerequisites: ['basics'],
     type: 'key',
     state: 'inactive',
     x: 510,
     y: 210,
-    connections: ['basics'],
-    videoUrl: 'https://www.youtube.com/watch?v=Z36ukVFnBko'
+    connections: ['basics']
   },
 
   // Row y=450
   {
     id: 'inversion-flag',
-    name: '1 arm invert to flag',
+    name: 'Inversion to Flag',
     description: 'Invert into flag position.',
     prerequisites: ['hanging-left'],
     type: 'regular',
     state: 'inactive',
     x: 150,
     y: 450,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=HiTTJftm8Bk'
+    connections: []
   },
   {
     id: 'low-switch',
-    name: 'Single arm invert to meathook',
+    name: 'Inversion to meathook',
     description: 'Invert directly to meathook.',
     prerequisites: ['hanging-left'],
     type: 'regular',
     state: 'inactive',
     x: 240,
     y: 450,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=f9wwfI56LhQ'
+    connections: []
   },
   {
     id: 'flare-to-flag',
@@ -396,101 +385,93 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'reverse-meathook',
-    name: 'Static high switch',
+    name: 'High switch',
     description: 'High position switch.',
     prerequisites: ['hanging-left'],
     type: 'regular',
     state: 'inactive',
     x: 420,
     y: 450,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=ijT5BrdM0tg'
+    connections: []
   },
   {
     id: 'barswrecker',
-    name: 'Spotted straddle rock',
+    name: 'Straddle rock to flag',
     description: 'Straddle into flag.',
     prerequisites: ['hanging-left'],
     type: 'regular',
     state: 'inactive',
     x: 510,
     y: 450,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=G7irT2GQ1uA'
+    connections: []
   },
 
   // Row y=720
   {
     id: 'double-full',
-    name: 'Double half-out',
+    name: 'Double Full',
     description: 'Double full rotation.',
     prerequisites: ['normal-hang'],
     type: 'regular',
     state: 'inactive',
     x: -300,
     y: 720,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=5-PQH5MFZo0'
+    connections: []
   },
   {
     id: 'blanks',
-    name: 'Spinning mushu tempo',
+    name: 'Mushu',
     description: 'Mushu position.',
     prerequisites: ['normal-hang'],
     type: 'regular',
     state: 'inactive',
     x: -210,
     y: 720,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=8WJkufTnGmE'
+    connections: []
   },
   {
     id: 'full',
-    name: '2 arm full twist',
+    name: 'Full',
     description: 'Full rotation skill.',
     prerequisites: ['normal-hang'],
     type: 'key',
     state: 'inactive',
     x: -120,
     y: 720,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=Un6PkAhavGQ'
+    connections: []
   },
   {
     id: 'high-switch-left',
-    name: 'Spinning high switch',
+    name: 'High Switch',
     description: 'High switch variation.',
     prerequisites: ['normal-hang'],
     type: 'regular',
     state: 'inactive',
     x: -30,
     y: 720,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=FTWTzB1TrEo'
+    connections: []
   },
   {
     id: 'barswrecker-switch',
-    name: 'Flare to nutcracker',
+    name: 'Nutcracker',
     description: 'Nutcracker technique.',
     prerequisites: ['normal-hang'],
     type: 'regular',
     state: 'inactive',
     x: 60,
     y: 720,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=Freat_9N9FQ'
+    connections: []
   },
   {
     id: 'high-switch',
-    name: 'Front lever',
+    name: 'Low switch',
     description: 'Low position switch.',
     prerequisites: ['normal-hang'],
     type: 'regular',
     state: 'inactive',
     x: 150,
     y: 720,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=8HraCkE7lwQ'
+    connections: []
   },
   {
     id: 'straddle-invert-flag',
@@ -501,8 +482,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 240,
     y: 720,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=AnIRPk_wci8'
+    connections: []
   },
   {
     id: 'inversion-meathook',
@@ -529,15 +509,14 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'flare',
-    name: 'One arm flare',
+    name: 'Flare',
     description: 'Flare movement.',
     prerequisites: ['normal-hang'],
     type: 'key',
     state: 'inactive',
     x: 510,
     y: 720,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=oB5ib9u2fT4'
+    connections: []
   },
 
   // Row y=840
@@ -554,55 +533,51 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'reverse-full',
-    name: 'Reverse flare to full +',
+    name: 'Reverse Full',
     description: 'Reverse full rotation.',
     prerequisites: ['reverse-hang'],
     type: 'key',
     state: 'inactive',
     x: -30,
     y: 840,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=vYUrKNzxiVA'
+    connections: []
   },
   {
     id: 'reverse-flag',
-    name: 'Reverse flare to nutcracker',
+    name: 'Reverse Flag',
     description: 'Reverse flag position.',
     prerequisites: ['reverse-hang'],
     type: 'regular',
     state: 'inactive',
     x: 60,
     y: 840,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=SayZ9AolESE'
+    connections: []
   },
   {
     id: 'flare-to-lockoff',
-    name: 'Reverse Flare to meathook',
+    name: 'Beat to 1 arm',
     description: 'Beat transition to one arm.',
     prerequisites: ['reverse-hang'],
     type: 'regular',
     state: 'inactive',
     x: 150,
     y: 840,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=UiYRfphWzLk'
+    connections: []
   },
   {
     id: 'front-3-arm',
-    name: 'Reverse flare to lock off',
+    name: 'Flare to lockoff',
     description: 'Flare into lockoff.',
     prerequisites: ['reverse-hang'],
     type: 'key',
     state: 'inactive',
     x: 240,
     y: 840,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=COJg5yzvEH0'
+    connections: []
   },
   {
     id: 'split-grip-full',
-    name: 'Reverse flare to split grab',
+    name: 'Split Grip to Full',
     description: 'Split grip transition to full.',
     prerequisites: ['reverse-hang'],
     type: 'regular',
@@ -610,8 +585,7 @@ export const skillTreeData: Skill[] = [
     isGoldBorder: true,
     x: 330,
     y: 840,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=obGJr1S9g9E'
+    connections: []
   },
   {
     id: 'split-grip-flag',
@@ -627,15 +601,14 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'meathook',
-    name: 'Meathook eccentric',
+    name: 'Meathook',
     description: 'Meathook position.',
     prerequisites: ['normal-hang'],
     type: 'key',
     state: 'inactive',
     x: 510,
     y: 840,
-    connections: ['reverse-hang'],
-    videoUrl: 'https://www.youtube.com/watch?v=sJ8Mky8eUL8'
+    connections: ['reverse-hang']
   },
 
   // Row y=960
@@ -849,27 +822,25 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'back-staller',
-    name: 'Back roll',
+    name: 'Back Salto',
     description: 'Back salto technique.',
     prerequisites: ['rotating-right'],
     type: 'key',
     state: 'inactive',
     x: 1890,
     y: -60,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=k0nBWzZPfvc'
+    connections: []
   },
   {
     id: 'delacrew',
-    name: 'Swing to dencheve',
+    name: 'Delchev',
     description: 'Delchev technique.',
     prerequisites: ['rotating-right'],
     type: 'regular',
     state: 'inactive',
     x: 1980,
     y: -60,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=ggkSz6urQko'
+    connections: []
   },
   {
     id: 'tamazuki',
@@ -893,12 +864,11 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1440,
     y: 60,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=py7b6Q04-nQ'
+    connections: []
   },
   {
     id: 'tap-plank',
-    name: 'Swing to plank',
+    name: 'To plank',
     description: 'Tap into plank position.',
     prerequisites: ['sitting-right'],
     type: 'regular',
@@ -906,8 +876,7 @@ export const skillTreeData: Skill[] = [
     isGoldBorder: true,
     x: 1530,
     y: 60,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=aoJzgNtjdjQ'
+    connections: []
   },
   {
     id: 'side-pull-push',
@@ -922,15 +891,14 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'ball-turn',
-    name: '2 arm side swing to half turn',
+    name: 'Half Turn',
     description: 'Half turn technique.',
     prerequisites: ['rotating-right'],
     type: 'regular',
     state: 'inactive',
     x: 1710,
     y: 60,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=UQ0fme2tGIo'
+    connections: []
   },
   {
     id: 'pirouette',
@@ -945,15 +913,14 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'swing-to-handstand',
-    name: '2 arm swing to handstand',
+    name: 'Swing to Handstand',
     description: 'Swing into handstand.',
     prerequisites: ['rotating-right'],
     type: 'key',
     state: 'inactive',
     x: 1890,
     y: 60,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=CmCYdpXLccM'
+    connections: []
   },
 
   // Row y=150
@@ -970,15 +937,14 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'swing-to-meathook',
-    name: '2 arm swing to meathook',
+    name: 'Swing to Meathook',
     description: 'Swing into meathook.',
     prerequisites: ['twisting-right'],
     type: 'regular',
     state: 'inactive',
     x: 1530,
     y: 150,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=PHtBZWcp0Gg'
+    connections: []
   },
   {
     id: 'swing-to-full',
@@ -995,27 +961,25 @@ export const skillTreeData: Skill[] = [
   // Row y=300
   {
     id: 'roll-ups',
-    name: 'Roll-ups / roll down',
+    name: 'Roll Ups',
     description: 'Roll up technique.',
     prerequisites: ['support'],
     type: 'key',
     state: 'active',
     x: 1530,
     y: 300,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=4ENCBawZ2pk'
+    connections: []
   },
   {
     id: 'front-armstand',
-    name: 'Full planche',
+    name: 'Press Handstand',
     description: 'Press to handstand.',
     prerequisites: ['support'],
     type: 'regular',
     state: 'inactive',
     x: 1620,
     y: 300,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=4CFphYfpabA'
+    connections: []
   },
   {
     id: 'starliar',
@@ -1026,8 +990,7 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1710,
     y: 300,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=30fUEKLW74M'
+    connections: []
   },
 
   // Row y=390
@@ -1101,7 +1064,7 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'back-flag',
-    name: '2 arm flag',
+    name: 'Back Flag',
     description: 'Back flag position.',
     prerequisites: ['hanging-right'],
     type: 'key',
@@ -1110,35 +1073,33 @@ export const skillTreeData: Skill[] = [
     x: 1620,
     y: 510,
     connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=gOJ4kMs5St8'
+    videoUrl: 'https://www.youtube.com/shorts/gOJ4kMs5St8'
   },
 
   // Row y=750
   {
     id: 'spinning-meathook',
-    name: 'Muscle-up',
+    name: 'Spinning muscle up',
     description: 'Meathook with spin.',
     prerequisites: ['center'],
     type: 'key',
     state: 'inactive',
     x: 1320,
     y: 750,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=X9xHB1FXCFw'
+    connections: []
   },
 
   // Row y=870
   {
     id: 'meathook-right',
-    name: '2 arm meathook',
+    name: 'Meathook',
     description: 'Right side meathook.',
     prerequisites: ['reverse-right'],
     type: 'regular',
     state: 'inactive',
     x: 1320,
     y: 870,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=MsLbJOZAW9M'
+    connections: []
   },
   {
     id: 'straightstar',
@@ -1155,27 +1116,25 @@ export const skillTreeData: Skill[] = [
   // Row y=990
   {
     id: 'flare-bottom',
-    name: '2 arm flare',
+    name: 'Flare',
     description: 'Flare from bottom.',
     prerequisites: ['normal-bottom'],
     type: 'key',
     state: 'inactive',
     x: 1320,
     y: 990,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=LngeQfLsL3c'
+    connections: []
   },
   {
     id: 'barswrecker-bottom',
-    name: '2 arm flare to nutcracker',
+    name: 'Nutcracker',
     description: 'Nutcracker from bottom.',
     prerequisites: ['normal-bottom'],
     type: 'regular',
     state: 'inactive',
     x: 1410,
     y: 990,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=zKKMrqKPJWY'
+    connections: []
   },
   {
     id: 'meathook-bottom',
@@ -1201,15 +1160,14 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'flare-to-flag-right',
-    name: '2 arm flare to flag',
+    name: 'Flare to Flag',
     description: 'Flare to flag.',
     prerequisites: ['normal-bottom'],
     type: 'key',
     state: 'inactive',
     x: 1680,
     y: 990,
-    connections: [],
-    videoUrl: 'https://www.youtube.com/watch?v=Rbs7Kw9xKU0'
+    connections: []
   },
   {
     id: 'flare-to-full',
