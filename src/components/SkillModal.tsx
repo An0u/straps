@@ -9,8 +9,25 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Check, Lock, X, ChevronRight, Star } from 'lucide-react';
+import { Check, Lock, X, ChevronRight, Star, Play } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
+
+const getYouTubeEmbedUrl = (url: string): string | null => {
+  // Handle YouTube Shorts
+  const shortsMatch = url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
+  if (shortsMatch) {
+    return `https://www.youtube.com/embed/${shortsMatch[1]}`;
+  }
+  
+  // Handle regular YouTube URLs
+  const regularMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+  if (regularMatch) {
+    return `https://www.youtube.com/embed/${regularMatch[1]}`;
+  }
+  
+  return null;
+};
 
 interface SkillModalProps {
   skill: Skill | null;
@@ -103,6 +120,25 @@ const SkillModal: React.FC<SkillModalProps> = ({
         </DialogHeader>
 
         <div className="space-y-4 mt-4">
+          {/* Video embed section */}
+          {skill.videoUrl && getYouTubeEmbedUrl(skill.videoUrl) && (
+            <div>
+              <h4 className="text-sm font-medium text-foreground mb-2 flex items-center gap-2">
+                <Play size={14} className="text-muted-foreground" />
+                Video Tutorial
+              </h4>
+              <AspectRatio ratio={9 / 16} className="overflow-hidden rounded-lg bg-muted">
+                <iframe
+                  src={getYouTubeEmbedUrl(skill.videoUrl)!}
+                  title={`${skill.name} video tutorial`}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full"
+                />
+              </AspectRatio>
+            </div>
+          )}
+
           {/* Prerequisites section */}
           <div>
             <h4 className="text-sm font-medium text-foreground mb-2 flex items-center gap-2">
