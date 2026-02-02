@@ -221,7 +221,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 420,
     y: -30,
-    connections: []
+    connections: [],
+    videoUrl: 'https://youtube.com/shorts/uFZ2-c1vePE?si=NNe87_Q2NvrFPEfP'
   },
   {
     id: 'double-salta',
@@ -796,7 +797,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1620,
     y: -60,
-    connections: []
+    connections: [],
+    videoUrl:'https://youtube.com/shorts/G5TW1kj028g'
   },
   {
     id: 'giants',
@@ -819,7 +821,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1800,
     y: -60,
-    connections: []
+    connections: [],
+    videoUrl:'https://youtube.com/shorts/6zuzT9qCQlk?si=U1gfY5vPGEtA-V4H'
   },
   {
     id: 'back-staller',
@@ -830,7 +833,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 1890,
     y: -60,
-    connections: []
+    connections: [],
+    videoUrl:'https://youtube.com/shorts/uFZ2-c1vePE'
   },
   {
     id: 'delacrew',
@@ -853,7 +857,8 @@ export const skillTreeData: Skill[] = [
     state: 'inactive',
     x: 2070,
     y: -60,
-    connections: []
+    connections: [],
+    videoUrl:''
   },
 
   // Row y=60
