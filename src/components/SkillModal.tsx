@@ -100,25 +100,24 @@ const SkillModal: React.FC<SkillModalProps> = ({
                   {isActive ? 'Active' : 'Locked'}
                 </Badge>
               </div>
-              <DialogTitle className="font-display text-2xl text-foreground">
+              <DialogTitle className="font-sans text-2xl text-foreground flex items-center gap-2">
                 {skill.name}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={onToggleFavorite}
+                  className={cn(
+                    'h-8 w-8 shrink-0',
+                    isFavorite && 'text-skill-gold'
+                  )}
+                >
+                  <Star 
+                    size={20} 
+                    className={cn(isFavorite && 'fill-skill-gold')} 
+                  />
+                </Button>
               </DialogTitle>
             </div>
-            {/* Favorite button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onToggleFavorite}
-              className={cn(
-                'h-8 w-8 shrink-0',
-                isFavorite && 'text-skill-gold'
-              )}
-            >
-              <Star 
-                size={20} 
-                className={cn(isFavorite && 'fill-skill-gold')} 
-              />
-            </Button>
           </div>
           <DialogDescription className="text-muted-foreground mt-3">
             {skill.description}
