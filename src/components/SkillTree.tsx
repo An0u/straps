@@ -445,7 +445,7 @@ const SkillTree: React.FC = () => {
           className="relative"
           style={{
             transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-            transformOrigin: 'center center',
+            transformOrigin: '0 0',
             width: treeWidth,
             height: treeHeight,
             transition: isDragging ? 'none' : 'transform 0.1s ease-out',
