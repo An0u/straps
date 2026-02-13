@@ -614,9 +614,20 @@ export const skillTreeData: Skill[] = [
 
   // Row y=960
   {
-    id: 'scorpion',
-    name: 'Scorpion',
-    description: 'Scorpion position.',
+    id: 'dragon',
+    name: 'Nugget',
+    description: 'Nugget position.',
+    prerequisites: ['cruiser'],
+    type: 'regular',
+    state: 'inactive',
+    x: 240,
+    y: 960,
+    connections: []
+  },
+  {
+    id: 'dragon-copy-1771019062590-45xoc-copy-1771019070693-ttg5b',
+    name: 'back candle',
+    description: 'Back candle position.',
     prerequisites: ['cruiser'],
     type: 'regular',
     state: 'inactive',
@@ -625,9 +636,9 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'dragon',
-    name: 'Nugget',
-    description: 'Nugget position.',
+    id: 'dragon-copy-1771019062590-45xoc',
+    name: 'Front candle',
+    description: 'Front candle position.',
     prerequisites: ['cruiser'],
     type: 'regular',
     state: 'inactive',
