@@ -117,15 +117,17 @@ const SkillTree: React.FC = () => {
     if (rect) {
       const mouseX = e.clientX - rect.left;
       const mouseY = e.clientY - rect.top;
-      const ratio = 1 - newScale / scale;
-      setPosition(prev => ({
-        x: prev.x + (mouseX - prev.x) * ratio,
-        y: prev.y + (mouseY - prev.y) * ratio,
-      }));
+      // Find the world-space point under the cursor, keep it fixed
+      const worldX = (mouseX - position.x) / scale;
+      const worldY = (mouseY - position.y) / scale;
+      setPosition({
+        x: mouseX - worldX * newScale,
+        y: mouseY - worldY * newScale,
+      });
     }
     
     setScale(newScale);
-  }, [scale]);
+  }, [scale, position]);
 
   // Handle mouse down for dragging or clearing selection
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
