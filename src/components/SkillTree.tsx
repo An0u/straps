@@ -110,8 +110,22 @@ const SkillTree: React.FC = () => {
   const handleWheel = useCallback((e: React.WheelEvent) => {
     e.preventDefault();
     const delta = e.deltaY > 0 ? -0.1 : 0.1;
-    handleZoom(delta);
-  }, [handleZoom]);
+    const newScale = Math.min(Math.max(0.3, scale + delta), 2);
+    
+    // Zoom toward mouse position
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (rect) {
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+      const ratio = 1 - newScale / scale;
+      setPosition(prev => ({
+        x: prev.x + (mouseX - prev.x) * ratio,
+        y: prev.y + (mouseY - prev.y) * ratio,
+      }));
+    }
+    
+    setScale(newScale);
+  }, [scale]);
 
   // Handle mouse down for dragging or clearing selection
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
