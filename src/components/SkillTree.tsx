@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/tooltip';
 
 const GRID_SIZE = 30;
+
 const ADMIN_STORAGE_KEY = 'skill-tree-admin';
 
 const SkillTree: React.FC = () => {
@@ -26,20 +27,24 @@ const SkillTree: React.FC = () => {
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [pinchDistance, setPinchDistance] = useState<number | null>(null);
-  const [pinchMidpoint, setPinchMidpoint] = useState<{ x: number; y: number } | null>(null);
   const [isAdminMode, setIsAdminMode] = useState(() => {
     return localStorage.getItem(ADMIN_STORAGE_KEY) === 'true';
   });
 
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // Refs to always have current scale/position in touch handlers without stale closures
+  // Use refs for pinch state to avoid stale closures during rapid touch events
+  const pinchRef = useRef<{
+    distance: number;
+    midX: number;
+    midY: number;
+  } | null>(null);
   const scaleRef = useRef(scale);
   const positionRef = useRef(position);
+
+  // Keep refs in sync with state
   useEffect(() => { scaleRef.current = scale; }, [scale]);
   useEffect(() => { positionRef.current = position; }, [position]);
-
+  
+  const containerRef = useRef<HTMLDivElement>(null);
   const { isSkillCompleted, isSkillFavorite, toggleSkillCompletion, toggleSkillFavorite, completedSkills } = useSkillProgress();
   const { 
     skills, 
@@ -62,6 +67,7 @@ const SkillTree: React.FC = () => {
     toggleKeySkill,
   } = useEditableSkillTree(GRID_SIZE);
 
+  // Keyboard shortcuts for edit mode and admin toggle
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.shiftKey && e.key === 'E') {
@@ -73,53 +79,68 @@ const SkillTree: React.FC = () => {
         });
         return;
       }
+      
       if (!isEditMode) return;
+      
       if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
         e.preventDefault();
         duplicateSelected();
       }
+      
       if (e.key === 'Delete' || e.key === 'Backspace') {
         if ((e.target as HTMLElement).tagName === 'INPUT') return;
         e.preventDefault();
         deleteSelected();
       }
     };
+    
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isEditMode, duplicateSelected, deleteSelected]);
 
+  // Calculate tree bounds
   const treeBounds = {
     minX: Math.min(...skills.map(s => s.x)) - 100,
     maxX: Math.max(...skills.map(s => s.x)) + 100,
     minY: Math.min(...skills.map(s => s.y)) - 100,
     maxY: Math.max(...skills.map(s => s.y)) + 100,
   };
+
   const treeWidth = treeBounds.maxX - treeBounds.minX;
   const treeHeight = treeBounds.maxY - treeBounds.minY;
 
+  // Handle zoom buttons
   const handleZoom = useCallback((delta: number) => {
     setScale(prev => Math.min(Math.max(0.3, prev + delta), 2));
   }, []);
 
+  // Handle wheel zoom (desktop)
   const handleWheel = useCallback((e: React.WheelEvent) => {
     e.preventDefault();
     const delta = e.deltaY > 0 ? -0.1 : 0.1;
     const newScale = Math.min(Math.max(0.3, scale + delta), 2);
+    
     const rect = containerRef.current?.getBoundingClientRect();
     if (rect) {
       const mouseX = e.clientX - rect.left;
       const mouseY = e.clientY - rect.top;
       const worldX = (mouseX - position.x) / scale;
       const worldY = (mouseY - position.y) / scale;
-      setPosition({ x: mouseX - worldX * newScale, y: mouseY - worldY * newScale });
+      setPosition({
+        x: mouseX - worldX * newScale,
+        y: mouseY - worldY * newScale,
+      });
     }
+    
     setScale(newScale);
   }, [scale, position]);
 
+  // Mouse handlers
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (e.button === 0) {
       setIsDragging(true);
       setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+      
       if (isEditMode) {
         clearSelection();
         clearConnectionSource();
@@ -129,7 +150,10 @@ const SkillTree: React.FC = () => {
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (isDragging) {
-      setPosition({ x: e.clientX - dragStart.x, y: e.clientY - dragStart.y });
+      setPosition({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y,
+      });
     }
   }, [isDragging, dragStart]);
 
@@ -137,93 +161,106 @@ const SkillTree: React.FC = () => {
     setIsDragging(false);
   }, []);
 
-  // Returns distance between two touch points and their midpoint (relative to container)
-  const getPinchInfo = useCallback((touches: React.TouchList) => {
-    if (touches.length < 2) return null;
+  // Helper: get distance and midpoint from two touches
+  const getTouchInfo = useCallback((touches: React.TouchList) => {
     const dx = touches[0].clientX - touches[1].clientX;
     const dy = touches[0].clientY - touches[1].clientY;
     const distance = Math.sqrt(dx * dx + dy * dy);
-    const clientMidX = (touches[0].clientX + touches[1].clientX) / 2;
-    const clientMidY = (touches[0].clientY + touches[1].clientY) / 2;
-    const rect = containerRef.current?.getBoundingClientRect();
-    const midX = rect ? clientMidX - rect.left : clientMidX;
-    const midY = rect ? clientMidY - rect.top : clientMidY;
+    const midX = (touches[0].clientX + touches[1].clientX) / 2;
+    const midY = (touches[0].clientY + touches[1].clientY) / 2;
     return { distance, midX, midY };
   }, []);
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     e.preventDefault();
+
     if (e.touches.length === 2) {
-      const info = getPinchInfo(e.touches);
-      if (info) {
-        setPinchDistance(info.distance);
-        setPinchMidpoint({ x: info.midX, y: info.midY });
-      }
-      // Stop any ongoing pan when pinch starts
-      setIsDragging(false);
+      // Start pinch — record initial distance and midpoint relative to container
+      const { distance, midX, midY } = getTouchInfo(e.touches);
+      const rect = containerRef.current?.getBoundingClientRect();
+      pinchRef.current = {
+        distance,
+        midX: midX - (rect?.left ?? 0),
+        midY: midY - (rect?.top ?? 0),
+      };
     } else if (e.touches.length === 1) {
-      setPinchDistance(null);
-      setPinchMidpoint(null);
+      pinchRef.current = null;
       setIsDragging(true);
       setDragStart({
-        x: e.touches[0].clientX - position.x,
-        y: e.touches[0].clientY - position.y,
+        x: e.touches[0].clientX - positionRef.current.x,
+        y: e.touches[0].clientY - positionRef.current.y,
       });
+      
       if (isEditMode) {
         clearSelection();
         clearConnectionSource();
       }
     }
-  }, [position, isEditMode, clearSelection, clearConnectionSource, getPinchInfo]);
+  }, [isEditMode, clearSelection, clearConnectionSource, getTouchInfo]);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     e.preventDefault();
-    if (e.touches.length === 2 && pinchDistance !== null && pinchMidpoint) {
-      const info = getPinchInfo(e.touches);
-      if (!info) return;
 
-      const rawRatio = info.distance / pinchDistance;
-      // Clamp each frame's ratio tightly so fast gestures feel controlled
-      const clampedRatio = Math.max(0.94, Math.min(1.06, rawRatio));
+    if (e.touches.length === 2 && pinchRef.current) {
+      const { distance: newDistance, midX: rawMidX, midY: rawMidY } = getTouchInfo(e.touches);
+      const rect = containerRef.current?.getBoundingClientRect();
+      const midX = rawMidX - (rect?.left ?? 0);
+      const midY = rawMidY - (rect?.top ?? 0);
+
+      const prevDistance = pinchRef.current.distance;
+
+      // Use ratio-based scaling (much smoother than additive delta)
+      const ratio = newDistance / prevDistance;
+      // Clamp per-frame ratio to prevent sudden jumps from finger lift/reattach
+      const clampedRatio = Math.min(Math.max(ratio, 0.93), 1.07);
 
       const currentScale = scaleRef.current;
       const currentPos = positionRef.current;
+
       const newScale = Math.min(Math.max(0.3, currentScale * clampedRatio), 2);
 
-      // Keep the pinch midpoint fixed in world space as scale changes
-      const worldX = (pinchMidpoint.x - currentPos.x) / currentScale;
-      const worldY = (pinchMidpoint.y - currentPos.y) / currentScale;
-      const newPosX = pinchMidpoint.x - worldX * newScale;
-      const newPosY = pinchMidpoint.y - worldY * newScale;
+      // Zoom toward the pinch midpoint: find the world point under the midpoint,
+      // then reposition so that same world point stays under the new midpoint
+      const worldX = (midX - currentPos.x) / currentScale;
+      const worldY = (midY - currentPos.y) / currentScale;
+      const newPosX = midX - worldX * newScale;
+      const newPosY = midY - worldY * newScale;
+
+      // Also pan by how much the midpoint itself moved (two-finger drag)
+      const panDX = midX - pinchRef.current.midX;
+      const panDY = midY - pinchRef.current.midY;
 
       setScale(newScale);
-      setPosition({ x: newPosX, y: newPosY });
-      // Update distance for next frame, keep midpoint fixed to original pinch origin
-      setPinchDistance(info.distance);
-    } else if (isDragging && e.touches.length === 1) {
+      setPosition({ x: newPosX + panDX, y: newPosY + panDY });
+
+      // Update for next frame
+      pinchRef.current = { distance: newDistance, midX, midY };
+
+    } else if (isDragging && e.touches.length === 1 && !pinchRef.current) {
       setPosition({
         x: e.touches[0].clientX - dragStart.x,
         y: e.touches[0].clientY - dragStart.y,
       });
     }
-  }, [isDragging, dragStart, pinchDistance, pinchMidpoint, getPinchInfo]);
+  }, [isDragging, dragStart, getTouchInfo]);
 
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
     e.preventDefault();
     if (e.touches.length < 2) {
-      setPinchDistance(null);
-      setPinchMidpoint(null);
+      pinchRef.current = null;
     }
     if (e.touches.length === 0) {
       setIsDragging(false);
     }
   }, []);
 
+  // Reset view
   const resetView = useCallback(() => {
     setScale(isMobile ? 0.5 : 0.8);
     setPosition({ x: isMobile ? 50 : -200, y: isMobile ? 50 : -100 });
   }, [isMobile]);
 
+  // Handle skill click
   const handleSkillClick = useCallback((skill: Skill) => {
     if (!isEditMode) {
       setSelectedSkill(skill);
@@ -237,11 +274,15 @@ const SkillTree: React.FC = () => {
   }, []);
 
   const handleToggleComplete = useCallback(() => {
-    if (selectedSkill) toggleSkillCompletion(selectedSkill.id);
+    if (selectedSkill) {
+      toggleSkillCompletion(selectedSkill.id);
+    }
   }, [selectedSkill, toggleSkillCompletion]);
 
   const handleToggleFavorite = useCallback(() => {
-    if (selectedSkill) toggleSkillFavorite(selectedSkill.id);
+    if (selectedSkill) {
+      toggleSkillFavorite(selectedSkill.id);
+    }
   }, [selectedSkill, toggleSkillFavorite]);
 
   return (
@@ -322,6 +363,7 @@ const SkillTree: React.FC = () => {
                 </TooltipTrigger>
                 <TooltipContent side="top">{isEditMode ? "Lock Layout (Save)" : "Edit Layout"}</TooltipContent>
               </Tooltip>
+
               {isEditMode && (
                 <>
                   <Tooltip>
@@ -366,6 +408,7 @@ const SkillTree: React.FC = () => {
         </div>
       )}
 
+      {/* Tree container */}
       <div
         ref={containerRef}
         className={`w-full h-full ${isEditMode ? 'cursor-default' : 'cursor-grab active:cursor-grabbing'}`}
@@ -386,7 +429,8 @@ const SkillTree: React.FC = () => {
             transformOrigin: '0 0',
             width: treeWidth,
             height: treeHeight,
-            transition: isDragging || pinchDistance !== null ? 'none' : 'transform 0.1s ease-out',
+            // No transition during any gesture — feels instant and avoids lag
+            transition: (isDragging || pinchRef.current) ? 'none' : 'transform 0.1s ease-out',
           }}
         >
           {isEditMode && (
