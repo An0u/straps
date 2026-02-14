@@ -30,8 +30,8 @@ const SkillTree: React.FC = () => {
     return localStorage.getItem(ADMIN_STORAGE_KEY) === 'true';
   });
 
-  // Pinch zoom refs
-  const pinchRef = useRef<{ distance: number; midX: number; midY: number } | null>(null);
+  // Pinch zoom refs - IMPROVED
+  const pinchRef = useRef<{ distance: number; scale: number } | null>(null);
   const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
   const hasMoved = useRef(false);
   const scaleRef = useRef(scale);
@@ -161,17 +161,18 @@ const SkillTree: React.FC = () => {
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (e.touches.length === 2) {
       // Two finger pinch zoom
-      const { distance, midX, midY } = getTouchInfo(e.touches);
-      const rect = containerRef.current?.getBoundingClientRect();
+      e.preventDefault(); // Prevent browser zoom
+      const { distance } = getTouchInfo(e.touches);
+      
       pinchRef.current = {
         distance,
-        midX: midX - (rect?.left ?? 0),
-        midY: midY - (rect?.top ?? 0),
+        scale: scaleRef.current, // Store the starting scale
       };
+      
       touchStartRef.current = null;
       hasMoved.current = false;
     } else if (e.touches.length === 1) {
-      // Single finger
+      // Single finger pan
       pinchRef.current = null;
       hasMoved.current = false;
       touchStartRef.current = {
@@ -189,7 +190,7 @@ const SkillTree: React.FC = () => {
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (e.touches.length === 2 && pinchRef.current) {
       // Pinch zoom with two fingers
-      e.preventDefault();
+      e.preventDefault(); // Prevent browser zoom
       hasMoved.current = true;
       
       const { distance: newDistance, midX: rawMidX, midY: rawMidY } = getTouchInfo(e.touches);
@@ -197,30 +198,33 @@ const SkillTree: React.FC = () => {
       const midX = rawMidX - (rect?.left ?? 0);
       const midY = rawMidY - (rect?.top ?? 0);
 
-      // Smooth zoom: limit ratio change per frame for smoother experience
-      let ratio = newDistance / pinchRef.current.distance;
-      // Clamp ratio to prevent jumpy zooms
-      ratio = Math.max(0.95, Math.min(1.05, ratio));
+      // Calculate zoom ratio - NO CLAMPING for smooth zoom
+      const ratio = newDistance / pinchRef.current.distance;
       
-      const currentScale = scaleRef.current;
+      const currentScale = pinchRef.current.scale;
       const currentPos = positionRef.current;
-      const newScale = Math.min(Math.max(0.3, currentScale * ratio), 2);
+      
+      // Apply zoom with limits
+      let newScale = currentScale * ratio;
+      newScale = Math.min(Math.max(0.3, newScale), 2);
 
+      // Calculate zoom center point
       const worldX = (midX - currentPos.x) / currentScale;
       const worldY = (midY - currentPos.y) / currentScale;
-      const panDX = midX - pinchRef.current.midX;
-      const panDY = midY - pinchRef.current.midY;
+
+      // Update position to zoom towards touch point
+      const newX = midX - worldX * newScale;
+      const newY = midY - worldY * newScale;
 
       setScale(newScale);
-      setPosition({ x: midX - worldX * newScale + panDX, y: midY - worldY * newScale + panDY });
-      pinchRef.current = { distance: newDistance, midX, midY };
+      setPosition({ x: newX, y: newY });
 
     } else if (e.touches.length === 1 && touchStartRef.current) {
-      // Single finger - check if moved enough to pan
+      // Single finger pan - check if moved enough
       const deltaX = Math.abs(e.touches[0].clientX - touchStartRef.current.x);
       const deltaY = Math.abs(e.touches[0].clientY - touchStartRef.current.y);
       
-      if (deltaX > 15 || deltaY > 15) {
+      if (deltaX > 10 || deltaY > 10) {
         // Significant movement - this is a pan gesture
         e.preventDefault();
         hasMoved.current = true;
@@ -237,7 +241,9 @@ const SkillTree: React.FC = () => {
   }, [isDragging, dragStart, getTouchInfo]);
 
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    if (e.touches.length < 2) pinchRef.current = null;
+    if (e.touches.length < 2) {
+      pinchRef.current = null;
+    }
     if (e.touches.length === 0) {
       setIsDragging(false);
       touchStartRef.current = null;
@@ -397,7 +403,7 @@ const SkillTree: React.FC = () => {
       <div
         ref={containerRef}
         className={`w-full h-full ${isEditMode ? 'cursor-default' : 'cursor-grab active:cursor-grabbing'}`}
-        style={{ touchAction: 'pan-x pan-y pinch-zoom' }}
+        style={{ touchAction: 'none' }}
         onWheel={handleWheel}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
