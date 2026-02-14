@@ -113,6 +113,25 @@ export const useSkillProgress = () => {
     };
   }, [completedSkills]);
 
+  const getAvailableSkills = useCallback((skills: any[]) => {
+    const available = new Set<string>();
+    
+    skills.forEach(skill => {
+      // A skill is available if all its direct parents (skills that connect TO it) are completed
+      const parents = skills.filter(s => s.connections.includes(skill.id));
+      
+      if (parents.length === 0) {
+        // No prerequisites - always available
+        available.add(skill.id);
+      } else if (parents.every(parent => completedSkills.has(parent.id))) {
+        // All prerequisites completed
+        available.add(skill.id);
+      }
+    });
+    
+    return available;
+  }, [completedSkills]);
+
   return {
     completedSkills,
     favoriteSkills,
@@ -122,5 +141,6 @@ export const useSkillProgress = () => {
     isSkillFavorite,
     resetProgress,
     getCompletionStats,
+    getAvailableSkills,
   };
 };
