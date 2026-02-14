@@ -191,6 +191,7 @@ const SkillTree: React.FC = () => {
     if (e.touches.length === 2 && pinchRef.current) {
       // Pinch zoom with two fingers
       e.preventDefault(); // Prevent browser zoom
+      e.stopPropagation(); // Prevent node events
       hasMoved.current = true;
       
       const { distance: newDistance, midX: rawMidX, midY: rawMidY } = getTouchInfo(e.touches);
@@ -198,8 +199,12 @@ const SkillTree: React.FC = () => {
       const midX = rawMidX - (rect?.left ?? 0);
       const midY = rawMidY - (rect?.top ?? 0);
 
-      // Calculate zoom ratio - NO CLAMPING for smooth zoom
-      const ratio = newDistance / pinchRef.current.distance;
+      // Calculate zoom ratio with dampening for smoother control
+      let ratio = newDistance / pinchRef.current.distance;
+      
+      // Dampen the zoom speed - make it less sensitive
+      const dampening = 0.5; // Adjust between 0.1 (very slow) and 1.0 (full speed)
+      ratio = 1 + (ratio - 1) * dampening;
       
       const currentScale = pinchRef.current.scale;
       const currentPos = positionRef.current;
@@ -409,9 +414,9 @@ const SkillTree: React.FC = () => {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        onTouchStartCapture={handleTouchStart}
+        onTouchMoveCapture={handleTouchMove}
+        onTouchEndCapture={handleTouchEnd}
       >
         <div
           className="relative"
