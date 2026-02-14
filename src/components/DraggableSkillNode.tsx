@@ -108,11 +108,9 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
   };
 
   const getGlowClass = () => {
-    if (isKey) return 'skill-node-svg-glow-gold';
-    if (!isActive) return '';
-    if (hasGoldBorder) return 'skill-node-svg-glow-gold';
-    if (skill.isBlue || skill.x > 1020) return 'skill-node-svg-glow-blue';
-    return 'skill-node-svg-glow';
+    // Only apply glow for gold border skills (key skills)
+    if (isKey || hasGoldBorder) return 'skill-node-svg-glow-gold';
+    return '';
   };
 
   const getTextSize = () => {
@@ -300,30 +298,7 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
       onTouchEnd={handleTouchEnd}
       onDoubleClick={handleDoubleClick}
     >
-      {/* ── Available skill highlight ring (static, no animation) ── */}
-      {isAvailable && !isEditMode && (
-        <>
-          {/* Outer static ring */}
-          <div
-            className="absolute pointer-events-none z-20"
-            style={{
-              inset: -6,
-              borderRadius: 6,
-              border: `2px solid ${availableRingColor}`,
-              boxShadow: `0 0 12px ${availableRingColor}, 0 0 24px ${availableRingColor}55`,
-            }}
-          />
-          {/* Inner subtle fill */}
-          <div
-            className="absolute pointer-events-none z-10"
-            style={{
-              inset: 0,
-              borderRadius: 4,
-              background: `radial-gradient(circle, ${availableRingColor}22 0%, transparent 70%)`,
-            }}
-          />
-        </>
-      )}
+      {/* Available skill highlight removed */}
 
       {/* Selection indicator */}
       {isEditMode && isSelected && !isEditing && (

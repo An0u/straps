@@ -468,8 +468,8 @@ const SkillTree: React.FC = () => {
               onClick={() => handleSkillClick(skill)}
               scale={scale}
               isEditMode={isEditMode}
-              isSelected={selectedIds.has(skill.id)}
-              isConnectionSource={connectionSource === skill.id}
+              isSelected={false}
+              isConnectionSource={false}
               onSelect={selectNode}
               onDragStart={handleDragStart}
               onDragMove={handleDragMove}
@@ -492,6 +492,7 @@ const SkillTree: React.FC = () => {
         onToggleComplete={handleToggleComplete}
         onToggleFavorite={handleToggleFavorite}
         allSkills={skills}
+        completedSkills={completedSkills}
       />
     </div>
   );

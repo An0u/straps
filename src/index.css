@@ -184,6 +184,11 @@
   .skill-node {
     @apply relative cursor-pointer transition-all duration-300;
     transform-style: preserve-3d;
+    /* EXPLICITLY REMOVE BORDERS/OUTLINES */
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    ring: 0 !important;
   }
 
   .skill-node-diamond {
