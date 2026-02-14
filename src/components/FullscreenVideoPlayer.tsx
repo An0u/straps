@@ -1,6 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { X } from 'lucide-react';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface FullscreenVideoPlayerProps {
   videoUrl: string;
@@ -15,63 +18,40 @@ const FullscreenVideoPlayer: React.FC<FullscreenVideoPlayerProps> = ({
   isOpen,
   onClose,
 }) => {
-  // Prevent body scroll when fullscreen is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
-
-  // Handle escape key
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isOpen) {
-        onClose();
-      }
-    };
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
+  const isMobile = useIsMobile();
 
   return (
-    <div 
-      className={cn(
-        "fixed inset-0 z-[100] bg-black flex items-center justify-center",
-        "animate-in fade-in duration-200"
-      )}
-      onClick={onClose}
-    >
-      {/* Close button - generous 44x44 hit area */}
-      <button
-        onClick={onClose}
-        className="absolute top-4 right-4 z-10 w-11 h-11 flex items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
-        aria-label="Close video"
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent
+        className={cn(
+          "p-0 border-0 bg-black [&>button]:hidden",
+          isMobile
+            ? "!fixed !inset-0 !max-w-full !max-h-full w-full h-full !m-0 !rounded-none !translate-x-0 !translate-y-0"
+            : "max-w-4xl w-full aspect-video"
+        )}
       >
-        <X size={24} />
-      </button>
+        <div className="relative w-full h-full">
+          {/* Close button overlay */}
+          <Button
+            onClick={onClose}
+            variant="ghost"
+            size="icon"
+            className="absolute top-4 right-4 z-50 w-10 h-10 rounded-full bg-black/70 hover:bg-black/90 text-white"
+          >
+            <X size={24} />
+          </Button>
 
-      {/* Video container - fills height, centered horizontally */}
-      <div 
-        className="relative w-full h-full max-w-[100vh*9/16] flex items-center justify-center"
-        style={{ maxWidth: 'calc(100dvh * 9 / 16)' }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <iframe
-          src={`${videoUrl}?autoplay=1`}
-          title={title}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="w-full h-full max-h-dvh"
-        />
-      </div>
-    </div>
+          {/* Video iframe */}
+          <iframe
+            src={videoUrl}
+            title={title}
+            className="w-full h-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 
