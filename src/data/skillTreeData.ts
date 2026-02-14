@@ -53,8 +53,8 @@ export const skillTreeData: Skill[] = [
     type: 'category',
     state: 'active',
     isBlue: true,
-    x: 1200,
-    y: 0,
+    x: 1175,
+    y: 75,
     connections: ['normal-two', 'reverse-two', 'center-two']
   },
   {
@@ -65,7 +65,7 @@ export const skillTreeData: Skill[] = [
     type: 'category',
     state: 'active',
     isBlue: true,
-    x: 1200,
+    x: 1175,
     y: 450,
     connections: ['hanging-two', 'support-two']
   },
@@ -77,8 +77,8 @@ export const skillTreeData: Skill[] = [
     type: 'category',
     state: 'active',
     isBlue: true,
-    x: 1200,
-    y: 900,
+    x: 1175,
+    y: 888,
     connections: ['twisting-two', 'rotating-two']
   },
 
@@ -91,8 +91,8 @@ export const skillTreeData: Skill[] = [
     type: 'category',
     state: 'active',
     isBlue: true,
-    x: 1350,
-    y: -150,
+    x: 1300,
+    y: -50,
     connections: []
   },
   {
@@ -103,8 +103,8 @@ export const skillTreeData: Skill[] = [
     type: 'category',
     state: 'active',
     isBlue: true,
-    x: 1350,
-    y: 0,
+    x: 1300,
+    y: 75,
     connections: []
   },
   {
@@ -115,8 +115,8 @@ export const skillTreeData: Skill[] = [
     type: 'category',
     state: 'active',
     isBlue: true,
-    x: 1350,
-    y: 150,
+    x: 1300,
+    y: 200,
     connections: []
   },
 
@@ -129,8 +129,8 @@ export const skillTreeData: Skill[] = [
     type: 'category',
     state: 'active',
     isBlue: true,
-    x: 1350,
-    y: 300,
+    x: 1300,
+    y: 325,
     connections: []
   },
   {
@@ -141,7 +141,7 @@ export const skillTreeData: Skill[] = [
     type: 'category',
     state: 'active',
     isBlue: true,
-    x: 1350,
+    x: 1300,
     y: 450,
     connections: ['support-two-ii']
   },
@@ -153,8 +153,8 @@ export const skillTreeData: Skill[] = [
     type: 'category',
     state: 'active',
     isBlue: true,
-    x: 1350,
-    y: 600,
+    x: 1300,
+    y: 575,
     connections: []
   },
 
@@ -167,8 +167,8 @@ export const skillTreeData: Skill[] = [
     type: 'category',
     state: 'active',
     isBlue: true,
-    x: 1350,
-    y: 750,
+    x: 1300,
+    y: 700,
     connections: ['twisting-two-ii']
   },
   {
@@ -179,8 +179,8 @@ export const skillTreeData: Skill[] = [
     type: 'category',
     state: 'active',
     isBlue: true,
-    x: 1350,
-    y: 900,
+    x: 1300,
+    y: 825,
     connections: []
   },
   {
@@ -191,8 +191,8 @@ export const skillTreeData: Skill[] = [
     type: 'category',
     state: 'active',
     isBlue: true,
-    x: 1350,
-    y: 1050,
+    x: 1300,
+    y: 950,
     connections: []
   },
 
@@ -205,8 +205,8 @@ export const skillTreeData: Skill[] = [
     type: 'key',
     state: 'inactive',
     isBlue: true,
-    x: 1500,
-    y: -150,
+    x: 1415,
+    y: -50,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/LngeQfLsL3c'
   },
@@ -218,8 +218,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1620,
-    y: -150,
+    x: 1519,
+    y: -50,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/zKKMrqKPJWY'
   },
@@ -231,8 +231,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1740,
-    y: -150,
+    x: 1623,
+    y: -50,
     connections: []
   },
   {
@@ -243,8 +243,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1860,
-    y: -150,
+    x: 1727,
+    y: -50,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/tDNdHqBcsOo?si=Z5XAhNpg1BZ36ylZ'
   },
@@ -256,8 +256,8 @@ export const skillTreeData: Skill[] = [
     type: 'key',
     state: 'inactive',
     isBlue: true,
-    x: 1980,
-    y: -150,
+    x: 1831,
+    y: -50,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/Rbs7Kw9xKU0'
   },
@@ -269,8 +269,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 2100,
-    y: -150,
+    x: 1935,
+    y: -50,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/Un6PkAhavGQ?si=sqvqQGeKlo5Un5nk'
   },
@@ -284,8 +284,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1500,
-    y: 0,
+    x: 1415,
+    y: 75,
     connections: []
   },
   {
@@ -296,8 +296,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1620,
-    y: 0,
+    x: 1519,
+    y: 75,
     connections: []
   },
 
@@ -310,8 +310,8 @@ export const skillTreeData: Skill[] = [
     type: 'key',
     state: 'inactive',
     isBlue: true,
-    x: 1500,
-    y: 150,
+    x: 1415,
+    y: 200,
     connections: []
   },
 
@@ -324,8 +324,8 @@ export const skillTreeData: Skill[] = [
     type: 'key',
     state: 'inactive',
     isBlue: true,
-    x: 1500,
-    y: 300,
+    x: 1415,
+    y: 325,
     connections: []
   },
   {
@@ -336,8 +336,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1620,
-    y: 300,
+    x: 1519,
+    y: 325,
     connections: [],
     videoUrl: 'https://youtu.be/3tQap3R4xgQ?si=l6GhHPs_EiXcoTsN'
   },
@@ -349,8 +349,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1740,
-    y: 300,
+    x: 1623,
+    y: 325,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/MsLbJOZAW9M'
   },
@@ -362,8 +362,8 @@ export const skillTreeData: Skill[] = [
     type: 'key',
     state: 'inactive',
     isBlue: true,
-    x: 1860,
-    y: 300,
+    x: 1727,
+    y: 325,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/gOJ4kMs5St8'
   },
@@ -377,7 +377,7 @@ export const skillTreeData: Skill[] = [
     type: 'key',
     state: 'inactive',
     isBlue: true,
-    x: 1500,
+    x: 1415,
     y: 450,
     connections: []
   },
@@ -389,7 +389,7 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1620,
+    x: 1519,
     y: 450,
     connections: []
   },
@@ -401,7 +401,7 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1740,
+    x: 1623,
     y: 450,
     connections: []
   },
@@ -413,7 +413,7 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1860,
+    x: 1727,
     y: 450,
     connections: []
   },
@@ -427,8 +427,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1500,
-    y: 600,
+    x: 1415,
+    y: 575,
     connections: []
   },
   {
@@ -439,8 +439,8 @@ export const skillTreeData: Skill[] = [
     type: 'key',
     state: 'inactive',
     isBlue: true,
-    x: 1620,
-    y: 600,
+    x: 1519,
+    y: 575,
     connections: []
   },
   {
@@ -451,8 +451,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1740,
-    y: 600,
+    x: 1623,
+    y: 575,
     connections: []
   },
   {
@@ -463,8 +463,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1860,
-    y: 600,
+    x: 1727,
+    y: 575,
     connections: [],
     videoUrl: 'https://www.youtube.com/watch?v=30fUEKLW74M'
   },
@@ -478,8 +478,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1500,
-    y: 750,
+    x: 1415,
+    y: 700,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/aoJzgNtjdjQ'
   },
@@ -491,8 +491,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1620,
-    y: 750,
+    x: 1519,
+    y: 700,
     connections: [],
     videoUrl: 'https://www.youtube.com/watch?v=PHtBZWcp0Gg'
   },
@@ -504,8 +504,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1740,
-    y: 750,
+    x: 1623,
+    y: 700,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/qzoISsV5-Zc?si=kgap5Uj5kiOh8x7t'
   },
@@ -517,8 +517,8 @@ export const skillTreeData: Skill[] = [
     type: 'key',
     state: 'inactive',
     isBlue: true,
-    x: 1860,
-    y: 750,
+    x: 1727,
+    y: 700,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/aCkpDVtMdzM?si=-f0jfaHafW56R9he'
   },
@@ -532,8 +532,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1500,
-    y: 900,
+    x: 1415,
+    y: 825,
     connections: [],
     videoUrl: 'https://www.youtube.com/watch?v=py7b6Q04-nQ'
   },
@@ -545,8 +545,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1620,
-    y: 900,
+    x: 1519,
+    y: 825,
     connections: [],
     videoUrl: 'https://www.youtube.com/watch?v=aoJzgNtjdjQ'
   },
@@ -558,8 +558,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1740,
-    y: 900,
+    x: 1623,
+    y: 825,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/aoJzgNtjdjQ'
   },
@@ -571,8 +571,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1860,
-    y: 900,
+    x: 1727,
+    y: 825,
     connections: [],
     videoUrl: 'https://www.youtube.com/watch?v=UQ0fme2tGIo'
   },
@@ -584,8 +584,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1980,
-    y: 900,
+    x: 1831,
+    y: 825,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/cxdtl4LmyeY?si=d2DZsl8ll79fUTOt'
   },
@@ -597,8 +597,8 @@ export const skillTreeData: Skill[] = [
     type: 'key',
     state: 'inactive',
     isBlue: true,
-    x: 2100,
-    y: 900,
+    x: 1935,
+    y: 825,
     connections: [],
     videoUrl: 'https://www.youtube.com/watch?v=CmCYdpXLccM'
   },
@@ -612,8 +612,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1500,
-    y: 1050,
+    x: 1415,
+    y: 950,
     connections: []
   },
   {
@@ -624,8 +624,8 @@ export const skillTreeData: Skill[] = [
     type: 'key',
     state: 'inactive',
     isBlue: true,
-    x: 1620,
-    y: 1050,
+    x: 1519,
+    y: 950,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/uFZ2-c1vePE?si=NNe87_Q2NvrFPEfP'
   },
@@ -637,8 +637,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1740,
-    y: 1050,
+    x: 1623,
+    y: 950,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/G5TW1kj028g'
   },
@@ -650,8 +650,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1860,
-    y: 1050,
+    x: 1727,
+    y: 950,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/CSCpzHYiBqA?si=d3td_sI2NW6nMx5c'
   },
@@ -663,8 +663,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 1980,
-    y: 1050,
+    x: 1831,
+    y: 950,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/6zuzT9qCQlk?si=U1gfY5vPGEtA-V4H'
   },
@@ -676,8 +676,8 @@ export const skillTreeData: Skill[] = [
     type: 'key',
     state: 'inactive',
     isBlue: true,
-    x: 2100,
-    y: 1050,
+    x: 1935,
+    y: 950,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/uFZ2-c1vePE'
   },
@@ -689,8 +689,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 2220,
-    y: 1050,
+    x: 2039,
+    y: 950,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/ggkSz6urQko?si=b77McRYXk1niVMXp'
   },
@@ -702,8 +702,8 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     isBlue: true,
-    x: 2340,
-    y: 1050,
+    x: 2143,
+    y: 950,
     connections: []
   },
 
@@ -730,8 +730,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['one-arm'],
     type: 'category',
     state: 'active',
-    x: 720,
-    y: 0,
+    x: 745,
+    y: 75,
     connections: ['center-one', 'reverse-one', 'normal-one']
   },
   {
@@ -741,7 +741,7 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['one-arm'],
     type: 'category',
     state: 'active',
-    x: 720,
+    x: 745,
     y: 450,
     connections: ['hanging-one']
   },
@@ -752,8 +752,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['one-arm'],
     type: 'category',
     state: 'active',
-    x: 720,
-    y: 900,
+    x: 745,
+    y: 888,
     connections: ['basics-one', 'twisting-one', 'rotating-one']
   },
 
@@ -765,8 +765,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['spin-one'],
     type: 'category',
     state: 'active',
-    x: 570,
-    y: -150,
+    x: 620,
+    y: -50,
     connections: []
   },
   {
@@ -776,8 +776,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['spin-one'],
     type: 'category',
     state: 'active',
-    x: 570,
-    y: 0,
+    x: 620,
+    y: 75,
     connections: []
   },
   {
@@ -787,8 +787,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['spin-one'],
     type: 'category',
     state: 'active',
-    x: 570,
-    y: 150,
+    x: 620,
+    y: 200,
     connections: []
   },
 
@@ -800,8 +800,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['static-one'],
     type: 'category',
     state: 'active',
-    x: 570,
-    y: 450,
+    x: 620,
+    y: 325,
     connections: []
   },
 
@@ -813,8 +813,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['swing-one'],
     type: 'category',
     state: 'active',
-    x: 570,
-    y: 750,
+    x: 620,
+    y: 700,
     connections: []
   },
   {
@@ -824,8 +824,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['swing-one'],
     type: 'category',
     state: 'active',
-    x: 570,
-    y: 900,
+    x: 620,
+    y: 825,
     connections: []
   },
   {
@@ -835,8 +835,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['swing-one'],
     type: 'category',
     state: 'active',
-    x: 570,
-    y: 1050,
+    x: 620,
+    y: 950,
     connections: ['rotating-one-ii']
   },
   {
@@ -846,8 +846,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['rotating-one'],
     type: 'category',
     state: 'active',
-    x: 570,
-    y: 1200,
+    x: 620,
+    y: 1075,
     connections: []
   },
 
@@ -859,8 +859,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['center-one'],
     type: 'key',
     state: 'inactive',
-    x: 420,
-    y: -150,
+    x: 505,
+    y: -50,
     connections: []
   },
   {
@@ -870,8 +870,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['center-one'],
     type: 'regular',
     state: 'inactive',
-    x: 300,
-    y: -150,
+    x: 401,
+    y: -50,
     connections: []
   },
   {
@@ -881,8 +881,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['center-one'],
     type: 'regular',
     state: 'inactive',
-    x: 180,
-    y: -150,
+    x: 297,
+    y: -50,
     connections: []
   },
 
@@ -894,8 +894,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['reverse-one'],
     type: 'key',
     state: 'inactive',
-    x: 420,
-    y: 0,
+    x: 505,
+    y: 75,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/UiYRfphWzLk'
   },
@@ -906,8 +906,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['reverse-one'],
     type: 'regular',
     state: 'inactive',
-    x: 300,
-    y: 0,
+    x: 401,
+    y: 75,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/obGJr1S9g9E'
   },
@@ -918,8 +918,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['reverse-one'],
     type: 'regular',
     state: 'inactive',
-    x: 180,
-    y: 0,
+    x: 297,
+    y: 75,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/vYUrKNzxiVA?si=M4pha7tXNSrOL-KO'
   },
@@ -930,8 +930,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['reverse-one'],
     type: 'key',
     state: 'inactive',
-    x: 60,
-    y: 0,
+    x: 193,
+    y: 75,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/COJg5yzvEH0'
   },
@@ -942,8 +942,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['reverse-one'],
     type: 'regular',
     state: 'inactive',
-    x: -60,
-    y: 0,
+    x: 89,
+    y: 75,
     connections: []
   },
   {
@@ -953,8 +953,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['reverse-one'],
     type: 'regular',
     state: 'inactive',
-    x: -180,
-    y: 0,
+    x: -15,
+    y: 75,
     connections: []
   },
   {
@@ -964,8 +964,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['reverse-one'],
     type: 'key',
     state: 'inactive',
-    x: -300,
-    y: 0,
+    x: -119,
+    y: 75,
     connections: []
   },
   {
@@ -975,8 +975,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['reverse-one'],
     type: 'regular',
     state: 'inactive',
-    x: -420,
-    y: 0,
+    x: -223,
+    y: 75,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/vYUrKNzxiVA?si=M4pha7tXNSrOL-KO'
   },
@@ -989,8 +989,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['normal-one'],
     type: 'key',
     state: 'inactive',
-    x: 420,
-    y: 150,
+    x: 505,
+    y: 200,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/oB5ib9u2fT4'
   },
@@ -1001,8 +1001,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['normal-one'],
     type: 'regular',
     state: 'inactive',
-    x: 300,
-    y: 150,
+    x: 401,
+    y: 200,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/Freat_9N9FQ'
   },
@@ -1013,8 +1013,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['normal-one'],
     type: 'regular',
     state: 'inactive',
-    x: 180,
-    y: 150,
+    x: 297,
+    y: 200,
     connections: []
   },
   {
@@ -1024,8 +1024,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['normal-one'],
     type: 'key',
     state: 'inactive',
-    x: 60,
-    y: 150,
+    x: 193,
+    y: 200,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/FSWWEqdo3o8'
   },
@@ -1036,8 +1036,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['normal-one'],
     type: 'regular',
     state: 'inactive',
-    x: -60,
-    y: 150,
+    x: 89,
+    y: 200,
     connections: []
   },
   {
@@ -1047,8 +1047,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['normal-one'],
     type: 'regular',
     state: 'inactive',
-    x: -180,
-    y: 150,
+    x: -15,
+    y: 200,
     connections: []
   },
   {
@@ -1058,8 +1058,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['normal-one'],
     type: 'regular',
     state: 'inactive',
-    x: -300,
-    y: 150,
+    x: -119,
+    y: 200,
     connections: []
   },
   {
@@ -1069,8 +1069,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['normal-one'],
     type: 'key',
     state: 'inactive',
-    x: -420,
-    y: 150,
+    x: -223,
+    y: 200,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/wU1eGKGhEtw'
   },
@@ -1081,8 +1081,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['normal-one'],
     type: 'regular',
     state: 'inactive',
-    x: -540,
-    y: 150,
+    x: -327,
+    y: 200,
     connections: []
   },
   {
@@ -1092,8 +1092,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['normal-one'],
     type: 'regular',
     state: 'inactive',
-    x: -660,
-    y: 150,
+    x: -431,
+    y: 200,
     connections: []
   },
 
@@ -1105,8 +1105,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['hanging-one'],
     type: 'regular',
     state: 'inactive',
-    x: 420,
-    y: 450,
+    x: 505,
+    y: 325,
     connections: []
   },
   {
@@ -1116,8 +1116,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['hanging-one'],
     type: 'regular',
     state: 'inactive',
-    x: 300,
-    y: 450,
+    x: 401,
+    y: 325,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/ijT5BrdM0tg'
   },
@@ -1128,8 +1128,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['hanging-one'],
     type: 'regular',
     state: 'inactive',
-    x: 180,
-    y: 450,
+    x: 297,
+    y: 325,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/HiTTJftm8Bk'
   },
@@ -1140,8 +1140,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['hanging-one'],
     type: 'regular',
     state: 'inactive',
-    x: 60,
-    y: 450,
+    x: 193,
+    y: 325,
     connections: []
   },
   {
@@ -1151,8 +1151,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['hanging-one'],
     type: 'regular',
     state: 'inactive',
-    x: -60,
-    y: 450,
+    x: 89,
+    y: 325,
     connections: []
   },
 
@@ -1164,8 +1164,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['basics-one'],
     type: 'key',
     state: 'inactive',
-    x: 420,
-    y: 750,
+    x: 505,
+    y: 700,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/Z36ukVFnBko'
   },
@@ -1176,8 +1176,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['basics-one'],
     type: 'regular',
     state: 'inactive',
-    x: 300,
-    y: 750,
+    x: 401,
+    y: 700,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/qzoISsV5-Zc?si=kgap5Uj5kiOh8x7t'
   },
@@ -1190,8 +1190,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['twisting-one'],
     type: 'regular',
     state: 'inactive',
-    x: 420,
-    y: 900,
+    x: 505,
+    y: 825,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/jkp_BVnO4vA'
   },
@@ -1202,8 +1202,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['twisting-one'],
     type: 'key',
     state: 'inactive',
-    x: 300,
-    y: 900,
+    x: 401,
+    y: 825,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/BJDNpk6f0BM?si=UgI9waZNerQ1KHJ3'
   },
@@ -1214,8 +1214,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['twisting-one'],
     type: 'regular',
     state: 'inactive',
-    x: 180,
-    y: 900,
+    x: 297,
+    y: 825,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/u8FwOq0WFXc'
   },
@@ -1226,8 +1226,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['twisting-one'],
     type: 'regular',
     state: 'inactive',
-    x: 60,
-    y: 900,
+    x: 193,
+    y: 825,
     connections: []
   },
   {
@@ -1237,8 +1237,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['twisting-one'],
     type: 'regular',
     state: 'inactive',
-    x: -60,
-    y: 900,
+    x: 89,
+    y: 825,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/9h72wmKI0RY?si=XBmDrDAxc2GtuhhP'
   },
@@ -1249,8 +1249,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['twisting-one'],
     type: 'regular',
     state: 'inactive',
-    x: -180,
-    y: 900,
+    x: -15,
+    y: 825,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/PQ9u_RVRfUg'
   },
@@ -1263,8 +1263,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['rotating-one'],
     type: 'regular',
     state: 'inactive',
-    x: 420,
-    y: 1050,
+    x: 505,
+    y: 950,
     connections: []
   },
   {
@@ -1274,8 +1274,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['rotating-one'],
     type: 'key',
     state: 'inactive',
-    x: 300,
-    y: 1050,
+    x: 401,
+    y: 950,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/8NfijlpC99A'
   },
@@ -1286,8 +1286,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['rotating-one'],
     type: 'regular',
     state: 'inactive',
-    x: 180,
-    y: 1050,
+    x: 297,
+    y: 950,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/ENIyf9XwSAg?si=XChsRB-e6sIWkI4O'
   },
@@ -1298,8 +1298,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['rotating-one'],
     type: 'regular',
     state: 'inactive',
-    x: 60,
-    y: 1050,
+    x: 193,
+    y: 950,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/PNBN6wlqCuw?si=e1JLkU9KILCs1huF'
   },
@@ -1310,8 +1310,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['rotating-one'],
     type: 'regular',
     state: 'inactive',
-    x: -60,
-    y: 1050,
+    x: 89,
+    y: 950,
     connections: []
   },
 
@@ -1323,8 +1323,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['rotating-one-ii'],
     type: 'regular',
     state: 'inactive',
-    x: 420,
-    y: 1200,
+    x: 505,
+    y: 1075,
     connections: []
   },
   {
@@ -1334,8 +1334,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['rotating-one-ii'],
     type: 'regular',
     state: 'inactive',
-    x: 300,
-    y: 1200,
+    x: 401,
+    y: 1075,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/AGgargIWLX4?si=ItbhaMgTReC2ThFE'
   },
@@ -1346,8 +1346,8 @@ export const skillTreeData: Skill[] = [
     prerequisites: ['rotating-one-ii'],
     type: 'regular',
     state: 'inactive',
-    x: 180,
-    y: 1200,
+    x: 297,
+    y: 1075,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/tR2kE-mkF5o'
   },
