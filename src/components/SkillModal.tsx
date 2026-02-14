@@ -347,20 +347,22 @@ const SkillModal: React.FC<SkillModalProps> = ({
             )}
 
             {/* Smart CTA */}
-            <div className="pt-2">
+            <div className="pt-2 space-y-3">
               <Tooltip>
                 <TooltipTrigger asChild>
                   <div className="w-full">
                     <Button
                       onClick={onToggleComplete}
                       disabled={isLocked}
+                      variant="ghost"
                       className={cn(
-                        'w-full',
+                        'w-full rounded-full font-medium transition-all text-white',
+                        '[&:not(:disabled)]:hover:bg-transparent [&:not(:disabled)]:hover:text-white',
                         isCompleted
-                          ? 'bg-skill-gold hover:bg-skill-gold/80 text-background'
+                          ? 'bg-purple-600 [&:not(:disabled)]:hover:!bg-purple-800 [&:not(:disabled)]:active:!bg-purple-900 focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-background'
                           : isLocked
-                          ? 'bg-muted text-muted-foreground cursor-not-allowed'
-                          : 'bg-primary hover:bg-primary/90 text-primary-foreground'
+                          ? 'bg-purple-600/40 text-white/40 cursor-not-allowed'
+                          : 'bg-purple-600 [&:not(:disabled)]:hover:!bg-purple-800 [&:not(:disabled)]:active:!bg-purple-900 focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-background'
                       )}
                     >
                       {isCompleted ? (
@@ -388,6 +390,15 @@ const SkillModal: React.FC<SkillModalProps> = ({
                   </TooltipContent>
                 )}
               </Tooltip>
+
+              {/* Dismiss Button */}
+              <Button
+                onClick={onClose}
+                variant="ghost"
+                className="w-full rounded-full font-medium bg-transparent text-white hover:!bg-white/5 hover:!text-white active:!bg-white/10 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background border border-white transition-all"
+              >
+                Dismiss
+              </Button>
             </div>
           </div>
         </div>
