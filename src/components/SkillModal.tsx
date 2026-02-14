@@ -40,6 +40,7 @@ interface SkillModalProps {
   onToggleComplete: () => void;
   onToggleFavorite: () => void;
   allSkills?: Skill[]; // Pass all skills to compute direct parents
+  completedSkills?: Set<string>; // Pass completed skills to show unlock status
 }
 
 const SkillModal: React.FC<SkillModalProps> = ({
@@ -51,6 +52,7 @@ const SkillModal: React.FC<SkillModalProps> = ({
   onToggleComplete,
   onToggleFavorite,
   allSkills = [],
+  completedSkills = new Set(),
 }) => {
   const [isVideoFullscreen, setIsVideoFullscreen] = useState(false);
   const isMobile = useIsMobile();
@@ -95,8 +97,8 @@ const SkillModal: React.FC<SkillModalProps> = ({
         )}
         
         <div className={cn("overflow-y-auto", isMobile ? "max-h-[85vh] px-6 pb-6" : "")}>
-        <DialogHeader>
-          <div className="flex items-center gap-2 mb-2">
+        <DialogHeader className="select-none caret-transparent">
+          <div className="flex items-center gap-2 mb-2 select-none caret-transparent">
             <Badge className={cn('text-xs', getTypeColor())}>
               {getTypeLabel()}
             </Badge>
@@ -117,14 +119,14 @@ const SkillModal: React.FC<SkillModalProps> = ({
               {isActive ? 'Active' : 'Locked'}
             </Badge>
           </div>
-          <DialogTitle className="font-sans text-2xl text-foreground flex items-center gap-2">
+          <DialogTitle className="font-sans text-2xl text-foreground flex items-center gap-2 select-none caret-transparent">
             {skill.name}
             <Button
               variant="ghost"
               size="icon"
               onClick={onToggleFavorite}
               className={cn(
-                'h-7 w-7 shrink-0',
+                'h-7 w-7 shrink-0 focus-visible:ring-0 focus-visible:ring-offset-0 select-none',
                 isFavorite && 'text-skill-gold'
               )}
             >
@@ -134,7 +136,7 @@ const SkillModal: React.FC<SkillModalProps> = ({
               />
             </Button>
           </DialogTitle>
-          <DialogDescription className="text-muted-foreground mt-3">
+          <DialogDescription className="text-muted-foreground mt-3 text-left">
             {skill.description}
           </DialogDescription>
         </DialogHeader>
@@ -193,65 +195,44 @@ const SkillModal: React.FC<SkillModalProps> = ({
             </>
           )}
 
-          {/* Prerequisites section - showing direct parents */}
+          {/* Unlocks section - showing what this skill unlocks */}
           <div>
             <h4 className="text-sm font-medium text-foreground mb-2 flex items-center gap-2">
-              <Lock size={14} className="text-muted-foreground" />
-              Direct Prerequisites
+              <ChevronRight size={14} className="text-muted-foreground" />
+              Unlocks the Following
             </h4>
-            {directParents.length > 0 ? (
+            {skill.connections.length > 0 ? (
               <div className="flex flex-wrap gap-2">
-                {directParents.map(parent => (
-                  <div
-                    key={parent.id}
-                    className={cn(
-                      'flex items-center gap-1 px-3 py-1.5 rounded-md text-sm',
-                      parent.state === 'active'
-                        ? 'bg-skill-active/20 text-skill-active border border-skill-active/30'
-                        : 'bg-muted text-muted-foreground border border-border'
-                    )}
-                  >
-                    {parent.state === 'active' ? (
-                      <Check size={12} />
-                    ) : (
-                      <X size={12} />
-                    )}
-                    {parent.name}
-                  </div>
-                ))}
+                {skill.connections.map(connId => {
+                  const connectedSkill = allSkills.find(s => s.id === connId);
+                  const displayName = connectedSkill?.name || connId.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                  const isUnlocked = connectedSkill ? completedSkills.has(connectedSkill.id) : false;
+                  return (
+                    <div
+                      key={connId}
+                      className={cn(
+                        'flex items-center gap-1 px-3 py-1.5 rounded-md text-sm',
+                        isUnlocked
+                          ? 'bg-skill-active/20 text-skill-active border border-skill-active/30'
+                          : 'bg-muted text-muted-foreground border border-border'
+                      )}
+                    >
+                      {isUnlocked ? (
+                        <Check size={12} />
+                      ) : (
+                        <Lock size={12} />
+                      )}
+                      {displayName}
+                    </div>
+                  );
+                })}
               </div>
             ) : (
               <p className="text-sm text-muted-foreground italic">
-                No prerequisites - this is a foundational skill
+                This skill doesn't unlock any other skills
               </p>
             )}
           </div>
-
-          {/* Connections section */}
-          {skill.connections.length > 0 && (
-            <div>
-              <h4 className="text-sm font-medium text-foreground mb-2 flex items-center gap-2">
-                <ChevronRight size={14} className="text-muted-foreground" />
-                Unlocks
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {skill.connections.slice(0, 5).map(connId => {
-                  const connectedSkill = allSkills.find(s => s.id === connId);
-                  const displayName = connectedSkill?.name || connId.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-                  return (
-                    <Badge key={connId} variant="secondary" className="text-xs">
-                      {displayName}
-                    </Badge>
-                  );
-                })}
-                {skill.connections.length > 5 && (
-                  <Badge variant="outline" className="text-xs">
-                    +{skill.connections.length - 5} more
-                  </Badge>
-                )}
-              </div>
-            </div>
-          )}
 
           {/* Progress tracking */}
           <div className="pt-4 border-t border-border">
