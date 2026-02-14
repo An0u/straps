@@ -206,18 +206,18 @@ const SkillTree: React.FC = () => {
       const dampening = 0.5; // Adjust between 0.1 (very slow) and 1.0 (full speed)
       ratio = 1 + (ratio - 1) * dampening;
       
-      const currentScale = pinchRef.current.scale;
+      const startScale = pinchRef.current.scale;
       const currentPos = positionRef.current;
       
       // Apply zoom with limits
-      let newScale = currentScale * ratio;
+      let newScale = startScale * ratio;
       newScale = Math.min(Math.max(0.3, newScale), 2);
 
-      // Calculate zoom center point
-      const worldX = (midX - currentPos.x) / currentScale;
-      const worldY = (midY - currentPos.y) / currentScale;
+      // Calculate the world position at the touch midpoint BEFORE zoom
+      const worldX = (midX - currentPos.x) / startScale;
+      const worldY = (midY - currentPos.y) / startScale;
 
-      // Update position to zoom towards touch point
+      // Keep that world point at the same screen position AFTER zoom
       const newX = midX - worldX * newScale;
       const newY = midY - worldY * newScale;
 
