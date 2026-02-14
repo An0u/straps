@@ -105,11 +105,11 @@ const SkillModal: React.FC<SkillModalProps> = ({
         className={cn(
           "modal-glass border-0 !p-0 [&>button]:hidden overflow-hidden flex flex-col",
           isMobile 
-            ? "!fixed !bottom-0 !left-0 !right-0 !top-auto !rounded-t-[24px] rounded-b-none h-[85vh] max-h-[85vh] w-full !max-w-full !m-0 !translate-x-0 !translate-y-0 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom-full data-[state=open]:slide-in-from-bottom-full" 
-            : "sm:max-w-lg rounded-lg h-[90vh] max-h-[90vh]"
+            ? "!fixed !bottom-0 !left-0 !right-0 !top-auto !rounded-t-[24px] rounded-b-none max-h-[85vh] w-full !max-w-full !m-0 !translate-x-0 !translate-y-0 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom-full data-[state=open]:slide-in-from-bottom-full"
+            : "sm:max-w-lg rounded-lg max-h-[90vh]"
         )}
       >
-        {/* Content area - no scrolling */}
+        {/* Content area */}
         <div className="flex-1 overflow-hidden">
           {/* Mobile swipe handle - only show if no video */}
           {isMobile && !embedUrl && (
