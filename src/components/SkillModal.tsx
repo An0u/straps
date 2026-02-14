@@ -103,13 +103,14 @@ const SkillModal: React.FC<SkillModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
         className={cn(
-          "modal-glass border-0 !p-0 [&>button]:hidden overflow-hidden",
+          "modal-glass border-0 !p-0 [&>button]:hidden overflow-hidden flex flex-col",
           isMobile 
-            ? "!fixed !bottom-0 !left-0 !right-0 !top-auto !rounded-t-[24px] rounded-b-none max-h-[85vh] w-full !max-w-full !m-0 !translate-x-0 !translate-y-0 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom-full data-[state=open]:slide-in-from-bottom-full" 
-            : "sm:max-w-lg rounded-lg"
+            ? "!fixed !bottom-0 !left-0 !right-0 !top-auto !rounded-t-[24px] rounded-b-none h-[85vh] max-h-[85vh] w-full !max-w-full !m-0 !translate-x-0 !translate-y-0 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom-full data-[state=open]:slide-in-from-bottom-full" 
+            : "sm:max-w-lg rounded-lg h-[90vh] max-h-[90vh]"
         )}
       >
-        <div className={cn("overflow-y-auto", isMobile ? "max-h-[85vh]" : "")}>
+        {/* Content area - no scrolling */}
+        <div className="flex-1 overflow-hidden">
           {/* Mobile swipe handle - only show if no video */}
           {isMobile && !embedUrl && (
             <div className="flex justify-center pt-3 pb-2">
@@ -345,61 +346,61 @@ const SkillModal: React.FC<SkillModalProps> = ({
                 </div>
               </div>
             )}
-
-            {/* Smart CTA */}
-            <div className="pt-2 space-y-3">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="w-full">
-                    <Button
-                      onClick={onToggleComplete}
-                      disabled={isLocked}
-                      variant="ghost"
-                      className={cn(
-                        'w-full rounded-full font-medium transition-all text-white',
-                        isCompleted
-                          ? 'bg-purple-600 hover:!bg-purple-600 [&:not(:disabled)]:active:!bg-purple-700 focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-background'
-                          : isLocked
-                          ? 'bg-purple-600/60 text-white/50 cursor-not-allowed hover:!bg-purple-600/60'
-                          : 'bg-purple-600 hover:!bg-purple-600 [&:not(:disabled)]:active:!bg-purple-700 focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-background'
-                      )}
-                    >
-                      {isCompleted ? (
-                        <>
-                          <Check size={16} className="mr-2" />
-                          Mark as Incomplete
-                        </>
-                      ) : isLocked ? (
-                        <>
-                          <Lock size={16} className="mr-2" />
-                          Locked
-                        </>
-                      ) : (
-                        <>
-                          <Check size={16} className="mr-2" />
-                          Mark as Complete
-                        </>
-                      )}
-                    </Button>
-                  </div>
-                </TooltipTrigger>
-                {isLocked && (
-                  <TooltipContent>
-                    <p>Complete {directParents.find(p => !completedSkills.has(p.id))?.name} to unlock this skill</p>
-                  </TooltipContent>
-                )}
-              </Tooltip>
-
-              {/* Dismiss Button */}
-              <Button
-                onClick={onClose}
-                variant="ghost"
-                className="w-full rounded-full font-medium bg-transparent text-white hover:!bg-transparent active:!bg-white/10 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background border border-white transition-all"
-              >
-                Dismiss
-              </Button>
-            </div>
           </div>
+        </div>
+
+        {/* Fixed CTA Buttons at Bottom */}
+        <div className="p-6 pt-0 space-y-3 border-t border-border/50 bg-background/95 backdrop-blur-sm">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="w-full">
+                <Button
+                  onClick={onToggleComplete}
+                  disabled={isLocked}
+                  variant="ghost"
+                  className={cn(
+                    'w-full rounded-full font-medium transition-all text-white gap-2',
+                    isCompleted
+                      ? 'bg-purple-600 hover:!bg-purple-600 [&:not(:disabled)]:active:!bg-purple-700 focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-background'
+                      : isLocked
+                      ? 'bg-purple-600/60 text-white/50 cursor-not-allowed hover:!bg-purple-600/60'
+                      : 'bg-purple-600 hover:!bg-purple-600 [&:not(:disabled)]:active:!bg-purple-700 focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-background'
+                  )}
+                >
+                  {isCompleted ? (
+                    <>
+                      <Check size={16} />
+                      Mark as Incomplete
+                    </>
+                  ) : isLocked ? (
+                    <>
+                      <Lock size={16} />
+                      Locked
+                    </>
+                  ) : (
+                    <>
+                      <Check size={16} />
+                      Mark as Complete
+                    </>
+                  )}
+                </Button>
+              </div>
+            </TooltipTrigger>
+            {isLocked && (
+              <TooltipContent>
+                <p>Complete {directParents.find(p => !completedSkills.has(p.id))?.name} to unlock this skill</p>
+              </TooltipContent>
+            )}
+          </Tooltip>
+
+          {/* Dismiss Button */}
+          <Button
+            onClick={onClose}
+            variant="ghost"
+            className="w-full rounded-full font-medium bg-transparent text-white hover:!bg-transparent active:!bg-white/10 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background border border-white transition-all"
+          >
+            Dismiss
+          </Button>
         </div>
 
         {/* Fullscreen video player */}
