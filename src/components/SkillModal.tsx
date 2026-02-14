@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Skill, getPrerequisiteSkills } from '@/data/skillTreeData';
+import { Skill } from '@/data/skillTreeData';
 import {
   Dialog,
   DialogContent,
@@ -39,6 +39,7 @@ interface SkillModalProps {
   isFavorite: boolean;
   onToggleComplete: () => void;
   onToggleFavorite: () => void;
+  allSkills?: Skill[]; // Pass all skills to compute direct parents
 }
 
 const SkillModal: React.FC<SkillModalProps> = ({
@@ -49,13 +50,16 @@ const SkillModal: React.FC<SkillModalProps> = ({
   isFavorite,
   onToggleComplete,
   onToggleFavorite,
+  allSkills = [],
 }) => {
   const [isVideoFullscreen, setIsVideoFullscreen] = useState(false);
   const isMobile = useIsMobile();
   
   if (!skill) return null;
 
-  const prerequisites = getPrerequisiteSkills(skill);
+  // Compute direct parents: skills whose connections array includes this skill's id
+  const directParents = allSkills.filter(s => s.connections.includes(skill.id));
+
   const isCategory = skill.type === 'category';
   const isKey = skill.type === 'key';
   const isActive = skill.state === 'active';
@@ -75,7 +79,22 @@ const SkillModal: React.FC<SkillModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="modal-glass sm:max-w-md border-0">
+      <DialogContent 
+        className={cn(
+          "modal-glass border-0",
+          isMobile 
+            ? "fixed bottom-0 left-0 right-0 top-auto rounded-t-3xl rounded-b-none max-h-[85vh] w-full max-w-full m-0 p-0 data-[state=open]:slide-in-from-bottom data-[state=closed]:slide-out-to-bottom" 
+            : "sm:max-w-md"
+        )}
+      >
+        {/* Mobile swipe handle */}
+        {isMobile && (
+          <div className="flex justify-center pt-3 pb-2">
+            <div className="w-12 h-1.5 bg-muted rounded-full" />
+          </div>
+        )}
+        
+        <div className={cn("overflow-y-auto", isMobile ? "max-h-[85vh] px-6 pb-6" : "")}>
         <DialogHeader>
           <div className="flex items-center gap-2 mb-2">
             <Badge className={cn('text-xs', getTypeColor())}>
@@ -174,30 +193,30 @@ const SkillModal: React.FC<SkillModalProps> = ({
             </>
           )}
 
-          {/* Prerequisites section */}
+          {/* Prerequisites section - showing direct parents */}
           <div>
             <h4 className="text-sm font-medium text-foreground mb-2 flex items-center gap-2">
               <Lock size={14} className="text-muted-foreground" />
-              Prerequisites
+              Direct Prerequisites
             </h4>
-            {prerequisites.length > 0 ? (
+            {directParents.length > 0 ? (
               <div className="flex flex-wrap gap-2">
-                {prerequisites.map(prereq => (
+                {directParents.map(parent => (
                   <div
-                    key={prereq.id}
+                    key={parent.id}
                     className={cn(
                       'flex items-center gap-1 px-3 py-1.5 rounded-md text-sm',
-                      prereq.state === 'active'
+                      parent.state === 'active'
                         ? 'bg-skill-active/20 text-skill-active border border-skill-active/30'
                         : 'bg-muted text-muted-foreground border border-border'
                     )}
                   >
-                    {prereq.state === 'active' ? (
+                    {parent.state === 'active' ? (
                       <Check size={12} />
                     ) : (
                       <X size={12} />
                     )}
-                    {prereq.name}
+                    {parent.name}
                   </div>
                 ))}
               </div>
@@ -216,11 +235,15 @@ const SkillModal: React.FC<SkillModalProps> = ({
                 Unlocks
               </h4>
               <div className="flex flex-wrap gap-2">
-                {skill.connections.slice(0, 5).map(connId => (
-                  <Badge key={connId} variant="secondary" className="text-xs">
-                    {connId.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                  </Badge>
-                ))}
+                {skill.connections.slice(0, 5).map(connId => {
+                  const connectedSkill = allSkills.find(s => s.id === connId);
+                  const displayName = connectedSkill?.name || connId.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                  return (
+                    <Badge key={connId} variant="secondary" className="text-xs">
+                      {displayName}
+                    </Badge>
+                  );
+                })}
                 {skill.connections.length > 5 && (
                   <Badge variant="outline" className="text-xs">
                     +{skill.connections.length - 5} more
@@ -254,6 +277,7 @@ const SkillModal: React.FC<SkillModalProps> = ({
               )}
             </Button>
           </div>
+        </div>
         </div>
       </DialogContent>
     </Dialog>
