@@ -7,6 +7,7 @@ interface DraggableSkillNodeProps {
   skill: Skill;
   isCompleted: boolean;
   isFavorite: boolean;
+  isAvailable: boolean;
   onClick: () => void;
   scale: number;
   isEditMode: boolean;
@@ -42,6 +43,7 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
   skill,
   isCompleted,
   isFavorite,
+  isAvailable,
   onClick,
   scale,
   isEditMode,
@@ -63,14 +65,12 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
   const nodeRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Sync edit value with skill name when it changes externally
   useEffect(() => {
     if (!isEditing) {
       setEditValue(skill.name);
     }
   }, [skill.name, isEditing]);
 
-  // Focus input when editing starts
   useEffect(() => {
     if (isEditing && inputRef.current) {
       inputRef.current.focus();
@@ -80,9 +80,8 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
 
   const isCategory = skill.type === 'category';
   const isKey = skill.type === 'key';
-  // Active state is now based on completion, not stored state
   const isActive = isCompleted;
-  const hasGoldBorder = skill.isGoldBorder || isKey; // Key skills always have gold treatment
+  const hasGoldBorder = skill.isGoldBorder || isKey;
 
   const getSize = () => {
     if (isCategory) return { width: 101, height: 101 };
@@ -92,15 +91,12 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
   const { width, height } = getSize();
 
   const getSvgPath = () => {
-    // Nodes to the right of "Two Arm" (x > 1020) use blue, left side uses purple
-    // isBlue property can override this for specific nodes
     const useBlue = skill.isBlue || skill.x > 1020;
     
     if (isCategory) {
       return useBlue ? SVG_PATHS.category.blue : SVG_PATHS.category.purple;
     }
     
-    // Key skills use inactive SVG when not completed, colored when completed
     if (isKey) {
       if (!isCompleted) {
         return SVG_PATHS.inactive;
@@ -112,11 +108,9 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
   };
 
   const getGlowClass = () => {
-    // Key skills get gold glow even when inactive
     if (isKey) return 'skill-node-svg-glow-gold';
     if (!isActive) return '';
     if (hasGoldBorder) return 'skill-node-svg-glow-gold';
-    // Use blue glow for right side (x > 1020) or nodes with isBlue, purple for left
     if (skill.isBlue || skill.x > 1020) return 'skill-node-svg-glow-blue';
     return 'skill-node-svg-glow';
   };
@@ -130,7 +124,6 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (!isEditMode) return;
     
-    // Alt+click toggles key skill status
     if (e.altKey && !e.ctrlKey && !e.shiftKey) {
       e.stopPropagation();
       e.preventDefault();
@@ -138,7 +131,6 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
       return;
     }
     
-    // Ctrl+Shift+click starts a connection
     if (e.ctrlKey && e.shiftKey) {
       e.stopPropagation();
       e.preventDefault();
@@ -149,7 +141,6 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
     e.stopPropagation();
     e.preventDefault();
     
-    // Select this node (shift adds to selection) and get the new selection
     const newSelection = onSelect(skill.id, e.shiftKey);
     
     lastMousePos.current = { x: e.clientX, y: e.clientY };
@@ -185,20 +176,21 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
     }
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
-  const handleClick = useCallback((e: React.MouseEvent) => {
+  // Use regular click handler which works for both mouse and touch
+  const handleNodeClick = useCallback((e: React.MouseEvent | React.TouchEvent) => {
     if (isEditing) {
       e.stopPropagation();
       return;
     }
     
-    // In edit mode, check if we're completing a connection
     if (isEditMode) {
       e.stopPropagation();
-      // Try to complete a connection (if source is set)
       onConnectionClick(skill.id, false);
       return;
     }
     
+    // For non-edit mode, open the modal
+    e.stopPropagation();
     onClick();
   }, [isEditMode, isEditing, onClick, onConnectionClick, skill.id]);
 
@@ -228,6 +220,61 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
     e.stopPropagation();
   }, [handleInputBlur, skill.name]);
 
+  // Mobile touch handling - track if it's a tap vs drag
+  const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (!isEditMode && !isEditing) {
+      touchStartRef.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+        time: Date.now()
+      };
+      e.stopPropagation(); // Prevent parent from handling
+    }
+  }, [isEditMode, isEditing]);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (!isEditMode && !isEditing && touchStartRef.current) {
+      const touch = e.changedTouches[0];
+      const deltaX = Math.abs(touch.clientX - touchStartRef.current.x);
+      const deltaY = Math.abs(touch.clientY - touchStartRef.current.y);
+      const deltaTime = Date.now() - touchStartRef.current.time;
+      
+      // If it's a tap (not a drag), open modal
+      if (deltaX < 10 && deltaY < 10 && deltaTime < 300) {
+        e.preventDefault();
+        e.stopPropagation();
+        onClick();
+      }
+      
+      touchStartRef.current = null;
+    }
+  }, [isEditMode, isEditing, onClick]);
+
+  // Simple click handler that works for both mouse AND touch
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    if (isEditing) {
+      e.stopPropagation();
+      return;
+    }
+    
+    if (isEditMode) {
+      e.stopPropagation();
+      onConnectionClick(skill.id, false);
+      return;
+    }
+    
+    e.stopPropagation();
+    onClick();
+  }, [isEditMode, isEditing, onClick, onConnectionClick, skill.id]);
+
+  // Determine availability ring color based on which side of the tree
+  const useBlue = skill.isBlue || skill.x > 1020;
+  const availableRingColor = useBlue
+    ? 'hsl(220 80% 60%)'   // blue side
+    : 'hsl(270 80% 65%)';  // purple side
+
   return (
     <div
       ref={nodeRef}
@@ -243,11 +290,41 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
         width,
         height,
         transition: isDragging ? 'none' : 'all 0.3s',
+        pointerEvents: 'auto',
+        zIndex: isAvailable ? 25 : 20,
+        touchAction: 'none', // Prevent default touch behaviors
       }}
       onMouseDown={handleMouseDown}
       onClick={handleClick}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       onDoubleClick={handleDoubleClick}
     >
+      {/* ── Available skill highlight ring (static, no animation) ── */}
+      {isAvailable && !isEditMode && (
+        <>
+          {/* Outer static ring */}
+          <div
+            className="absolute pointer-events-none z-20"
+            style={{
+              inset: -6,
+              borderRadius: 6,
+              border: `2px solid ${availableRingColor}`,
+              boxShadow: `0 0 12px ${availableRingColor}, 0 0 24px ${availableRingColor}55`,
+            }}
+          />
+          {/* Inner subtle fill */}
+          <div
+            className="absolute pointer-events-none z-10"
+            style={{
+              inset: 0,
+              borderRadius: 4,
+              background: `radial-gradient(circle, ${availableRingColor}22 0%, transparent 70%)`,
+            }}
+          />
+        </>
+      )}
+
       {/* Selection indicator */}
       {isEditMode && isSelected && !isEditing && (
         <div className="absolute -inset-3 border-2 border-primary rounded bg-primary/10 pointer-events-none z-30" />
@@ -280,7 +357,7 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
         draggable={false}
       />
 
-      {/* Gold glow overlay for key skills and gold border skills */}
+      {/* Gold glow overlay for key / gold border skills */}
       {hasGoldBorder && (
         <div 
           className={cn(
