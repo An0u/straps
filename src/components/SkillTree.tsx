@@ -31,7 +31,12 @@ const SkillTree: React.FC = () => {
   });
 
   // Pinch zoom refs - IMPROVED
-  const pinchRef = useRef<{ distance: number; scale: number } | null>(null);
+  const pinchRef = useRef<{ 
+    distance: number; 
+    scale: number;
+    originX: number;  // Lock the zoom origin
+    originY: number;
+  } | null>(null);
   const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
   const hasMoved = useRef(false);
   const scaleRef = useRef(scale);
@@ -162,11 +167,24 @@ const SkillTree: React.FC = () => {
     if (e.touches.length === 2) {
       // Two finger pinch zoom
       e.preventDefault(); // Prevent browser zoom
-      const { distance } = getTouchInfo(e.touches);
+      const { distance, midX, midY } = getTouchInfo(e.touches);
+      const rect = containerRef.current?.getBoundingClientRect();
+      
+      // Calculate screen position of midpoint
+      const screenMidX = midX - (rect?.left ?? 0);
+      const screenMidY = midY - (rect?.top ?? 0);
+      
+      // Calculate and LOCK the world position at touch start
+      const currentPos = positionRef.current;
+      const currentScale = scaleRef.current;
+      const worldOriginX = (screenMidX - currentPos.x) / currentScale;
+      const worldOriginY = (screenMidY - currentPos.y) / currentScale;
       
       pinchRef.current = {
         distance,
-        scale: scaleRef.current, // Store the starting scale
+        scale: currentScale,
+        originX: worldOriginX,  // Lock this world position
+        originY: worldOriginY,
       };
       
       touchStartRef.current = null;
@@ -196,8 +214,8 @@ const SkillTree: React.FC = () => {
       
       const { distance: newDistance, midX: rawMidX, midY: rawMidY } = getTouchInfo(e.touches);
       const rect = containerRef.current?.getBoundingClientRect();
-      const midX = rawMidX - (rect?.left ?? 0);
-      const midY = rawMidY - (rect?.top ?? 0);
+      const screenMidX = rawMidX - (rect?.left ?? 0);
+      const screenMidY = rawMidY - (rect?.top ?? 0);
 
       // Calculate zoom ratio with dampening for smoother control
       let ratio = newDistance / pinchRef.current.distance;
@@ -207,19 +225,18 @@ const SkillTree: React.FC = () => {
       ratio = 1 + (ratio - 1) * dampening;
       
       const startScale = pinchRef.current.scale;
-      const currentPos = positionRef.current;
       
       // Apply zoom with limits
       let newScale = startScale * ratio;
       newScale = Math.min(Math.max(0.3, newScale), 2);
 
-      // Calculate the world position at the touch midpoint BEFORE zoom
-      const worldX = (midX - currentPos.x) / startScale;
-      const worldY = (midY - currentPos.y) / startScale;
+      // Use the LOCKED origin from pinch start - not the current midpoint!
+      const lockedWorldX = pinchRef.current.originX;
+      const lockedWorldY = pinchRef.current.originY;
 
-      // Keep that world point at the same screen position AFTER zoom
-      const newX = midX - worldX * newScale;
-      const newY = midY - worldY * newScale;
+      // Keep that locked world point at the current screen midpoint
+      const newX = screenMidX - lockedWorldX * newScale;
+      const newY = screenMidY - lockedWorldY * newScale;
 
       setScale(newScale);
       setPosition({ x: newX, y: newY });
