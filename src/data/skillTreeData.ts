@@ -22,72 +22,36 @@ export interface SkillTreeSection {
   skills: Skill[];
 }
 
-// Y positions for skill rows - each row is 90 pixels apart
-const generateYPositions = (startY: number, count: number, spacing: number = 90) => {
-  return Array.from({ length: count }, (_, i) => startY + (i * spacing));
-};
-
 export const skillTreeData: Skill[] = [
-  // ============ TWO ARM BRANCH ============
-  
-  // LEVEL 1 - Root
   {
     id: 'two-arm',
     name: 'Two Arm',
-    description: 'Foundation for all two-arm skills. Essential grip and positioning.',
+    description: 'Foundation for all two arm skills.',
     prerequisites: [],
     type: 'category',
     state: 'active',
     isBlue: true,
     x: 1050,
     y: 450,
-    connections: ['spin-two', 'static-two', 'swing-two']
+    connections: ['two-spin', 'two-static', 'two-swing']
   },
-
-  // LEVEL 2 - Main categories
   {
-    id: 'spin-two',
+    id: 'two-spin',
     name: 'Spin',
-    description: 'Spinning movements and rotations in two-arm positions.',
+    description: 'Spin movements and positions.',
     prerequisites: ['two-arm'],
     type: 'category',
     state: 'active',
     isBlue: true,
     x: 1175,
     y: 75,
-    connections: ['normal-two', 'reverse-two', 'center-two']
+    connections: ['two-spin-normal', 'two-spin-reverse', 'two-spin-center']
   },
   {
-    id: 'static-two',
-    name: 'Static',
-    description: 'Two-arm static positions and holds.',
-    prerequisites: ['two-arm'],
-    type: 'category',
-    state: 'active',
-    isBlue: true,
-    x: 1175,
-    y: 450,
-    connections: ['hanging-two', 'support-two']
-  },
-  {
-    id: 'swing-two',
-    name: 'Swing',
-    description: 'Swinging movements with two arms.',
-    prerequisites: ['two-arm'],
-    type: 'category',
-    state: 'active',
-    isBlue: true,
-    x: 1175,
-    y: 888,
-    connections: ['twisting-two', 'rotating-two']
-  },
-
-  // LEVEL 3 - Spin subcategories
-  {
-    id: 'normal-two',
+    id: 'two-spin-normal',
     name: 'Normal',
-    description: 'Normal spinning position.',
-    prerequisites: ['spin-two'],
+    description: 'Normal techniques.',
+    prerequisites: ['two-spin'],
     type: 'category',
     state: 'active',
     isBlue: true,
@@ -96,10 +60,10 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'reverse-two',
+    id: 'two-spin-reverse',
     name: 'Reverse',
-    description: 'Reverse spinning position.',
-    prerequisites: ['spin-two'],
+    description: 'Reverse techniques.',
+    prerequisites: ['two-spin'],
     type: 'category',
     state: 'active',
     isBlue: true,
@@ -108,10 +72,10 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'center-two',
+    id: 'two-spin-center',
     name: 'Center',
-    description: 'Center spinning position.',
-    prerequisites: ['spin-two'],
+    description: 'Center techniques.',
+    prerequisites: ['two-spin'],
     type: 'category',
     state: 'active',
     isBlue: true,
@@ -119,13 +83,23 @@ export const skillTreeData: Skill[] = [
     y: 200,
     connections: []
   },
-
-  // LEVEL 3 - Static subcategories
   {
-    id: 'hanging-two',
+    id: 'two-static',
+    name: 'Static',
+    description: 'Static movements and positions.',
+    prerequisites: ['two-arm'],
+    type: 'category',
+    state: 'active',
+    isBlue: true,
+    x: 1175,
+    y: 450,
+    connections: ['two-static-hanging', 'two-static-support', 'two-static-support-ii']
+  },
+  {
+    id: 'two-static-hanging',
     name: 'Hanging',
-    description: 'Two-arm hanging techniques.',
-    prerequisites: ['static-two'],
+    description: 'Hanging techniques.',
+    prerequisites: ['two-static'],
     type: 'category',
     state: 'active',
     isBlue: true,
@@ -134,22 +108,22 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'support-two',
+    id: 'two-static-support',
     name: 'Support',
-    description: 'Support positions and transitions.',
-    prerequisites: ['static-two'],
+    description: 'Support techniques.',
+    prerequisites: ['two-static'],
     type: 'category',
     state: 'active',
     isBlue: true,
     x: 1300,
     y: 450,
-    connections: ['support-two-ii']
+    connections: []
   },
   {
-    id: 'support-two-ii',
-    name: 'Support II',
-    description: 'Advanced support positions.',
-    prerequisites: ['support-two'],
+    id: 'two-static-support-ii',
+    name: 'Support Ii',
+    description: 'Support Ii techniques.',
+    prerequisites: ['two-static'],
     type: 'category',
     state: 'active',
     isBlue: true,
@@ -157,25 +131,35 @@ export const skillTreeData: Skill[] = [
     y: 575,
     connections: []
   },
-
-  // LEVEL 3 - Swing subcategories
   {
-    id: 'twisting-two',
+    id: 'two-swing',
+    name: 'Swing',
+    description: 'Swing movements and positions.',
+    prerequisites: ['two-arm'],
+    type: 'category',
+    state: 'active',
+    isBlue: true,
+    x: 1175,
+    y: 888,
+    connections: ['two-swing-twisting', 'two-swing-twisting-ii', 'two-swing-rotating']
+  },
+  {
+    id: 'two-swing-twisting',
     name: 'Twisting',
-    description: 'Twisting movements from swing.',
-    prerequisites: ['swing-two'],
+    description: 'Twisting techniques.',
+    prerequisites: ['two-swing'],
     type: 'category',
     state: 'active',
     isBlue: true,
     x: 1300,
     y: 700,
-    connections: ['twisting-two-ii']
+    connections: []
   },
   {
-    id: 'twisting-two-ii',
-    name: 'Twisting II',
-    description: 'Advanced twisting movements.',
-    prerequisites: ['twisting-two'],
+    id: 'two-swing-twisting-ii',
+    name: 'Twisting Ii',
+    description: 'Twisting Ii techniques.',
+    prerequisites: ['two-swing'],
     type: 'category',
     state: 'active',
     isBlue: true,
@@ -184,10 +168,10 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'rotating-two',
+    id: 'two-swing-rotating',
     name: 'Rotating',
-    description: 'Rotational movements from swing.',
-    prerequisites: ['swing-two'],
+    description: 'Rotating techniques.',
+    prerequisites: ['two-swing'],
     type: 'category',
     state: 'active',
     isBlue: true,
@@ -195,13 +179,165 @@ export const skillTreeData: Skill[] = [
     y: 950,
     connections: []
   },
-
-  // ====== TWO ARM SKILLS - Normal Spin (6 skills, left to right, 40px spacing) ======
   {
-    id: 'flare-two',
+    id: 'one-arm',
+    name: 'One Arm',
+    description: 'Foundation for all one arm skills.',
+    prerequisites: [],
+    type: 'category',
+    state: 'active',
+    x: 870,
+    y: 450,
+    connections: ['one-spin', 'one-static', 'one-swing']
+  },
+  {
+    id: 'one-spin',
+    name: 'Spin',
+    description: 'Spin movements and positions.',
+    prerequisites: ['one-arm'],
+    type: 'category',
+    state: 'active',
+    x: 745,
+    y: 75,
+    connections: ['one-spin-center', 'one-spin-reverse', 'one-spin-normal']
+  },
+  {
+    id: 'one-spin-center',
+    name: 'Center',
+    description: 'Center techniques.',
+    prerequisites: ['one-spin'],
+    type: 'category',
+    state: 'active',
+    x: 620,
+    y: -50,
+    connections: []
+  },
+  {
+    id: 'one-spin-reverse',
+    name: 'Reverse',
+    description: 'Reverse techniques.',
+    prerequisites: ['one-spin'],
+    type: 'category',
+    state: 'active',
+    x: 620,
+    y: 75,
+    connections: []
+  },
+  {
+    id: 'one-spin-normal',
+    name: 'Normal',
+    description: 'Normal techniques.',
+    prerequisites: ['one-spin'],
+    type: 'category',
+    state: 'active',
+    x: 620,
+    y: 200,
+    connections: []
+  },
+  {
+    id: 'one-static',
+    name: 'Static',
+    description: 'Static movements and positions.',
+    prerequisites: ['one-arm'],
+    type: 'category',
+    state: 'active',
+    x: 745,
+    y: 450,
+    connections: ['one-static-hanging']
+  },
+  {
+    id: 'one-static-hanging',
+    name: 'Hanging',
+    description: 'Hanging techniques.',
+    prerequisites: ['one-static'],
+    type: 'category',
+    state: 'active',
+    x: 620,
+    y: 325,
+    connections: []
+  },
+  {
+    id: 'one-swing',
+    name: 'Swing',
+    description: 'Swing movements and positions.',
+    prerequisites: ['one-arm'],
+    type: 'category',
+    state: 'active',
+    x: 745,
+    y: 888,
+    connections: ['one-swing-basics', 'one-swing-twisting', 'one-swing-rotating', 'one-swing-rotating-ii']
+  },
+  {
+    id: 'one-swing-basics',
+    name: 'Basics',
+    description: 'Basics techniques.',
+    prerequisites: ['one-swing'],
+    type: 'category',
+    state: 'active',
+    x: 620,
+    y: 700,
+    connections: []
+  },
+  {
+    id: 'one-swing-twisting',
+    name: 'Twisting',
+    description: 'Twisting techniques.',
+    prerequisites: ['one-swing'],
+    type: 'category',
+    state: 'active',
+    x: 620,
+    y: 825,
+    connections: []
+  },
+  {
+    id: 'one-swing-rotating',
+    name: 'Rotating',
+    description: 'Rotating techniques.',
+    prerequisites: ['one-swing'],
+    type: 'category',
+    state: 'active',
+    x: 620,
+    y: 950,
+    connections: []
+  },
+  {
+    id: 'one-swing-rotating-ii',
+    name: 'Rotating Ii',
+    description: 'Rotating Ii techniques.',
+    prerequisites: ['one-swing'],
+    type: 'category',
+    state: 'active',
+    x: 620,
+    y: 1075,
+    connections: []
+  },
+  {
+    id: 'c-shaping',
+    name: 'C-Shaping',
+    description: 'C-shaping techniques for body control and positioning.',
+    prerequisites: [],
+    type: 'category',
+    state: 'active',
+    x: 960,
+    y: 1200,
+    connections: ['c-shaping-c']
+  },
+  {
+    id: 'c-shaping-c',
+    name: 'C',
+    description: 'C movements and positions.',
+    prerequisites: ['c-shaping'],
+    type: 'category',
+    state: 'active',
+    x: 960,
+    y: 1325,
+    connections: []
+  },
+  {
+    id: 'flare',
     name: 'Flare',
     description: 'Horizontal flag position performed in rotation. Body tilted to one side with arm tucked to back.',
-    prerequisites: ['normal-two'],
+    prerequisites: ['two-spin-normal'],
     type: 'key',
     state: 'inactive',
     isBlue: true,
@@ -211,10 +347,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://youtube.com/shorts/LngeQfLsL3c'
   },
   {
-    id: 'nutcracker-two',
+    id: 'nutcracker',
     name: 'Nutcracker',
     description: 'Inverted position with legs separated and turned out. Back stretched pushing hips toward wrist.',
-    prerequisites: ['normal-two'],
+    prerequisites: ['two-spin-normal'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -224,11 +360,11 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://youtube.com/shorts/zKKMrqKPJWY'
   },
   {
-    id: 'meathook-two-normal',
+    id: 'meathook',
     name: 'Meathook',
     description: 'Hanging with legs raised and pelvis lifted to the side. Arm held tight to body.',
-    prerequisites: ['normal-two'],
-    type: 'regular',
+    prerequisites: ['two-spin-normal'],
+    type: 'key',
     state: 'inactive',
     isBlue: true,
     x: 1623,
@@ -236,10 +372,10 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'straightjacket-two',
+    id: 'straightjacket',
     name: 'Straightjacket',
     description: 'Arms crossed or wrapped while maintaining rotation. Limited arm mobility.',
-    prerequisites: ['normal-two'],
+    prerequisites: ['two-spin-normal'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -249,10 +385,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://youtube.com/shorts/tDNdHqBcsOo?si=Z5XAhNpg1BZ36ylZ'
   },
   {
-    id: 'flare-to-flag-two',
-    name: 'Flare to Flag',
+    id: 'flare-to-flag',
+    name: 'Flare to flag',
     description: 'Transition from flare to flag while rotating. Continuous arm rotation from wrist through body.',
-    prerequisites: ['normal-two'],
+    prerequisites: ['two-spin-normal'],
     type: 'key',
     state: 'inactive',
     isBlue: true,
@@ -262,10 +398,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://youtube.com/shorts/Rbs7Kw9xKU0'
   },
   {
-    id: 'flare-to-full-two',
-    name: 'Flare to Full',
+    id: 'flare-to-full',
+    name: 'Flare to full',
     description: 'Flare transitioning to fully extended position while rotating.',
-    prerequisites: ['normal-two'],
+    prerequisites: ['two-spin-normal'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -274,13 +410,11 @@ export const skillTreeData: Skill[] = [
     connections: [],
     videoUrl: 'https://youtube.com/shorts/Un6PkAhavGQ?si=sqvqQGeKlo5Un5nk'
   },
-
-  // ====== TWO ARM SKILLS - Reverse Spin (2 skills, 40px spacing) ======
   {
-    id: 'meathook-two-reverse',
-    name: 'Meathook in Reverse',
+    id: 'meathook-in-reverse',
+    name: 'Meathook in reverse',
     description: 'Meathook position with reverse rotation direction.',
-    prerequisites: ['reverse-two'],
+    prerequisites: ['two-spin-reverse'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -289,10 +423,10 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'straightjacket-two-reverse',
-    name: 'Straightjacket in Reverse',
+    id: 'straightjacket-in-reverse',
+    name: 'Straightjacket in reverse',
     description: 'Straightjacket position spinning in opposite direction.',
-    prerequisites: ['reverse-two'],
+    prerequisites: ['two-spin-reverse'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -300,13 +434,11 @@ export const skillTreeData: Skill[] = [
     y: 75,
     connections: []
   },
-
-  // ====== TWO ARM SKILLS - Center Spin (1 skill) ======
   {
     id: 'spinning-muscle-up',
-    name: 'Spinning Muscle Up',
+    name: 'Spinning muscle up',
     description: 'Muscle-up performed while rotating around central straps axis.',
-    prerequisites: ['center-two'],
+    prerequisites: ['two-spin-center'],
     type: 'key',
     state: 'inactive',
     isBlue: true,
@@ -314,13 +446,11 @@ export const skillTreeData: Skill[] = [
     y: 200,
     connections: []
   },
-
-  // ====== TWO ARM SKILLS - Hanging (4 skills, 40px spacing) ======
   {
-    id: 'two-arm-inversion',
-    name: '2 Arm Inversion',
+    id: '2-arm-inversion',
+    name: '2 arm inversion',
     description: 'Inverted hanging with both arms. Pelvis stretched with feet to ceiling.',
-    prerequisites: ['hanging-two'],
+    prerequisites: ['two-static-hanging'],
     type: 'key',
     state: 'inactive',
     isBlue: true,
@@ -329,10 +459,10 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'two-arm-skin-cat',
-    name: '2 Arm Skin the Cat',
+    id: '2-arm-skin-the-cat',
+    name: '2 arm skin the cat',
     description: 'Shoulder rotation from hanging to inverted. Continuous wrist rotation throughout.',
-    prerequisites: ['hanging-two'],
+    prerequisites: ['two-static-hanging'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -342,10 +472,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://youtu.be/3tQap3R4xgQ?si=l6GhHPs_EiXcoTsN'
   },
   {
-    id: 'inversion-to-meathook-two',
-    name: 'Inversion to Meathook',
+    id: 'inversion-to-methook',
+    name: 'inversion to methook',
     description: 'Transition from inverted position into meathook. Tuck one arm while bringing feet to side.',
-    prerequisites: ['hanging-two'],
+    prerequisites: ['two-static-hanging'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -356,9 +486,9 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'back-flag',
-    name: 'Back Flag',
+    name: 'Back flag',
     description: 'Horizontal back planche position behind the straps. Shallow angle between trunk and arms.',
-    prerequisites: ['hanging-two'],
+    prerequisites: ['two-static-hanging'],
     type: 'key',
     state: 'inactive',
     isBlue: true,
@@ -367,13 +497,11 @@ export const skillTreeData: Skill[] = [
     connections: [],
     videoUrl: 'https://youtube.com/shorts/gOJ4kMs5St8'
   },
-
-  // ====== TWO ARM SKILLS - Support (4 skills on first line, 40px spacing) ======
   {
     id: 'front-balance',
-    name: 'Front Balance',
+    name: 'Front balance',
     description: 'Horizontal support with locked grip. Shoulders set back, arms bent, palms up on pelvis.',
-    prerequisites: ['support-two'],
+    prerequisites: ['two-static-support'],
     type: 'key',
     state: 'inactive',
     isBlue: true,
@@ -383,9 +511,9 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'side-balance',
-    name: 'Side Balance',
+    name: 'Side balance',
     description: 'Support balanced to one side. Weight on one arm with pelvis turned.',
-    prerequisites: ['support-two'],
+    prerequisites: ['two-static-support'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -397,7 +525,7 @@ export const skillTreeData: Skill[] = [
     id: 'butterfly',
     name: 'Butterfly',
     description: 'Support variation with open shoulders and extended body line.',
-    prerequisites: ['support-two'],
+    prerequisites: ['two-static-support'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -407,9 +535,9 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'full-to-full',
-    name: 'Full to Full',
+    name: 'Full to full',
     description: 'Transition between two fully extended support positions.',
-    prerequisites: ['support-two'],
+    prerequisites: ['two-static-support'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -417,13 +545,11 @@ export const skillTreeData: Skill[] = [
     y: 450,
     connections: []
   },
-
-  // ====== TWO ARM SKILLS - Support II (4 skills on second line, 40px spacing) ======
   {
-    id: 'bent-arm-handstand',
-    name: 'Bent Arm to Handstand',
+    id: 'bent-arm-to-handstand',
+    name: 'Bent arm to handstand',
     description: 'Press to handstand from bent arms. Raise pelvis above shoulders.',
-    prerequisites: ['support-two-ii'],
+    prerequisites: ['two-static-support-ii'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -433,21 +559,22 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'roll-ups',
-    name: 'Roll Ups',
+    name: 'Roll ups',
     description: 'Rolling from tucked position, lifting pelvis to place straps above elbows.',
-    prerequisites: ['support-two-ii'],
+    prerequisites: ['two-static-support-ii'],
     type: 'key',
     state: 'inactive',
     isBlue: true,
     x: 1519,
     y: 575,
-    connections: []
+    connections: [],
+    videoUrl: 'Roll-ups / roll down - YouTube'
   },
   {
     id: 'press-handstand',
-    name: 'Press Handstand',
+    name: 'Press handstand',
     description: 'Controlled press to handstand. Pelvis above shoulders with open shoulders.',
-    prerequisites: ['support-two-ii'],
+    prerequisites: ['two-static-support-ii'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -459,7 +586,7 @@ export const skillTreeData: Skill[] = [
     id: 'azarian',
     name: 'Azarian',
     description: 'Advanced static strength position. Maltese or iron cross variation.',
-    prerequisites: ['support-two-ii'],
+    prerequisites: ['two-static-support-ii'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -468,13 +595,11 @@ export const skillTreeData: Skill[] = [
     connections: [],
     videoUrl: 'https://www.youtube.com/watch?v=30fUEKLW74M'
   },
-
-  // ====== TWO ARM SKILLS - Twisting (4 skills on first line, 40px spacing) ======
   {
     id: 'pull-to-hips',
-    name: 'Pull to Hips',
+    name: 'Pull to hips',
     description: 'Swinging movement pulling toward hips using momentum.',
-    prerequisites: ['twisting-two'],
+    prerequisites: ['two-swing-twisting'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -484,10 +609,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://youtube.com/shorts/aoJzgNtjdjQ'
   },
   {
-    id: 'swing-to-meathook-two',
-    name: 'Swing to Meathook',
+    id: 'swing-to-meathook',
+    name: 'Swing to meathook',
     description: 'Using swing momentum to transition into meathook position.',
-    prerequisites: ['twisting-two'],
+    prerequisites: ['two-swing-twisting'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -497,10 +622,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://www.youtube.com/watch?v=PHtBZWcp0Gg'
   },
   {
-    id: 'side-swing-flag',
-    name: 'Side Swing to 2 Arm Flag',
+    id: 'side-swing-to-2-arm-flag',
+    name: 'Side swing to 2 arm flag',
     description: 'Lateral swing transitioning to two-arm flag. Control sideways momentum.',
-    prerequisites: ['twisting-two'],
+    prerequisites: ['two-swing-twisting'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -510,10 +635,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://youtube.com/shorts/qzoISsV5-Zc?si=kgap5Uj5kiOh8x7t'
   },
   {
-    id: 'swing-to-full-two',
-    name: 'Swing to Full',
+    id: 'swing-to-fulll',
+    name: 'swing to fulll',
     description: 'Swing leading to fully extended position using momentum.',
-    prerequisites: ['twisting-two'],
+    prerequisites: ['two-swing-twisting'],
     type: 'key',
     state: 'inactive',
     isBlue: true,
@@ -522,13 +647,11 @@ export const skillTreeData: Skill[] = [
     connections: [],
     videoUrl: 'https://youtube.com/shorts/aCkpDVtMdzM?si=-f0jfaHafW56R9he'
   },
-
-  // ====== TWO ARM SKILLS - Twisting II (6 skills on second line, 40px spacing) ======
   {
     id: 'bell-beats',
-    name: 'Bell Beats',
+    name: 'bell beats',
     description: 'Rhythmic swinging similar to rings. Arched position to dish position at vertical.',
-    prerequisites: ['twisting-two-ii'],
+    prerequisites: ['two-swing-twisting-ii'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -539,9 +662,9 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'to-plank',
-    name: 'To Plank',
+    name: 'to plank',
     description: 'Swing transitioning to horizontal plank position using momentum.',
-    prerequisites: ['twisting-two-ii'],
+    prerequisites: ['two-swing-twisting-ii'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -552,9 +675,9 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'side-push-pull',
-    name: 'Side Push Pull',
+    name: 'side push pull',
     description: 'Lateral swinging with pushing and pulling actions.',
-    prerequisites: ['twisting-two-ii'],
+    prerequisites: ['two-swing-twisting-ii'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -565,9 +688,9 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'half-turn',
-    name: 'Half Turn',
+    name: 'half turn',
     description: '180-degree rotation during swing. Turn initiated by feet at peak.',
-    prerequisites: ['twisting-two-ii'],
+    prerequisites: ['two-swing-twisting-ii'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -577,10 +700,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://www.youtube.com/watch?v=UQ0fme2tGIo'
   },
   {
-    id: 'pirouette-two',
-    name: 'Pirouette',
+    id: 'pirouette',
+    name: 'pirouette',
     description: 'Full 360-degree rotation during swing phase.',
-    prerequisites: ['twisting-two-ii'],
+    prerequisites: ['two-swing-twisting-ii'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -591,9 +714,9 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'swing-to-handstand',
-    name: 'Swing to Handstand',
+    name: 'swing to handstand',
     description: 'Using swing momentum to transition into handstand.',
-    prerequisites: ['twisting-two-ii'],
+    prerequisites: ['two-swing-twisting-ii'],
     type: 'key',
     state: 'inactive',
     isBlue: true,
@@ -602,13 +725,11 @@ export const skillTreeData: Skill[] = [
     connections: [],
     videoUrl: 'https://www.youtube.com/watch?v=CmCYdpXLccM'
   },
-
-  // ====== TWO ARM SKILLS - Rotating (8 skills, 40px spacing) ======
   {
     id: 'armpit-beats',
-    name: 'Armpit Beats',
+    name: 'Armpit beats',
     description: 'Swinging with straps in armpit area. Different rotation axis.',
-    prerequisites: ['rotating-two'],
+    prerequisites: ['two-swing-rotating'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -617,10 +738,10 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'disloc-two',
+    id: 'disloc',
     name: 'Disloc',
     description: 'Shoulder rotation backward through full range. Continuous wrist rotation.',
-    prerequisites: ['rotating-two'],
+    prerequisites: ['two-swing-rotating'],
     type: 'key',
     state: 'inactive',
     isBlue: true,
@@ -630,10 +751,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://youtube.com/shorts/uFZ2-c1vePE?si=NNe87_Q2NvrFPEfP'
   },
   {
-    id: 'inloc-two',
+    id: 'inloc',
     name: 'Inloc',
     description: 'Forward shoulder rotation. Body passes forward through arms.',
-    prerequisites: ['rotating-two'],
+    prerequisites: ['two-swing-rotating'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -646,7 +767,7 @@ export const skillTreeData: Skill[] = [
     id: 'giants',
     name: 'Giants',
     description: 'Full 360-degree rotations around straps axis. Continuous circular swinging.',
-    prerequisites: ['rotating-two'],
+    prerequisites: ['two-swing-rotating'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -659,7 +780,7 @@ export const skillTreeData: Skill[] = [
     id: 'inloc-giants',
     name: 'Inloc Giants',
     description: 'Giant swings with forward shoulder rotation pattern.',
-    prerequisites: ['rotating-two'],
+    prerequisites: ['two-swing-rotating'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -670,9 +791,9 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'back-salto',
-    name: 'Back Salto',
+    name: 'Back salto',
     description: 'Backward somersault, likely with release or loose grip.',
-    prerequisites: ['rotating-two'],
+    prerequisites: ['two-swing-rotating'],
     type: 'key',
     state: 'inactive',
     isBlue: true,
@@ -685,7 +806,7 @@ export const skillTreeData: Skill[] = [
     id: 'delchev',
     name: 'Delchev',
     description: 'Named skill involving release and re-catch with rotation.',
-    prerequisites: ['rotating-two'],
+    prerequisites: ['two-swing-rotating'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -698,7 +819,7 @@ export const skillTreeData: Skill[] = [
     id: 'yamawaki',
     name: 'Yamawaki',
     description: 'Named gymnastics skill adapted to straps. Specific rotation pattern.',
-    prerequisites: ['rotating-two'],
+    prerequisites: ['two-swing-rotating'],
     type: 'regular',
     state: 'inactive',
     isBlue: true,
@@ -706,157 +827,11 @@ export const skillTreeData: Skill[] = [
     y: 950,
     connections: []
   },
-
-  // ============ ONE ARM BRANCH ============
-  
-  // LEVEL 1 - Root
-  {
-    id: 'one-arm',
-    name: 'One Arm',
-    description: 'Foundation for all one-arm skills. Master single arm grip and control.',
-    prerequisites: [],
-    type: 'category',
-    state: 'active',
-    x: 870,
-    y: 450,
-    connections: ['spin-one', 'static-one', 'swing-one']
-  },
-
-  // LEVEL 2 - Main categories
-  {
-    id: 'spin-one',
-    name: 'Spin',
-    description: 'Spinning from hang position. Dynamic movement skills.',
-    prerequisites: ['one-arm'],
-    type: 'category',
-    state: 'active',
-    x: 745,
-    y: 75,
-    connections: ['center-one', 'reverse-one', 'normal-one']
-  },
-  {
-    id: 'static-one',
-    name: 'Static',
-    description: 'Static holds and positions. Focus on stability and control.',
-    prerequisites: ['one-arm'],
-    type: 'category',
-    state: 'active',
-    x: 745,
-    y: 450,
-    connections: ['hanging-one']
-  },
-  {
-    id: 'swing-one',
-    name: 'Swing',
-    description: 'Swinging from rotation. Momentum-based skills.',
-    prerequisites: ['one-arm'],
-    type: 'category',
-    state: 'active',
-    x: 745,
-    y: 888,
-    connections: ['basics-one', 'twisting-one', 'rotating-one']
-  },
-
-  // LEVEL 3 - Spin subcategories
-  {
-    id: 'center-one',
-    name: 'Center',
-    description: 'Advanced cruiser position. Signature skill for flow.',
-    prerequisites: ['spin-one'],
-    type: 'category',
-    state: 'active',
-    x: 620,
-    y: -50,
-    connections: []
-  },
-  {
-    id: 'reverse-one',
-    name: 'Reverse',
-    description: 'Inverted hanging position. Builds core and grip.',
-    prerequisites: ['spin-one'],
-    type: 'category',
-    state: 'active',
-    x: 620,
-    y: 75,
-    connections: []
-  },
-  {
-    id: 'normal-one',
-    name: 'Normal',
-    description: 'Standard hanging position. Entry point for hang variations.',
-    prerequisites: ['spin-one'],
-    type: 'category',
-    state: 'active',
-    x: 620,
-    y: 200,
-    connections: []
-  },
-
-  // LEVEL 3 - Static subcategories
-  {
-    id: 'hanging-one',
-    name: 'Hanging',
-    description: 'Hanging positions using one arm. Build endurance and grip strength.',
-    prerequisites: ['static-one'],
-    type: 'category',
-    state: 'active',
-    x: 620,
-    y: 325,
-    connections: []
-  },
-
-  // LEVEL 3 - Swing subcategories
-  {
-    id: 'basics-one',
-    name: 'Basics',
-    description: 'Fundamental movements and positions. Essential foundation.',
-    prerequisites: ['swing-one'],
-    type: 'category',
-    state: 'active',
-    x: 620,
-    y: 700,
-    connections: []
-  },
-  {
-    id: 'twisting-one',
-    name: 'Twisting',
-    description: 'Twisting movements from rotation. Advanced coordination.',
-    prerequisites: ['swing-one'],
-    type: 'category',
-    state: 'active',
-    x: 620,
-    y: 825,
-    connections: []
-  },
-  {
-    id: 'rotating-one',
-    name: 'Rotating',
-    description: 'Rotating movements and spins. Dynamic one-arm rotations.',
-    prerequisites: ['swing-one'],
-    type: 'category',
-    state: 'active',
-    x: 620,
-    y: 950,
-    connections: ['rotating-one-ii']
-  },
-  {
-    id: 'rotating-one-ii',
-    name: 'Rotating II',
-    description: 'Advanced rotating movements.',
-    prerequisites: ['rotating-one'],
-    type: 'category',
-    state: 'active',
-    x: 620,
-    y: 1075,
-    connections: []
-  },
-
-  // ====== ONE ARM SKILLS - Center Spin (3 skills, RIGHT to LEFT, 40px spacing) ======
   {
     id: 'center-spin',
     name: 'Center Spin',
-    description: 'One-arm rotation around the vertical axis with body spinning in the center between the straps.',
-    prerequisites: ['center-one'],
+    description: 'One-arm rotation around the vertical axis with body spinning in the center between the straps',
+    prerequisites: ['one-spin-center'],
     type: 'key',
     state: 'inactive',
     x: 505,
@@ -866,8 +841,8 @@ export const skillTreeData: Skill[] = [
   {
     id: 'nugget',
     name: 'Nugget',
-    description: 'A compact one-arm spinning position with the body close to the suspended arm.',
-    prerequisites: ['center-one'],
+    description: 'A compact one-arm spinning position with the body close to the suspended arm',
+    prerequisites: ['one-spin-center'],
     type: 'regular',
     state: 'inactive',
     x: 401,
@@ -877,21 +852,19 @@ export const skillTreeData: Skill[] = [
   {
     id: 'scorpion',
     name: 'Scorpion',
-    description: 'One-arm spinning position with back arched and one leg bent upward resembling a scorpion\'s tail.',
-    prerequisites: ['center-one'],
+    description: 'One-arm spinning position with back arched and one leg bent upward resembling a scorpion\'s tail',
+    prerequisites: ['one-spin-center'],
     type: 'regular',
     state: 'inactive',
     x: 297,
     y: -50,
     connections: []
   },
-
-  // ====== ONE ARM SKILLS - Reverse Spin (8 skills, RIGHT to LEFT, 40px spacing) ======
   {
-    id: 'meathook-one',
+    id: 'meathook-1',
     name: 'Meathook',
-    description: 'One-arm position with closed legs raised to the side; hanging arm held tightly to body.',
-    prerequisites: ['reverse-one'],
+    description: 'One-arm position with closed legs raised to the side; the hanging arm held tightly to the body with stretched free arm next to the ear; body in a closed hooked shape',
+    prerequisites: ['one-spin-reverse'],
     type: 'key',
     state: 'inactive',
     x: 505,
@@ -900,10 +873,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://youtube.com/shorts/UiYRfphWzLk'
   },
   {
-    id: 'split-grip-flag',
-    name: 'Split Grip to Flag',
-    description: 'Transition from split grip position into one-arm flag while spinning in reverse.',
-    prerequisites: ['reverse-one'],
+    id: 'split-grip-to-flag',
+    name: 'Split grip to flag',
+    description: 'Transition from a split grip position into a one-arm flag (horizontal inverted position) while spinning in reverse direction',
+    prerequisites: ['one-spin-reverse'],
     type: 'regular',
     state: 'inactive',
     x: 401,
@@ -912,10 +885,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://youtube.com/shorts/obGJr1S9g9E'
   },
   {
-    id: 'split-grip-full',
-    name: 'Split Grip to Full',
-    description: 'Transition from split grip to full rotation/inversion while spinning in reverse.',
-    prerequisites: ['reverse-one'],
+    id: 'split-grip-to-full',
+    name: 'Split grip to full',
+    description: 'Transition from split grip to a full rotation/inversion while spinning in reverse direction',
+    prerequisites: ['one-spin-reverse'],
     type: 'regular',
     state: 'inactive',
     x: 297,
@@ -924,10 +897,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://youtube.com/shorts/vYUrKNzxiVA?si=M4pha7tXNSrOL-KO'
   },
   {
-    id: 'flare-lockoff',
-    name: 'Flare to Lockoff',
-    description: 'Dynamic flaring movement transitioning to locked static hold while spinning in reverse.',
-    prerequisites: ['reverse-one'],
+    id: 'flare-to-lockoff',
+    name: 'Flare to lockoff',
+    description: 'Dynamic flaring movement transitioning to a locked static hold position while spinning in reverse',
+    prerequisites: ['one-spin-reverse'],
     type: 'key',
     state: 'inactive',
     x: 193,
@@ -936,10 +909,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://youtube.com/shorts/COJg5yzvEH0'
   },
   {
-    id: 'beat-one-arm',
-    name: 'Beat to 1 Arm',
-    description: 'Swinging movement transitioning into one-arm hang while spinning in reverse.',
-    prerequisites: ['reverse-one'],
+    id: 'beat-to-1-arm',
+    name: 'Beat to 1 arm',
+    description: 'Swinging movement (beat) transitioning into a one-arm hang or position while spinning in reverse direction',
+    prerequisites: ['one-spin-reverse'],
     type: 'regular',
     state: 'inactive',
     x: 89,
@@ -948,9 +921,9 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'reverse-flag',
-    name: 'Reverse Flag',
-    description: 'One-arm flag position performed with reverse/backward rotation.',
-    prerequisites: ['reverse-one'],
+    name: 'Reverse flag',
+    description: 'One-arm flag position (inverted horizontal) performed with reverse/backward rotation',
+    prerequisites: ['one-spin-reverse'],
     type: 'regular',
     state: 'inactive',
     x: -15,
@@ -959,9 +932,9 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'reverse-full',
-    name: 'Reverse Full',
-    description: 'Complete rotation performed in reverse direction on one arm.',
-    prerequisites: ['reverse-one'],
+    name: 'Reverse full',
+    description: 'Complete rotation performed in reverse direction on one arm',
+    prerequisites: ['one-spin-reverse'],
     type: 'key',
     state: 'inactive',
     x: -119,
@@ -971,8 +944,8 @@ export const skillTreeData: Skill[] = [
   {
     id: 'reverse-mushu',
     name: 'Reverse Mushu',
-    description: 'Mushu position executed with reverse spin direction.',
-    prerequisites: ['reverse-one'],
+    description: 'Mushu position (one-arm horizontal position with specific leg configuration) executed with reverse spin direction; similar to a one-arm flag with variations in body shape',
+    prerequisites: ['one-spin-reverse'],
     type: 'regular',
     state: 'inactive',
     x: -223,
@@ -980,13 +953,11 @@ export const skillTreeData: Skill[] = [
     connections: [],
     videoUrl: 'https://youtube.com/shorts/vYUrKNzxiVA?si=M4pha7tXNSrOL-KO'
   },
-
-  // ====== ONE ARM SKILLS - Normal Spin (10 skills, RIGHT to LEFT, 40px spacing) ======
   {
-    id: 'flare-one',
+    id: 'flare-1',
     name: 'Flare',
-    description: 'Dynamic swinging movement with body extended horizontally while spinning.',
-    prerequisites: ['normal-one'],
+    description: 'Dynamic swinging movement with body extended horizontally while spinning in reverse direction',
+    prerequisites: ['one-spin-normal'],
     type: 'key',
     state: 'inactive',
     x: 505,
@@ -995,10 +966,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://youtube.com/shorts/oB5ib9u2fT4'
   },
   {
-    id: 'nutcracker-one',
+    id: 'nutcracker-1',
     name: 'Nutcracker',
-    description: 'One-arm position with legs separated and turned out; back stretched upward.',
-    prerequisites: ['normal-one'],
+    description: 'One-arm position with legs separated and turned out; outer leg in hooked meathook shape; back stretched upward pushing hips toward wrist',
+    prerequisites: ['one-spin-normal'],
     type: 'regular',
     state: 'inactive',
     x: 401,
@@ -1009,8 +980,8 @@ export const skillTreeData: Skill[] = [
   {
     id: 'reverse-meathook',
     name: 'Reverse Meathook',
-    description: 'Meathook position with opposite rotation direction.',
-    prerequisites: ['normal-one'],
+    description: 'Meathook position with opposite rotation direction - inverted hanging position tilted to one side with one arm tucked to back close to pelvis',
+    prerequisites: ['one-spin-normal'],
     type: 'regular',
     state: 'inactive',
     x: 297,
@@ -1018,10 +989,10 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'flare-to-flag-one',
-    name: 'Flare to Flag',
-    description: 'Dynamic flaring movement transitioning into one-arm flag position.',
-    prerequisites: ['normal-one'],
+    id: 'flare-to-flag-1',
+    name: 'Flare to flag',
+    description: 'Dynamic flaring movement transitioning into a one-arm flag position (horizontal inverted) while spinning forward',
+    prerequisites: ['one-spin-normal'],
     type: 'key',
     state: 'inactive',
     x: 193,
@@ -1031,9 +1002,9 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'low-switch',
-    name: 'Low Switch',
-    description: 'Transition between positions executed at lower height while spinning.',
-    prerequisites: ['normal-one'],
+    name: 'Low switch',
+    description: 'Transition between positions (meathook to flag or flag to meathook) executed at a lower height while spinning',
+    prerequisites: ['one-spin-normal'],
     type: 'regular',
     state: 'inactive',
     x: 89,
@@ -1041,10 +1012,10 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'nutcracker-switch',
-    name: 'Nutcracker Switch',
-    description: 'Transition involving nutcracker position while maintaining rotation.',
-    prerequisites: ['normal-one'],
+    id: 'nutcrcker-switch',
+    name: 'Nutcrcker switch',
+    description: 'Transition involving the nutcracker position - changing between different leg/body configurations while maintaining rotation',
+    prerequisites: ['one-spin-normal'],
     type: 'regular',
     state: 'inactive',
     x: -15,
@@ -1052,10 +1023,10 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'high-switch-one',
-    name: 'High Switch',
-    description: 'Fast transition between meathook and flag at peak of movement.',
-    prerequisites: ['normal-one'],
+    id: 'high-switch',
+    name: 'High switch',
+    description: 'Fast transition between meathook and flag positions at the peak of movement; involves stretching through vertical position with half cat twist',
+    prerequisites: ['one-spin-normal'],
     type: 'regular',
     state: 'inactive',
     x: -119,
@@ -1063,11 +1034,11 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'full-one',
+    id: 'full',
     name: 'Full',
-    description: 'Complete 360-degree rotation on one arm.',
-    prerequisites: ['normal-one'],
-    type: 'key',
+    description: 'Complete 360-degree rotation on one arm; can refer to full turn in spinning or full body rotation',
+    prerequisites: ['one-spin-normal'],
+    type: 'regular',
     state: 'inactive',
     x: -223,
     y: 200,
@@ -1077,8 +1048,8 @@ export const skillTreeData: Skill[] = [
   {
     id: 'mushu',
     name: 'Mushu',
-    description: 'One-arm horizontal position similar to flag with specific body configuration.',
-    prerequisites: ['normal-one'],
+    description: 'One-arm horizontal position similar to flag but with specific body and leg configuration; named position in contemporary straps vocabulary',
+    prerequisites: ['one-spin-normal'],
     type: 'regular',
     state: 'inactive',
     x: -327,
@@ -1087,22 +1058,20 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'double-full',
-    name: 'Double Full',
-    description: 'Two complete 360-degree rotations performed consecutively on one arm.',
-    prerequisites: ['normal-one'],
+    name: 'Double full',
+    description: 'Two complete 360-degree rotations performed consecutively on one arm while spinning',
+    prerequisites: ['one-spin-normal'],
     type: 'regular',
     state: 'inactive',
     x: -431,
     y: 200,
     connections: []
   },
-
-  // ====== ONE ARM SKILLS - Hanging (5 skills, RIGHT to LEFT, 40px spacing) ======
   {
-    id: 'straddle-rock-flag',
-    name: 'Straddle Rock to Flag',
-    description: 'Movement from straddle position rocking into one-arm flag.',
-    prerequisites: ['hanging-one'],
+    id: 'straddle-rock-to-flag',
+    name: 'Straddle rock to flag',
+    description: 'Movement from a straddle position rocking into a one-arm flag (horizontal inverted position); performed as a static transition',
+    prerequisites: ['one-static-hanging'],
     type: 'regular',
     state: 'inactive',
     x: 505,
@@ -1110,10 +1079,10 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'high-switch-static',
-    name: 'High Switch',
-    description: 'Transition from meathook to flag through vertical alignment.',
-    prerequisites: ['hanging-one'],
+    id: 'high-switch-1',
+    name: 'High switch',
+    description: 'Transition from meathook to flag position through vertical alignment with legs together; involves pelvis lift and half cat twist; performed without swinging momentum',
+    prerequisites: ['one-static-hanging'],
     type: 'regular',
     state: 'inactive',
     x: 401,
@@ -1122,10 +1091,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://youtube.com/shorts/ijT5BrdM0tg'
   },
   {
-    id: 'inversion-one',
+    id: 'inversion',
     name: 'Inversion',
-    description: 'One-arm inverted position with body hanging upside down.',
-    prerequisites: ['hanging-one'],
+    description: 'One-arm inverted position with body hanging upside down; suspended arm as extension of straps with pelvis stretched and feet pointing to ceiling',
+    prerequisites: ['one-static-hanging'],
     type: 'regular',
     state: 'inactive',
     x: 297,
@@ -1134,10 +1103,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://youtube.com/shorts/HiTTJftm8Bk'
   },
   {
-    id: 'inversion-meathook',
-    name: 'Inversion to Meathook',
-    description: 'Transition from inverted position down into meathook.',
-    prerequisites: ['hanging-one'],
+    id: 'inversion-to-meathook',
+    name: 'Inversion to meathook',
+    description: 'Transition from one-arm inverted vertical position down into meathook (horizontal side-facing position with hooked body shape)',
+    prerequisites: ['one-static-hanging'],
     type: 'regular',
     state: 'inactive',
     x: 193,
@@ -1145,23 +1114,21 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'inversion-flag',
-    name: 'Inversion to Flag',
-    description: 'Transition from inverted position into flag.',
-    prerequisites: ['hanging-one'],
+    id: 'inversion-to-flag',
+    name: 'Inversion to flag',
+    description: 'Transition from one-arm inverted vertical position into flag (horizontal inverted position with extended body)',
+    prerequisites: ['one-static-hanging'],
     type: 'regular',
     state: 'inactive',
     x: 89,
     y: 325,
     connections: []
   },
-
-  // ====== ONE ARM SKILLS - Basics (2 skills, RIGHT to LEFT, 40px spacing) ======
   {
     id: 'front-to-front',
-    name: 'Front to Front',
-    description: 'Basic one-arm swinging movement from front position back to front.',
-    prerequisites: ['basics-one'],
+    name: 'Front to front',
+    description: 'Basic one-arm swinging movement from front position back to front; fundamental swinging pattern',
+    prerequisites: ['one-swing-basics'],
     type: 'key',
     state: 'inactive',
     x: 505,
@@ -1170,10 +1137,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://youtube.com/shorts/Z36ukVFnBko'
   },
   {
-    id: 'front-to-side',
-    name: 'Front to Side',
-    description: 'One-arm swing transitioning from front-facing to side-facing position.',
-    prerequisites: ['basics-one'],
+    id: 'fron-to-side',
+    name: 'Fron to Side',
+    description: 'One-arm swing transitioning from front-facing position to side-facing position',
+    prerequisites: ['one-swing-basics'],
     type: 'regular',
     state: 'inactive',
     x: 401,
@@ -1181,13 +1148,11 @@ export const skillTreeData: Skill[] = [
     connections: [],
     videoUrl: 'https://youtube.com/shorts/qzoISsV5-Zc?si=kgap5Uj5kiOh8x7t'
   },
-
-  // ====== ONE ARM SKILLS - Twisting (6 skills, RIGHT to LEFT, 40px spacing) ======
   {
     id: 'inside-pirouette',
     name: 'Inside Pirouette',
-    description: 'Half turn initiated by feet at furthest swing point; body rotates inward.',
-    prerequisites: ['twisting-one'],
+    description: 'Half turn initiated by feet at furthest swing point; body rotates inward around suspended arm while maintaining extended position',
+    prerequisites: ['one-swing-twisting'],
     type: 'regular',
     state: 'inactive',
     x: 505,
@@ -1198,8 +1163,8 @@ export const skillTreeData: Skill[] = [
   {
     id: 'reverse-soleil',
     name: 'Reverse Soleil',
-    description: 'Twisting movement performed in reverse direction.',
-    prerequisites: ['twisting-one'],
+    description: 'Twisting movement performed in reverse direction; body rotation initiated during swing phase with specific directional control',
+    prerequisites: ['one-swing-twisting'],
     type: 'key',
     state: 'inactive',
     x: 401,
@@ -1210,8 +1175,8 @@ export const skillTreeData: Skill[] = [
   {
     id: 'soleil',
     name: 'Soleil',
-    description: 'Twisting swing movement where body rotates around suspended arm.',
-    prerequisites: ['twisting-one'],
+    description: 'Twisting swing movement where body rotates around suspended arm; feet describe circular path during upward swing phase',
+    prerequisites: ['one-swing-twisting'],
     type: 'regular',
     state: 'inactive',
     x: 297,
@@ -1222,8 +1187,8 @@ export const skillTreeData: Skill[] = [
   {
     id: 'outside-pirouette',
     name: 'Outside Pirouette',
-    description: 'Half turn rotation where body turns outward away from suspended arm.',
-    prerequisites: ['twisting-one'],
+    description: 'Half turn rotation where body turns outward away from suspended arm during swing; initiated at peak of momentum',
+    prerequisites: ['one-swing-twisting'],
     type: 'regular',
     state: 'inactive',
     x: 193,
@@ -1232,9 +1197,9 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'swing-to-flag',
-    name: 'Swing to Flag',
-    description: 'Swinging movement that culminates in a flag position.',
-    prerequisites: ['twisting-one'],
+    name: 'Swing to flag',
+    description: 'Swinging movement that culminates in a flag position; involves closing hips during forward swing, transitioning through vertical to horizontal inverted position',
+    prerequisites: ['one-swing-twisting'],
     type: 'regular',
     state: 'inactive',
     x: 89,
@@ -1245,8 +1210,8 @@ export const skillTreeData: Skill[] = [
   {
     id: 'swing-to-mushu',
     name: 'Swing to Mushu',
-    description: 'One-arm swing transitioning into Mushu position.',
-    prerequisites: ['twisting-one'],
+    description: 'One-arm swing transitioning into Mushu position (horizontal position with specific body configuration)',
+    prerequisites: ['one-swing-twisting'],
     type: 'regular',
     state: 'inactive',
     x: -15,
@@ -1254,13 +1219,11 @@ export const skillTreeData: Skill[] = [
     connections: [],
     videoUrl: 'https://youtube.com/shorts/PQ9u_RVRfUg'
   },
-
-  // ====== ONE ARM SKILLS - Rotating (5 skills, RIGHT to LEFT, 40px spacing) ======
   {
-    id: 'back-one',
+    id: 'back',
     name: 'Back',
-    description: 'Backward swinging movement on one arm.',
-    prerequisites: ['rotating-one'],
+    description: 'Backward swinging movement on one arm; body extends through vertical with open shoulders and natural descent pattern',
+    prerequisites: ['one-swing-rotating'],
     type: 'regular',
     state: 'inactive',
     x: 505,
@@ -1268,10 +1231,10 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'disloc-one',
+    id: 'disloc-1',
     name: 'Disloc',
-    description: 'Dislocate movement on one arm; outward rotation allowing body to swing opposite side.',
-    prerequisites: ['rotating-one'],
+    description: 'Dislocate movement on one arm; outward rotation of hanging arm and shoulder allowing body to swing to opposite side of strap, maintaining axis and direction',
+    prerequisites: ['one-swing-rotating'],
     type: 'key',
     state: 'inactive',
     x: 401,
@@ -1282,8 +1245,8 @@ export const skillTreeData: Skill[] = [
   {
     id: 'salto',
     name: 'Salto',
-    description: 'Somersault/flip performed while swinging on one arm.',
-    prerequisites: ['rotating-one'],
+    description: 'Somersault/flip performed while swinging on one arm; requires significant momentum and body control',
+    prerequisites: ['one-swing-rotating'],
     type: 'regular',
     state: 'inactive',
     x: 297,
@@ -1292,10 +1255,10 @@ export const skillTreeData: Skill[] = [
     videoUrl: 'https://youtube.com/shorts/ENIyf9XwSAg?si=XChsRB-e6sIWkI4O'
   },
   {
-    id: 'one-half-salto',
-    name: '1.5 Arm Salto',
-    description: 'One and a half somersault rotation performed on one arm.',
-    prerequisites: ['rotating-one'],
+    id: '15-arm-salto',
+    name: '1.5 arm salto',
+    description: 'One and a half somersault rotation performed on one arm during swing; advanced rotational movement',
+    prerequisites: ['one-swing-rotating'],
     type: 'regular',
     state: 'inactive',
     x: 193,
@@ -1305,22 +1268,20 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'double-salto',
-    name: 'Double Salto',
-    description: 'Two complete somersaults performed consecutively on one arm.',
-    prerequisites: ['rotating-one'],
+    name: 'Double salto',
+    description: 'Two complete somersaults performed consecutively on one arm while swinging; extreme difficulty move',
+    prerequisites: ['one-swing-rotating'],
     type: 'regular',
     state: 'inactive',
     x: 89,
     y: 950,
     connections: []
   },
-
-  // ====== ONE ARM SKILLS - Rotating II (3 skills on second line, RIGHT to LEFT, 40px spacing) ======
   {
-    id: 'front-one',
+    id: 'front',
     name: 'Front',
-    description: 'Forward swinging rotation on one arm.',
-    prerequisites: ['rotating-one-ii'],
+    description: 'Forward swinging rotation on one arm; body rotates forward around suspended arm axis',
+    prerequisites: ['one-swing-rotating-ii'],
     type: 'regular',
     state: 'inactive',
     x: 505,
@@ -1328,10 +1289,10 @@ export const skillTreeData: Skill[] = [
     connections: []
   },
   {
-    id: 'inloc-one',
+    id: 'inloc-1',
     name: 'Inloc',
-    description: 'Inlocate movement - inward rotation pattern during swing.',
-    prerequisites: ['rotating-one-ii'],
+    description: 'Inlocate movement - opposite of dislocate; inward rotation pattern during swing, body passing through specific rotational positions',
+    prerequisites: ['one-swing-rotating-ii'],
     type: 'regular',
     state: 'inactive',
     x: 401,
@@ -1341,15 +1302,26 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'double-front',
-    name: 'Double Front',
-    description: 'Two forward rotations performed in sequence on one arm.',
-    prerequisites: ['rotating-one-ii'],
+    name: 'Double front',
+    description: 'Two forward rotations performed in sequence on one arm; requires high swing momentum and precise technique',
+    prerequisites: ['one-swing-rotating-ii'],
     type: 'regular',
     state: 'inactive',
     x: 297,
     y: 1075,
     connections: [],
     videoUrl: 'https://youtube.com/shorts/tR2kE-mkF5o'
+  },
+  {
+    id: 'front-c',
+    name: 'Front C',
+    description: 'C shaping techique etx',
+    prerequisites: ['c-shaping-c'],
+    type: 'regular',
+    state: 'inactive',
+    x: 960.0,
+    y: 1325,
+    connections: []
   },
 ];
 
