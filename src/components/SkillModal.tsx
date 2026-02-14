@@ -83,9 +83,17 @@ const SkillModal: React.FC<SkillModalProps> = ({
         className={cn(
           "modal-glass border-0",
           isMobile 
-            ? "fixed bottom-0 left-0 right-0 top-auto rounded-t-3xl rounded-b-none max-h-[85vh] w-full max-w-full m-0 p-0 data-[state=open]:slide-in-from-bottom data-[state=closed]:slide-out-to-bottom" 
+            ? "fixed bottom-0 left-0 right-0 top-auto rounded-t-3xl rounded-b-none max-h-[85vh] w-full max-w-full m-0 p-0 translate-x-0 translate-y-0 data-[state=open]:slide-in-from-bottom data-[state=closed]:slide-out-to-bottom" 
             : "sm:max-w-md"
         )}
+        style={isMobile ? {
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          top: 'auto',
+          transform: 'none',
+        } : undefined}
       >
         {/* Mobile swipe handle */}
         {isMobile && (
