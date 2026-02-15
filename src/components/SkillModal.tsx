@@ -37,6 +37,21 @@ const getYouTubeEmbedUrl = (url: string): string | null => {
   return null;
 };
 
+const getCategorySvg = (skillName: string): string | null => {
+  const lowerName = skillName.toLowerCase();
+  
+  if (lowerName.includes('one arm')) {
+    return '/shapes/category-ornate.svg';
+  } else if (lowerName.includes('two arm')) {
+    return '/shapes/category.svg';
+  } else if (lowerName.includes('c-shaping')) {
+    return '/shapes/category.svg'; // Default to category.svg for C-Shaping
+  }
+  
+  // Default for any other categories
+  return '/shapes/category.svg';
+};
+
 interface SkillModalProps {
   skill: Skill | null;
   isOpen: boolean;
@@ -74,8 +89,12 @@ const SkillModal: React.FC<SkillModalProps> = ({
 
   const isCategory = skill.type === 'category';
   const isKey = skill.type === 'key';
+  
   const embedUrl = skill.videoUrl ? getYouTubeEmbedUrl(skill.videoUrl) : null;
   const videoId = embedUrl?.split('/').pop();
+  
+  // Get category SVG for level 1, 2, 3 nodes
+  const categorySvg = isCategory ? getCategorySvg(skill.name) : null;
 
   const getTypeLabel = () => {
     if (isCategory) return 'Category';
@@ -99,6 +118,54 @@ const SkillModal: React.FC<SkillModalProps> = ({
     return <Badge className="bg-green-500/10 text-green-400 border-green-500/30">Ready to Learn</Badge>;
   };
 
+  // Get button text based on node level
+  const getButtonText = () => {
+    if (isLocked) {
+      return (
+        <>
+          <Lock size={16} />
+          Locked
+        </>
+      );
+    }
+    
+    // Categories (Level 1, 2, 3) show "Start Now" or "Started"
+    if (isCategory) {
+      if (isCompleted) {
+        return (
+          <>
+            <Check size={16} />
+            Started
+          </>
+        );
+      } else {
+        return (
+          <>
+            <Play size={16} />
+            Start Now
+          </>
+        );
+      }
+    }
+    
+    // Level 4 actual skills show "Mark as Complete" or "Mark as Incomplete"
+    if (isCompleted) {
+      return (
+        <>
+          <Check size={16} />
+          Mark as Incomplete
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Check size={16} />
+          Mark as Complete
+        </>
+      );
+    }
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
@@ -118,7 +185,7 @@ const SkillModal: React.FC<SkillModalProps> = ({
             </div>
           )}
           
-          {/* Video Hero Section or Empty State */}
+          {/* Video Hero Section or Category SVG or Empty State */}
           {embedUrl ? (
             <div className="relative w-full">
               {/* Swipe handle for mobile */}
@@ -168,6 +235,36 @@ const SkillModal: React.FC<SkillModalProps> = ({
                   </div>
                 </AspectRatio>
               </button>
+            </div>
+          ) : categorySvg ? (
+            <div className={cn(
+              "relative w-full bg-gradient-to-br from-purple-600/20 to-blue-600/20",
+              isMobile && "rounded-t-[24px]"
+            )}>
+              {/* Close button overlay on category SVG */}
+              <button
+                onClick={onClose}
+                className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors"
+              >
+                <X size={18} className="text-white" />
+              </button>
+
+              <AspectRatio ratio={16 / 9}>
+                <div className="w-full h-full flex items-center justify-center p-8 relative overflow-hidden">
+                  {/* Background text */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white/25 select-none pointer-events-none skill-text">
+                    <div className="text-4xl tracking-wider uppercase mb-4">CATEGORY</div>
+                    <div className="text-7xl sm:text-8xl tracking-wide uppercase whitespace-nowrap">{skill.name}</div>
+                  </div>
+                  
+                  {/* SVG icon overlay */}
+                  <img 
+                    src={categorySvg} 
+                    alt={skill.name}
+                    className="w-32 h-32 object-contain relative z-10"
+                  />
+                </div>
+              </AspectRatio>
             </div>
           ) : (
             <div className={cn(
@@ -367,22 +464,7 @@ const SkillModal: React.FC<SkillModalProps> = ({
                       : 'bg-purple-600 hover:!bg-purple-600 [&:not(:disabled)]:active:!bg-purple-700 focus-visible:ring-2 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-background'
                   )}
                 >
-                  {isCompleted ? (
-                    <>
-                      <Check size={16} />
-                      Mark as Incomplete
-                    </>
-                  ) : isLocked ? (
-                    <>
-                      <Lock size={16} />
-                      Locked
-                    </>
-                  ) : (
-                    <>
-                      <Check size={16} />
-                      Mark as Complete
-                    </>
-                  )}
+                  {getButtonText()}
                 </Button>
               </div>
             </TooltipTrigger>
