@@ -2,7 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Pirata+One&display=swap');
+/*
+  ⚠️  Google Fonts @import removed from here intentionally.
+  Load fonts in index.html instead (non-blocking). Add this to your <head>:
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Pirata+One&display=swap"
+    media="print"
+    onload="this.media='all'"
+  >
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Pirata+One&display=swap">
+  </noscript>
+*/
 
 @layer base {
   :root {
@@ -80,7 +95,6 @@
   }
 
   html {
-    /* Lock the viewport height so browser chrome sliding never causes reflow */
     position: fixed;
     top: 0;
     left: 0;
@@ -90,7 +104,6 @@
     height: 100%;
     overflow: hidden;
     overscroll-behavior: none;
-    /* Prevent browser pinch-zoom from conflicting with app zoom */
     touch-action: none;
   }
 
@@ -123,32 +136,13 @@
     touch-action: none;
   }
 
-  /* UI Typography Scale */
-  h1 {
-    @apply text-2xl md:text-3xl font-semibold tracking-tight;
-  }
+  h1 { @apply text-2xl md:text-3xl font-semibold tracking-tight; }
+  h2 { @apply text-xl md:text-2xl font-semibold tracking-tight; }
+  h3 { @apply text-lg font-medium; }
+  h4 { @apply text-base font-medium; }
+  p  { @apply text-sm leading-relaxed; }
+  small { @apply text-xs; }
 
-  h2 {
-    @apply text-xl md:text-2xl font-semibold tracking-tight;
-  }
-
-  h3 {
-    @apply text-lg font-medium;
-  }
-
-  h4 {
-    @apply text-base font-medium;
-  }
-
-  p {
-    @apply text-sm leading-relaxed;
-  }
-
-  small {
-    @apply text-xs;
-  }
-
-  /* Skill node text - keeps Pirata One for thematic display */
   .skill-text {
     font-family: 'Pirata One', cursive;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
@@ -184,11 +178,9 @@
   .skill-node {
     @apply relative cursor-pointer transition-all duration-300;
     transform-style: preserve-3d;
-    /* EXPLICITLY REMOVE BORDERS/OUTLINES */
     border: none !important;
     outline: none !important;
     box-shadow: none !important;
-    ring: 0 !important;
   }
 
   .skill-node-diamond {
@@ -196,40 +188,19 @@
     clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   }
 
-  .skill-node-active {
-    background: var(--gradient-active);
-    box-shadow: var(--shadow-glow-purple);
-  }
-
-  .skill-node-key {
-    background: var(--gradient-key);
-    box-shadow: var(--shadow-glow-blue);
-  }
-
-  .skill-node-inactive {
-    background: var(--gradient-inactive);
-  }
-
-  .skill-node-category {
-    background: var(--gradient-category);
-    box-shadow: var(--shadow-glow-purple);
-  }
-
-  .skill-node-gold-border {
-    box-shadow: var(--shadow-glow-gold);
-  }
+  .skill-node-active   { background: var(--gradient-active);   box-shadow: var(--shadow-glow-purple); }
+  .skill-node-key      { background: var(--gradient-key);      box-shadow: var(--shadow-glow-blue); }
+  .skill-node-inactive { background: var(--gradient-inactive); }
+  .skill-node-category { background: var(--gradient-category); box-shadow: var(--shadow-glow-purple); }
+  .skill-node-gold-border { box-shadow: var(--shadow-glow-gold); }
 
   .skill-glow-pulse {
     animation: glowPulse 2s ease-in-out infinite;
   }
 
   @keyframes glowPulse {
-    0%, 100% {
-      filter: brightness(1);
-    }
-    50% {
-      filter: brightness(1.2);
-    }
+    0%, 100% { filter: brightness(1); }
+    50%       { filter: brightness(1.2); }
   }
 
   .feedback-button {
@@ -282,20 +253,7 @@
 }
 
 /* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: hsl(var(--background));
-}
-
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted));
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground));
-}
+::-webkit-scrollbar       { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: hsl(var(--background)); }
+::-webkit-scrollbar-thumb { background: hsl(var(--muted)); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground)); }
