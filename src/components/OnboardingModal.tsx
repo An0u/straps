@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -45,6 +45,15 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({
 }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const isMobile = useIsMobile();
+
+  // Prefetch the SkillTree chunk as soon as onboarding opens.
+  // By the time the user taps through all 3 steps, it'll be ready.
+  useEffect(() => {
+    if (isOpen) {
+      import('@/components/SkillTree');
+      import('@/data/skillTreeData');
+    }
+  }, [isOpen]);
 
   const handleNext = () => {
     if (currentStep < onboardingSteps.length - 1) {

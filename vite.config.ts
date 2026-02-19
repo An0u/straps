@@ -21,15 +21,16 @@ export default defineConfig({
         manualChunks: {
           // Keep React + router together so they're always available first
           "vendor-react": ["react", "react-dom", "react-router-dom"],
-          // Radix UI components
-          "vendor-radix": [
+          // All UI deps together to avoid circular chunk issues
+          "vendor-ui": [
             "@radix-ui/react-dialog",
             "@radix-ui/react-tooltip",
             "@radix-ui/react-progress",
             "@radix-ui/react-aspect-ratio",
+            "@tanstack/react-query",
+            "sonner",
+            "lucide-react",
           ],
-          // Other large deps
-          "vendor-ui": ["@tanstack/react-query", "sonner", "lucide-react"],
         },
       },
     },
