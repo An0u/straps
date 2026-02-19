@@ -41,21 +41,42 @@ const SkillTree: React.FC = () => {
     handleOnboardingComplete 
   } = useOnboarding();
 
-  // Pinch zoom refs - IMPROVED
+  // Pinch zoom refs
   const pinchRef = useRef<{ 
     distance: number; 
     scale: number;
-    originX: number;  // Lock the zoom origin
+    originX: number;
     originY: number;
   } | null>(null);
   const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
   const hasMoved = useRef(false);
+
+  // Live values during gesture - updated every frame without triggering re-renders
+  const liveTransform = useRef({ scale: 0, x: 0, y: 0 });
+
   const scaleRef = useRef(scale);
   const positionRef = useRef(position);
-  useEffect(() => { scaleRef.current = scale; }, [scale]);
-  useEffect(() => { positionRef.current = position; }, [position]);
+  useEffect(() => { 
+    scaleRef.current = scale;
+    liveTransform.current.scale = scale;
+  }, [scale]);
+  useEffect(() => { 
+    positionRef.current = position;
+    liveTransform.current.x = position.x;
+    liveTransform.current.y = position.y;
+  }, [position]);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  // Ref to the inner transform div - we mutate its style directly during gestures
+  const transformDivRef = useRef<HTMLDivElement>(null);
+
+  // Apply transform directly to DOM - zero React overhead during gesture
+  const applyTransformDirect = useCallback((x: number, y: number, s: number) => {
+    liveTransform.current = { x, y, scale: s };
+    if (transformDivRef.current) {
+      transformDivRef.current.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+    }
+  }, []);
 
   const {
     isSkillCompleted,
@@ -218,60 +239,48 @@ const SkillTree: React.FC = () => {
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (e.touches.length === 2 && pinchRef.current) {
-      // Pinch zoom with two fingers
-      e.preventDefault(); // Prevent browser zoom
-      e.stopPropagation(); // Prevent node events
+      e.preventDefault();
+      e.stopPropagation();
       hasMoved.current = true;
-      
+
       const { distance: newDistance, midX: rawMidX, midY: rawMidY } = getTouchInfo(e.touches);
       const rect = containerRef.current?.getBoundingClientRect();
       const screenMidX = rawMidX - (rect?.left ?? 0);
       const screenMidY = rawMidY - (rect?.top ?? 0);
 
-      // Calculate zoom ratio with dampening for smoother control
       let ratio = newDistance / pinchRef.current.distance;
-      
-      // Dampen the zoom speed - make it less sensitive
-      const dampening = 0.5; // Adjust between 0.1 (very slow) and 1.0 (full speed)
+      const dampening = 0.5;
       ratio = 1 + (ratio - 1) * dampening;
-      
-      const startScale = pinchRef.current.scale;
-      
-      // Apply zoom with limits
-      let newScale = startScale * ratio;
+
+      let newScale = pinchRef.current.scale * ratio;
       newScale = Math.min(Math.max(0.3, newScale), 2);
 
-      // Use the LOCKED origin from pinch start - not the current midpoint!
       const lockedWorldX = pinchRef.current.originX;
       const lockedWorldY = pinchRef.current.originY;
-
-      // Keep that locked world point at the current screen midpoint
       const newX = screenMidX - lockedWorldX * newScale;
       const newY = screenMidY - lockedWorldY * newScale;
 
-      setScale(newScale);
-      setPosition({ x: newX, y: newY });
+      // ✅ Direct DOM update — no React re-render during pinch
+      applyTransformDirect(newX, newY, newScale);
 
     } else if (e.touches.length === 1 && touchStartRef.current) {
-      // Single finger pan - check if moved enough
       const deltaX = Math.abs(e.touches[0].clientX - touchStartRef.current.x);
       const deltaY = Math.abs(e.touches[0].clientY - touchStartRef.current.y);
-      
+
       if (deltaX > 10 || deltaY > 10) {
-        // Significant movement - this is a pan gesture
         e.preventDefault();
         hasMoved.current = true;
-        
-        if (!isDragging) {
-          setIsDragging(true);
-        }
-        setPosition({
-          x: e.touches[0].clientX - dragStart.x,
-          y: e.touches[0].clientY - dragStart.y,
-        });
+
+        if (!isDragging) setIsDragging(true);
+
+        const newX = e.touches[0].clientX - dragStart.x;
+        const newY = e.touches[0].clientY - dragStart.y;
+
+        // ✅ Direct DOM update — no React re-render during pan
+        applyTransformDirect(newX, newY, liveTransform.current.scale);
       }
     }
-  }, [isDragging, dragStart, getTouchInfo]);
+  }, [isDragging, dragStart, getTouchInfo, applyTransformDirect]);
 
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
     if (e.touches.length < 2) {
@@ -280,6 +289,12 @@ const SkillTree: React.FC = () => {
     if (e.touches.length === 0) {
       setIsDragging(false);
       touchStartRef.current = null;
+
+      // ✅ Commit the live DOM transform to React state only once, on finger lift
+      const { x, y, scale: s } = liveTransform.current;
+      setScale(s);
+      setPosition({ x, y });
+
       hasMoved.current = false;
     }
   }, []);
@@ -447,6 +462,7 @@ const SkillTree: React.FC = () => {
         onTouchEndCapture={handleTouchEnd}
       >
         <div
+          ref={transformDivRef}
           className="relative"
           style={{
             transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
