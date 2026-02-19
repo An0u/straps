@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,6 @@ import { useIsMobile } from '@/hooks/use-mobile';
 interface OnboardingStep {
   title: string;
   description: string;
-  imagePath: string;
 }
 
 interface OnboardingModalProps {
@@ -24,17 +23,14 @@ const onboardingSteps: OnboardingStep[] = [
   {
     title: 'Welcome to Your Straps Journey',
     description: 'Master aerial straps skills through a structured progression system. Each skill builds on the last, creating a clear path from beginner to advanced techniques.',
-    imagePath: '/onboarding/step-1.png',
   },
   {
     title: 'Unlock Skills as You Progress',
     description: 'Complete prerequisite skills to unlock new challenges. Track your progress, mark favorites, and watch tutorial videos for each movement.',
-    imagePath: '/onboarding/step-2.png',
   },
   {
     title: 'Navigate Your Skill Tree',
     description: 'Zoom, pan, and explore different categories: Two Arm, One Arm, and C-Shaping. Tap any skill to view details, prerequisites, and what it unlocks.',
-    imagePath: '/onboarding/step-3.png',
   },
 ];
 
@@ -45,15 +41,6 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({
 }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const isMobile = useIsMobile();
-
-  // Prefetch the SkillTree chunk as soon as onboarding opens.
-  // By the time the user taps through all 3 steps, it'll be ready.
-  useEffect(() => {
-    if (isOpen) {
-      import('@/components/SkillTree');
-      import('@/data/skillTreeData');
-    }
-  }, [isOpen]);
 
   const handleNext = () => {
     if (currentStep < onboardingSteps.length - 1) {
@@ -99,24 +86,10 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({
           isMobile && "rounded-t-[24px]"
         )}>
           <div className="aspect-[16/9] flex items-center justify-center p-8">
-            <div className="flex items-center justify-center">
-              <img 
-                src={currentStepData.imagePath}
-                alt={currentStepData.title}
-                className="w-32 h-32 object-contain"
-                onError={(e) => {
-                  // Fallback to emoji if image doesn't load
-                  e.currentTarget.style.display = 'none';
-                  const placeholder = e.currentTarget.nextElementSibling as HTMLElement;
-                  if (placeholder) placeholder.style.display = 'block';
-                }}
-              />
-              {/* Fallback emoji - only shows if image fails to load */}
-              <div className="hidden text-8xl">
-                {currentStep === 0 && '🤸'}
-                {currentStep === 1 && '🎯'}
-                {currentStep === 2 && '🗺️'}
-              </div>
+            <div className="text-8xl select-none">
+              {currentStep === 0 && '🤸'}
+              {currentStep === 1 && '🎯'}
+              {currentStep === 2 && '🗺️'}
             </div>
           </div>
         </div>
