@@ -1,8 +1,10 @@
-import React from 'react';
-import SkillTree from '@/components/SkillTree';
+import React, { lazy, Suspense } from 'react';
 import FeedbackButton from '@/components/FeedbackButton';
 import { useSkillProgress } from '@/hooks/useSkillProgress';
 import { skillTreeData } from '@/data/skillTreeData';
+
+// Lazy-load the heavy skill tree component — it won't block first paint
+const SkillTree = lazy(() => import('@/components/SkillTree'));
 
 const Index: React.FC = () => {
   const { completedSkills } = useSkillProgress();
@@ -36,9 +38,18 @@ const Index: React.FC = () => {
         </div>
       </header>
 
-      {/* Main skill tree area — fixed so it never shifts with browser chrome */}
+      {/* Main skill tree area — lazy loaded so it doesn't block first paint */}
       <main className="fixed inset-0 w-full h-full">
-        <SkillTree />
+        <Suspense fallback={
+          <div className="fixed inset-0 flex items-center justify-center bg-background">
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+              <p className="text-xs text-muted-foreground">Loading skill tree...</p>
+            </div>
+          </div>
+        }>
+          <SkillTree />
+        </Suspense>
       </main>
 
       {/* Feedback button */}

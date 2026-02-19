@@ -1,9 +1,11 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect, lazy, Suspense } from 'react';
 import { Skill } from '@/data/skillTreeData';
 import DraggableSkillNode from './DraggableSkillNode';
 import ConnectionLines from './ConnectionLines';
-import SkillModal from './SkillModal';
-import OnboardingModal from './OnboardingModal';
+
+// Lazy-load modals — they're only shown on user interaction, not on initial render
+const SkillModal = lazy(() => import('./SkillModal'));
+const OnboardingModal = lazy(() => import('./OnboardingModal'));
 import { useSkillProgress } from '@/hooks/useSkillProgress';
 import { useEditableSkillTree } from '@/hooks/useEditableSkillTree';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -492,25 +494,33 @@ const SkillTree: React.FC = () => {
         </div>
       </div>
 
-      {/* Skill Modal */}
-      <SkillModal
-        skill={selectedSkill}
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        isCompleted={selectedSkill ? isSkillCompleted(selectedSkill.id) : false}
-        isFavorite={selectedSkill ? isSkillFavorite(selectedSkill.id) : false}
-        onToggleComplete={handleToggleComplete}
-        onToggleFavorite={handleToggleFavorite}
-        allSkills={skills}
-        completedSkills={completedSkills}
-      />
+      {/* Skill Modal — lazy loaded, only fetched when first opened */}
+      {isModalOpen && (
+        <Suspense fallback={null}>
+          <SkillModal
+            skill={selectedSkill}
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            isCompleted={selectedSkill ? isSkillCompleted(selectedSkill.id) : false}
+            isFavorite={selectedSkill ? isSkillFavorite(selectedSkill.id) : false}
+            onToggleComplete={handleToggleComplete}
+            onToggleFavorite={handleToggleFavorite}
+            allSkills={skills}
+            completedSkills={completedSkills}
+          />
+        </Suspense>
+      )}
 
-      {/* Onboarding Modal */}
-      <OnboardingModal
-        isOpen={showOnboarding}
-        onClose={() => setShowOnboarding(false)}
-        onComplete={handleOnboardingComplete}
-      />
+      {/* Onboarding Modal — lazy loaded, only fetched on first visit */}
+      {showOnboarding && (
+        <Suspense fallback={null}>
+          <OnboardingModal
+            isOpen={showOnboarding}
+            onClose={() => setShowOnboarding(false)}
+            onComplete={handleOnboardingComplete}
+          />
+        </Suspense>
+      )}
     </div>
   );
 };
