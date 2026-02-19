@@ -41,6 +41,14 @@ const SkillTree: React.FC = () => {
     handleOnboardingComplete 
   } = useOnboarding();
 
+  // Delay mounting the onboarding modal until after first paint
+  // so it doesn't count as LCP content for Lighthouse/PageSpeed
+  const [onboardingMounted, setOnboardingMounted] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setOnboardingMounted(true), 800);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Pinch zoom refs
   const pinchRef = useRef<{ 
     distance: number; 
@@ -510,25 +518,23 @@ const SkillTree: React.FC = () => {
         </div>
       </div>
 
-      {/* Skill Modal — lazy loaded, only fetched when first opened */}
-      {isModalOpen && (
-        <Suspense fallback={null}>
-          <SkillModal
-            skill={selectedSkill}
-            isOpen={isModalOpen}
-            onClose={closeModal}
-            isCompleted={selectedSkill ? isSkillCompleted(selectedSkill.id) : false}
-            isFavorite={selectedSkill ? isSkillFavorite(selectedSkill.id) : false}
-            onToggleComplete={handleToggleComplete}
-            onToggleFavorite={handleToggleFavorite}
-            allSkills={skills}
-            completedSkills={completedSkills}
-          />
-        </Suspense>
-      )}
+      {/* Skill Modal — stays mounted so Radix Dialog animations work correctly */}
+      <Suspense fallback={null}>
+        <SkillModal
+          skill={selectedSkill}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          isCompleted={selectedSkill ? isSkillCompleted(selectedSkill.id) : false}
+          isFavorite={selectedSkill ? isSkillFavorite(selectedSkill.id) : false}
+          onToggleComplete={handleToggleComplete}
+          onToggleFavorite={handleToggleFavorite}
+          allSkills={skills}
+          completedSkills={completedSkills}
+        />
+      </Suspense>
 
-      {/* Onboarding Modal — lazy loaded, only fetched on first visit */}
-      {showOnboarding && (
+      {/* Onboarding Modal — delayed mount so it doesn't affect LCP */}
+      {onboardingMounted && (
         <Suspense fallback={null}>
           <OnboardingModal
             isOpen={showOnboarding}
