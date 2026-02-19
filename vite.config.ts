@@ -18,35 +18,18 @@ export default defineConfig({
     minify: "esbuild",
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          // React core — always needed, load first
-          if (id.includes("node_modules/react/") || id.includes("node_modules/react-dom/")) {
-            return "vendor-react";
-          }
-          // Router — small, but separate from React core
-          if (id.includes("node_modules/react-router-dom/") || id.includes("node_modules/react-router/")) {
-            return "vendor-router";
-          }
-          // Radix UI — large, lazy-loaded via component usage
-          if (id.includes("node_modules/@radix-ui/")) {
-            return "vendor-radix";
-          }
-          // TanStack Query
-          if (id.includes("node_modules/@tanstack/")) {
-            return "vendor-query";
-          }
-          // Lucide icons — often large, keep separate
-          if (id.includes("node_modules/lucide-react/")) {
-            return "vendor-icons";
-          }
-          // Sonner toasts
-          if (id.includes("node_modules/sonner/")) {
-            return "vendor-sonner";
-          }
-          // Everything else in node_modules goes into a general vendor chunk
-          if (id.includes("node_modules/")) {
-            return "vendor-misc";
-          }
+        manualChunks: {
+          // Keep React + router together so they're always available first
+          "vendor-react": ["react", "react-dom", "react-router-dom"],
+          // Radix UI components
+          "vendor-radix": [
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-tooltip",
+            "@radix-ui/react-progress",
+            "@radix-ui/react-aspect-ratio",
+          ],
+          // Other large deps
+          "vendor-ui": ["@tanstack/react-query", "sonner", "lucide-react"],
         },
       },
     },
