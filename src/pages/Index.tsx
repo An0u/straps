@@ -6,10 +6,16 @@ import { skillTreeData } from '@/data/skillTreeData';
 // Lazy-load the heavy skill tree component — it won't block first paint
 const SkillTree = lazy(() => import('@/components/SkillTree'));
 
+// Only count non-category skills in the progress total
+const totalSkills = skillTreeData.filter(s => s.type !== 'category').length;
+
 const Index: React.FC = () => {
   const { completedSkills } = useSkillProgress();
-  const totalSkills = skillTreeData.length;
-  const completedCount = completedSkills.size;
+
+  // Count only completed non-category skills
+  const completedCount = skillTreeData.filter(
+    s => s.type !== 'category' && completedSkills.has(s.id)
+  ).length;
 
   return (
     <div className="fixed inset-0 w-full bg-background overflow-hidden">
@@ -28,9 +34,9 @@ const Index: React.FC = () => {
           <div className="flex items-center gap-3 mt-4 w-full min-w-[200px]">
             <span className="text-xs text-muted-foreground whitespace-nowrap">Progress</span>
             <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
-              <div 
+              <div
                 className="h-full bg-skill-gold rounded-full transition-all duration-300"
-                style={{ width: `${(completedCount / totalSkills) * 100}%` }}
+                style={{ width: `${totalSkills > 0 ? (completedCount / totalSkills) * 100 : 0}%` }}
               />
             </div>
             <span className="text-xs font-medium text-foreground whitespace-nowrap">{completedCount}/{totalSkills}</span>
