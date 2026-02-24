@@ -45,10 +45,9 @@ const getCategorySvg = (skillName: string): string | null => {
   } else if (lowerName.includes('two arm')) {
     return '/shapes/category.svg';
   } else if (lowerName.includes('c-shaping')) {
-    return '/shapes/category.svg'; // Default to category.svg for C-Shaping
+    return '/shapes/category.svg';
   }
   
-  // Default for any other categories
   return '/shapes/category.svg';
 };
 
@@ -80,12 +79,66 @@ const SkillModal: React.FC<SkillModalProps> = ({
   
   if (!skill) return null;
 
-  // Compute direct parents: skills whose connections array includes this skill's id
+  // Build parent map for ancestor lookups
+  const parentMap = new Map<string, Skill[]>();
+  allSkills.forEach(s => {
+    s.connections.forEach(childId => {
+      if (!parentMap.has(childId)) parentMap.set(childId, []);
+      parentMap.get(childId)!.push(s);
+    });
+  });
+
+  // Walk up to find the nearest category ancestor
+  const findCategoryAncestor = (skillId: string, visited = new Set<string>()): Skill | null => {
+    if (visited.has(skillId)) return null;
+    visited.add(skillId);
+    const parents = parentMap.get(skillId) || [];
+    for (const parent of parents) {
+      if (parent.type === 'category') return parent;
+      const ancestor = findCategoryAncestor(parent.id, visited);
+      if (ancestor) return ancestor;
+    }
+    return null;
+  };
+
+  // Direct parents (skills whose connections array includes this skill's id)
   const directParents = allSkills.filter(s => s.connections.includes(skill.id));
-  const completedPrereqs = directParents.filter(p => completedSkills.has(p.id)).length;
   const totalPrereqs = directParents.length;
-  const prereqProgress = totalPrereqs > 0 ? (completedPrereqs / totalPrereqs) * 100 : 100;
-  const isLocked = totalPrereqs > 0 && completedPrereqs < totalPrereqs;
+
+  // A non-category skill is unlocked if its L3 category ancestor is completed.
+  // This means the entire L4 chain unlocks together when the L3 is done.
+  const isLocked = (() => {
+    if (skill.type === 'category') return false;
+    if (totalPrereqs === 0) return false;
+
+    // Check if any direct parent is a completed category
+    const hasCompletedCategoryParent = directParents.some(
+      p => p.type === 'category' && completedSkills.has(p.id)
+    );
+    if (hasCompletedCategoryParent) return false;
+
+    // Walk up to find the L3 category ancestor — if completed, whole chain is unlocked
+    const categoryAncestor = findCategoryAncestor(skill.id);
+    if (categoryAncestor && completedSkills.has(categoryAncestor.id)) return false;
+
+    // Fallback: locked if direct parents not all completed
+    return true;
+  })();
+
+  // For the prerequisites display, show the category ancestor as the requirement
+  // when the direct parent is a non-category L4 skill
+  const categoryAncestor = findCategoryAncestor(skill.id);
+  const showChainPrereqs = directParents.length > 0 && directParents.every(p => p.type !== 'category');
+
+  // What to show in the prerequisites section
+  const prereqsToShow: Skill[] = showChainPrereqs && categoryAncestor
+    ? [categoryAncestor]
+    : directParents;
+
+  const completedPrereqsCount = prereqsToShow.filter(p => completedSkills.has(p.id)).length;
+  const prereqProgress = prereqsToShow.length > 0
+    ? (completedPrereqsCount / prereqsToShow.length) * 100
+    : 100;
 
   const isCategory = skill.type === 'category';
   const isKey = skill.type === 'key';
@@ -93,7 +146,6 @@ const SkillModal: React.FC<SkillModalProps> = ({
   const embedUrl = skill.videoUrl ? getYouTubeEmbedUrl(skill.videoUrl) : null;
   const videoId = embedUrl?.split('/').pop();
   
-  // Get category SVG for level 1, 2, 3 nodes
   const categorySvg = isCategory ? getCategorySvg(skill.name) : null;
 
   const getTypeLabel = () => {
@@ -118,7 +170,6 @@ const SkillModal: React.FC<SkillModalProps> = ({
     return <Badge className="bg-green-500/10 text-green-400 border-green-500/30">Ready to Learn</Badge>;
   };
 
-  // Get button text based on node level
   const getButtonText = () => {
     if (isLocked) {
       return (
@@ -129,7 +180,6 @@ const SkillModal: React.FC<SkillModalProps> = ({
       );
     }
     
-    // Categories (Level 1, 2, 3) show "Start Now" or "Started"
     if (isCategory) {
       if (isCompleted) {
         return (
@@ -148,7 +198,6 @@ const SkillModal: React.FC<SkillModalProps> = ({
       }
     }
     
-    // Level 4 actual skills show "Mark as Complete" or "Mark as Incomplete"
     if (isCompleted) {
       return (
         <>
@@ -188,12 +237,10 @@ const SkillModal: React.FC<SkillModalProps> = ({
           {/* Video Hero Section or Category SVG or Empty State */}
           {embedUrl ? (
             <div className="relative w-full">
-              {/* Swipe handle for mobile */}
               {isMobile && (
                 <div className="absolute top-2 left-1/2 -translate-x-1/2 z-30 w-10 h-1 bg-white/40 rounded-full" />
               )}
 
-              {/* Close button overlay on video */}
               <button
                 onClick={onClose}
                 className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors"
@@ -214,21 +261,17 @@ const SkillModal: React.FC<SkillModalProps> = ({
                     alt={`${skill.name} video`}
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      // Fallback to high quality thumbnail
                       e.currentTarget.src = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
                     }}
                   />
-                  {/* Gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                   
-                  {/* Play button */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center transform transition-all group-hover:scale-110 group-hover:bg-white shadow-2xl">
                       <Play size={28} className="text-black ml-1" fill="currentColor" />
                     </div>
                   </div>
 
-                  {/* Duration indicator (optional - you can add if you have duration data) */}
                   <div className="absolute bottom-3 right-3 px-2 py-1 bg-black/80 rounded text-xs text-white flex items-center gap-1">
                     <Clock size={12} />
                     <span>Tutorial</span>
@@ -241,7 +284,6 @@ const SkillModal: React.FC<SkillModalProps> = ({
               "relative w-full bg-gradient-to-br from-purple-600/20 to-blue-600/20",
               isMobile && "rounded-t-[24px]"
             )}>
-              {/* Close button overlay on category SVG */}
               <button
                 onClick={onClose}
                 className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors"
@@ -251,13 +293,11 @@ const SkillModal: React.FC<SkillModalProps> = ({
 
               <AspectRatio ratio={16 / 9}>
                 <div className="w-full h-full flex items-center justify-center p-8 relative overflow-hidden">
-                  {/* Background text */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-white/25 select-none pointer-events-none skill-text">
                     <div className="text-4xl tracking-wider uppercase mb-4">CATEGORY</div>
                     <div className="text-7xl sm:text-8xl tracking-wide uppercase whitespace-nowrap">{skill.name}</div>
                   </div>
                   
-                  {/* SVG icon overlay */}
                   <img 
                     src={categorySvg} 
                     alt={skill.name}
@@ -271,7 +311,6 @@ const SkillModal: React.FC<SkillModalProps> = ({
               "relative w-full bg-muted/30",
               isMobile && "rounded-t-[24px]"
             )}>
-              {/* Close button overlay on empty state */}
               <button
                 onClick={onClose}
                 className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors"
@@ -291,7 +330,7 @@ const SkillModal: React.FC<SkillModalProps> = ({
           )}
 
           {/* Content Section */}
-          <div className="p-6 space-y-4">
+          <div className="p-6 space-y-4 overflow-y-auto" style={{ maxHeight: isMobile ? '45vh' : '50vh' }}>
             <DialogHeader className="select-none caret-transparent space-y-3">
               {/* Badges */}
               <div className="flex items-center gap-2 flex-wrap">
@@ -354,7 +393,7 @@ const SkillModal: React.FC<SkillModalProps> = ({
             </DialogHeader>
 
             {/* Prerequisites Progress */}
-            {totalPrereqs > 0 && (
+            {prereqsToShow.length > 0 && (
               <div className="space-y-3 p-4 bg-muted/30 rounded-lg border border-border">
                 <div className="flex items-center justify-between">
                   <h4 className="text-sm font-medium text-foreground flex items-center gap-2">
@@ -362,42 +401,39 @@ const SkillModal: React.FC<SkillModalProps> = ({
                     Prerequisites
                   </h4>
                   <span className="text-xs text-muted-foreground">
-                    {completedPrereqs}/{totalPrereqs} completed
+                    {completedPrereqsCount}/{prereqsToShow.length} completed
                   </span>
                 </div>
                 
                 <Progress value={prereqProgress} className="h-2" />
 
                 <div className="space-y-2">
-                  {directParents.map(parent => {
-                    const isCompleted = completedSkills.has(parent.id);
+                  {prereqsToShow.map(parent => {
+                    const isDone = completedSkills.has(parent.id);
                     return (
                       <div
                         key={parent.id}
                         className={cn(
                           'flex items-center justify-between p-2 rounded-md text-sm',
-                          isCompleted
+                          isDone
                             ? 'bg-green-500/10 text-green-400'
                             : 'bg-muted text-muted-foreground'
                         )}
                       >
                         <div className="flex items-center gap-2">
-                          {isCompleted ? (
+                          {isDone ? (
                             <Check size={14} className="shrink-0" />
                           ) : (
                             <div className="w-3.5 h-3.5 rounded-full border-2 border-current shrink-0" />
                           )}
                           <span>{parent.name}</span>
                         </div>
-                        {!isCompleted && (
+                        {!isDone && (
                           <Button
                             variant="ghost"
                             size="sm"
                             className="h-6 text-xs"
-                            onClick={() => {
-                              // TODO: Navigate to this skill
-                              onClose();
-                            }}
+                            onClick={() => onClose()}
                           >
                             View
                           </Button>
@@ -470,7 +506,7 @@ const SkillModal: React.FC<SkillModalProps> = ({
             </TooltipTrigger>
             {isLocked && (
               <TooltipContent>
-                <p>Complete {directParents.find(p => !completedSkills.has(p.id))?.name} to unlock this skill</p>
+                <p>Complete {prereqsToShow.find(p => !completedSkills.has(p.id))?.name} to unlock this skill</p>
               </TooltipContent>
             )}
           </Tooltip>
