@@ -968,6 +968,7 @@ export const skillTreeData: Skill[] = [
     x: 210,
     y: -75,
     connections: ['front-candle'],
+	videoUrl:'https://youtube.com/shorts/H4ozywL45I8?si=tlsbjtUt5yOwcpXZ',
   },
   {
     id: 'front-candle',
