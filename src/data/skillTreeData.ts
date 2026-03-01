@@ -354,7 +354,8 @@ export const skillTreeData: Skill[] = [
     state: 'active',
     x: 370,
     y: -75,
-    connections: ['center-spin']
+    connections: ['center-spin'],
+	videoUrl:'https://youtube.com/shorts/H4ozywL45I8?si=tlsbjtUt5yOwcpXZ',
   },
   {
     id: 'one-spin-reverse',
@@ -558,6 +559,7 @@ export const skillTreeData: Skill[] = [
     x: 1710,
     y: 225,
     connections: [],
+	videoUrl:'https://youtube.com/shorts/uWyEd6r3eOY?si=GxIngbc9z_YDafbg',
   },
 
   // ── LEVEL 4 — two-static-hanging chain ─────────────────────────────────────────────────
@@ -977,6 +979,7 @@ export const skillTreeData: Skill[] = [
     x: 60,
     y: -75,
     connections: ['back-candle'],
+	videoUrl:'https://youtube.com/shorts/6WDJZediu5Q?si=ZMGQ4fSUnu_ExrHh',
   },
   {
     id: 'back-candle',
@@ -988,6 +991,7 @@ export const skillTreeData: Skill[] = [
     x: -90,
     y: -75,
     connections: ['nugget'],
+	videoUrl:'https://youtube.com/shorts/ubBj-fPzcX0?si=_I4MzlHkTI_JDepb',
   },
   {
     id: 'nugget',
@@ -1133,6 +1137,7 @@ export const skillTreeData: Skill[] = [
     x: -90,
     y: 225,
     connections: ['flare-to-flag-1'],
+	videoUrl:'https://youtube.com/shorts/K9wC5gS7n-I?si=GwAyWCoMxH0G1Wg8',
   },
   {
     id: 'flare-to-flag-1',
@@ -1168,6 +1173,7 @@ export const skillTreeData: Skill[] = [
     x: -540,
     y: 225,
     connections: ['high-switch'],
+	videoUrl:'https://youtube.com/shorts/pQPwq2w3vwo?si=JlhWT6ytLL6eBjnj',
   },
   {
     id: 'high-switch',
@@ -1204,6 +1210,7 @@ export const skillTreeData: Skill[] = [
     x: -990,
     y: 225,
     connections: ['double-full'],
+	videoUrl:'https://youtube.com/shorts/cUtlEPOU4iw?si=vtgP30LsXKefMo3e',
   },
   {
     id: 'double-full',
@@ -1215,6 +1222,7 @@ export const skillTreeData: Skill[] = [
     x: -1140,
     y: 225,
     connections: [],
+	videoUrl:'https://youtube.com/shorts/SEtrvxISarM?si=e-j--JRd-GoUX6gK',
   },
 
   // ── LEVEL 4 — one-static-hanging chain ─────────────────────────────────────────────────
@@ -1350,6 +1358,7 @@ export const skillTreeData: Skill[] = [
     x: -240,
     y: 813,
     connections: ['swing-to-flag'],
+	videoUrl:'https://youtube.com/shorts/AVxbFPkoBZ8?si=tG23JR8NeuC0pnQY',
   },
   {
     id: 'swing-to-flag',
@@ -1434,7 +1443,7 @@ export const skillTreeData: Skill[] = [
     x: -390,
     y: 963,
     connections: [],
-    videoUrl: 'https://youtube.com/shorts/xfKd8H8mcxE?si=q8FS2fW8a36xpf07',
+    videoUrl: 'https://youtube.com/shorts/WNXk34-Fzyk?si=ZLeCu4_LBh8XpCCa',
   },
 
   // ── LEVEL 4 — one-swing-rotating-ii chain ─────────────────────────────────────────────────
@@ -1471,7 +1480,7 @@ export const skillTreeData: Skill[] = [
     x: -90,
     y: 1113,
     connections: [],
-    videoUrl: 'https://youtube.com/shorts/tR2kE-mkF5o',
+    videoUrl: 'https://youtube.com/shorts/gxeFZ03qV98?si=O6Pl90PbagyT6wWr',
   },
 
   // ── LEVEL 4 — c-shaping-static chain ─────────────────────────────────────────
