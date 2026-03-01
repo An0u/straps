@@ -355,7 +355,7 @@ export const skillTreeData: Skill[] = [
     x: 370,
     y: -75,
     connections: ['center-spin'],
-	videoUrl:'https://youtube.com/shorts/H4ozywL45I8?si=tlsbjtUt5yOwcpXZ',
+	
   },
   {
     id: 'one-spin-reverse',
