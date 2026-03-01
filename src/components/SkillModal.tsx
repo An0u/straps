@@ -488,7 +488,7 @@ const SkillModal: React.FC<SkillModalProps> = ({
             <TooltipTrigger asChild>
               <div className="w-full">
                 <Button
-                  onClick={onToggleComplete}
+                  onClick={() => { onToggleComplete(); if (!isCompleted) onClose(); }}
                   disabled={isLocked}
                   variant="ghost"
                   className={cn(

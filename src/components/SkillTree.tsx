@@ -10,17 +10,13 @@ import { useSkillProgress } from '@/hooks/useSkillProgress';
 import { useEditableSkillTree } from '@/hooks/useEditableSkillTree';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useOnboarding } from '@/hooks/useOnboarding';
-import { ZoomIn, ZoomOut, RotateCcw, Move, Lock, Unlock, Grid3X3, RotateCw, Copy, Trash2, Download } from 'lucide-react';
-import { toast } from 'sonner';
+import { ZoomIn, ZoomOut, RotateCcw, Move } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-
-const GRID_SIZE = 30;
-const ADMIN_STORAGE_KEY = 'skill-tree-admin';
 
 const SkillTree: React.FC = () => {
   const isMobile = useIsMobile();
@@ -30,10 +26,6 @@ const SkillTree: React.FC = () => {
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isAdminMode, setIsAdminMode] = useState(() => {
-    return localStorage.getItem(ADMIN_STORAGE_KEY) === 'true';
-  });
-
   // Onboarding state
   const { 
     showOnboarding, 
@@ -47,6 +39,15 @@ const SkillTree: React.FC = () => {
   useEffect(() => {
     const timer = setTimeout(() => setOnboardingMounted(true), 800);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Defer rendering nodes until after first paint — shows spinner first
+  const [treeReady, setTreeReady] = useState(false);
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => {
+      setTimeout(() => setTreeReady(true), 50);
+    });
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   // Pinch zoom refs
@@ -95,55 +96,28 @@ const SkillTree: React.FC = () => {
     getAvailableSkills,
   } = useSkillProgress();
 
-  const { 
-    skills, 
-    isEditMode, 
-    selectedIds,
-    connectionSource,
-    toggleEditMode, 
-    selectNode,
-    clearSelection,
-    handleDragStart,
-    handleDragMove,
-    handleDragEnd,
-    resetPositions,
-    updateNodeName,
-    duplicateSelected,
-    deleteSelected,
-    handleConnectionClick,
-    clearConnectionSource,
-    toggleKeySkill,
-  } = useEditableSkillTree(GRID_SIZE);
+  const { skills } = useEditableSkillTree();
 
   // Derive available skills — updates any time completedSkills or skills change
   const availableSkills = getAvailableSkills(skills);
 
-  // Keyboard shortcuts
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.shiftKey && e.key === 'E') {
-        e.preventDefault();
-        setIsAdminMode(prev => {
-          const newValue = !prev;
-          localStorage.setItem(ADMIN_STORAGE_KEY, String(newValue));
-          return newValue;
-        });
-        return;
-      }
-      if (!isEditMode) return;
-      if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
-        e.preventDefault();
-        duplicateSelected();
-      }
-      if (e.key === 'Delete' || e.key === 'Backspace') {
-        if ((e.target as HTMLElement).tagName === 'INPUT') return;
-        e.preventDefault();
-        deleteSelected();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isEditMode, duplicateSelected, deleteSelected]);
+  // Viewport culling — only render nodes visible in the current viewport
+  // Adds a generous 200px buffer so nodes pop in before they're visible
+  const visibleSkills = React.useMemo(() => {
+    const vpWidth = window.innerWidth;
+    const vpHeight = window.innerHeight;
+    const buffer = 200;
+    return skills.filter(skill => {
+      const screenX = skill.x * scale + position.x;
+      const screenY = skill.y * scale + position.y;
+      return (
+        screenX > -buffer &&
+        screenX < vpWidth + buffer &&
+        screenY > -buffer &&
+        screenY < vpHeight + buffer
+      );
+    });
+  }, [skills, scale, position]);
 
   // Tree bounds
   const treeBounds = {
@@ -181,9 +155,8 @@ const SkillTree: React.FC = () => {
     if (e.button === 0) {
       setIsDragging(true);
       setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
-      if (isEditMode) { clearSelection(); clearConnectionSource(); }
     }
-  }, [position, isEditMode, clearSelection, clearConnectionSource]);
+  }, [position]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (isDragging) {
@@ -313,11 +286,9 @@ const SkillTree: React.FC = () => {
   }, [isMobile]);
 
   const handleSkillClick = useCallback((skill: Skill) => {
-    if (!isEditMode) {
-      setSelectedSkill(skill);
-      setIsModalOpen(true);
-    }
-  }, [isEditMode]);
+    setSelectedSkill(skill);
+    setIsModalOpen(true);
+  }, []);
 
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
@@ -337,43 +308,6 @@ const SkillTree: React.FC = () => {
 
       {/* Floating bottom toolbar */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
-        {isEditMode && (
-          <div className="bg-primary/90 backdrop-blur-sm rounded-lg px-3 py-2 text-sm text-primary-foreground max-w-[90vw]">
-            <div className="flex items-center gap-2 justify-between flex-wrap">
-              <div className="flex items-center gap-2">
-                <Grid3X3 size={14} />
-                <span>Grid: {GRID_SIZE}px</span>
-              </div>
-              {selectedIds.size > 0 && (
-                <div className="flex gap-1">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="secondary" size="sm" onClick={duplicateSelected} className="h-6 px-2 text-xs">
-                        <Copy size={12} className="mr-1" />Duplicate
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>Ctrl+D</TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="secondary" size="sm" onClick={deleteSelected} className="h-6 px-2 text-xs text-destructive hover:text-destructive">
-                        <Trash2 size={12} className="mr-1" />Delete
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>Delete / Backspace</TooltipContent>
-                  </Tooltip>
-                </div>
-              )}
-            </div>
-            <div className="text-xs opacity-80 mt-1">Click to select • Shift+click for multi • Double-click to rename</div>
-            <div className="text-xs opacity-80">Ctrl+Shift+click to start connection • Alt+click to toggle key skill</div>
-            {connectionSource && (
-              <div className="text-xs text-accent mt-1">✓ Connection source selected - click target node</div>
-            )}
-            <div className="text-xs opacity-80">{selectedIds.size} selected</div>
-          </div>
-        )}
-
         <div className="bg-card/80 backdrop-blur-sm rounded-full p-1.5 flex flex-row gap-1 shadow-lg">
           <Tooltip>
             <TooltipTrigger asChild>
@@ -399,66 +333,13 @@ const SkillTree: React.FC = () => {
             </TooltipTrigger>
             <TooltipContent side="top">Reset View</TooltipContent>
           </Tooltip>
-
-          {isAdminMode && (
-            <>
-              <div className="w-px h-6 bg-border self-center mx-1" />
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant={isEditMode ? "default" : "ghost"} size="icon" onClick={toggleEditMode} className="h-9 w-9 rounded-full">
-                    {isEditMode ? <Unlock size={18} /> : <Lock size={18} />}
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="top">{isEditMode ? "Lock Layout (Save)" : "Edit Layout"}</TooltipContent>
-              </Tooltip>
-              {isEditMode && (
-                <>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="ghost" size="icon" onClick={resetPositions} className="h-9 w-9 rounded-full text-destructive hover:text-destructive">
-                        <RotateCw size={18} />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent side="top">Reset to Default</TooltipContent>
-                  </Tooltip>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost" size="icon"
-                        onClick={() => {
-                          const exportData = skills.map(s => ({
-                            id: s.id, name: s.name, x: s.x, y: s.y,
-                            connections: s.connections,
-                            ...(s.type === 'key' ? { type: 'key' } : {}),
-                          }));
-                          navigator.clipboard.writeText(JSON.stringify(exportData, null, 2));
-                          toast.success('Layout exported (includes key skills)!');
-                        }}
-                        className="h-9 w-9 rounded-full"
-                      >
-                        <Download size={18} />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent side="top">Export Layout</TooltipContent>
-                  </Tooltip>
-                </>
-              )}
-            </>
-          )}
         </div>
       </div>
-
-      {!isMobile && (
-        <div className="absolute top-4 right-4 z-20 bg-card/60 backdrop-blur-sm rounded-lg px-3 py-2 flex items-center gap-2 text-sm text-muted-foreground">
-          <Move size={14} />
-          <span>{isEditMode ? "Drag nodes to reposition" : "Drag to pan • Scroll to zoom"}</span>
-        </div>
-      )}
 
       {/* Tree container */}
       <div
         ref={containerRef}
-        className={`w-full h-full ${isEditMode ? 'cursor-default' : 'cursor-grab active:cursor-grabbing'}`}
+        className={'w-full h-full cursor-grab active:cursor-grabbing'}
         style={{ touchAction: 'none' }}
         onWheel={handleWheel}
         onMouseDown={handleMouseDown}
@@ -480,20 +361,34 @@ const SkillTree: React.FC = () => {
             transition: isDragging ? 'none' : 'transform 0.1s ease-out',
           }}
         >
-          {isEditMode && (
-            <svg className="absolute inset-0 pointer-events-none opacity-20" style={{ width: treeWidth, height: treeHeight }}>
-              <defs>
-                <pattern id="grid" width={GRID_SIZE} height={GRID_SIZE} patternUnits="userSpaceOnUse">
-                  <path d={`M ${GRID_SIZE} 0 L 0 0 0 ${GRID_SIZE}`} fill="none" stroke="hsl(var(--primary))" strokeWidth="0.5" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#grid)" />
-            </svg>
-          )}
-
           <ConnectionLines skills={skills} completedSkills={completedSkills} treeBounds={treeBounds} />
 
-          {skills.map(skill => (
+          {!treeReady && (
+            <div
+              style={{
+                position: 'fixed',
+                inset: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'hsl(220 15% 8%)',
+                zIndex: 50,
+              }}
+            >
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+                <div style={{
+                  width: 32, height: 32, borderRadius: '50%',
+                  border: '2px solid hsl(270 70% 60%)',
+                  borderTopColor: 'transparent',
+                  animation: 'spin 0.8s linear infinite',
+                }} />
+                <p style={{ fontSize: 12, color: 'hsl(220 10% 55%)' }}>Loading skill tree...</p>
+              </div>
+              <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+            </div>
+          )}
+
+          {treeReady && visibleSkills.map(skill => (
             <DraggableSkillNode
               key={skill.id}
               skill={skill}
@@ -502,17 +397,17 @@ const SkillTree: React.FC = () => {
               isAvailable={availableSkills.has(skill.id)}
               onClick={() => handleSkillClick(skill)}
               scale={scale}
-              isEditMode={isEditMode}
+              isEditMode={false}
               isSelected={false}
               isConnectionSource={false}
-              onSelect={selectNode}
-              onDragStart={handleDragStart}
-              onDragMove={handleDragMove}
-              onDragEnd={handleDragEnd}
-              onConnectionClick={handleConnectionClick}
-              gridSize={GRID_SIZE}
-              onNameChange={updateNodeName}
-              onToggleKeySkill={toggleKeySkill}
+              onSelect={() => new Set<string>()}
+              onDragStart={() => {}}
+              onDragMove={() => {}}
+              onDragEnd={() => {}}
+              onConnectionClick={() => false}
+              gridSize={30}
+              onNameChange={() => {}}
+              onToggleKeySkill={() => {}}
             />
           ))}
         </div>
