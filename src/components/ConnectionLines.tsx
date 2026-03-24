@@ -1,5 +1,6 @@
 import React from 'react';
 import { Skill } from '@/data/skillTreeData';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ConnectionLinesProps {
   skills: Skill[];
@@ -13,6 +14,7 @@ interface ConnectionLinesProps {
 }
 
 const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills, completedSkills, treeBounds }) => {
+  const isMobile = useIsMobile();
   const treeWidth = treeBounds.maxX - treeBounds.minX;
   const treeHeight = treeBounds.maxY - treeBounds.minY;
   const getSkillById = (skillId: string) => {
@@ -158,7 +160,7 @@ const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills, completedSkil
           stroke={line.colorType === 'blue' ? 'hsl(220 70% 55%)' : 'hsl(270 70% 55%)'}
           strokeWidth={4}
           strokeLinecap="round"
-          filter={`url(#glow${line.colorType === 'blue' ? 'Blue' : 'Purple'})`}
+          filter={isMobile ? undefined : `url(#glow${line.colorType === 'blue' ? 'Blue' : 'Purple'})`}
         />
       ))}
     </svg>

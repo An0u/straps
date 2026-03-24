@@ -119,13 +119,18 @@ const SkillTree: React.FC = () => {
     });
   }, [skills, scale, position]);
 
-  // Tree bounds
-  const treeBounds = {
-    minX: Math.min(...skills.map(s => s.x)) - 100,
-    maxX: Math.max(...skills.map(s => s.x)) + 100,
-    minY: Math.min(...skills.map(s => s.y)) - 100,
-    maxY: Math.max(...skills.map(s => s.y)) + 100,
-  };
+  // Tree bounds — memoized so it only recalculates when skills change.
+  // Uses reduce instead of Math.min/max(...spread) to avoid call stack limits on large arrays.
+  const treeBounds = React.useMemo(() => {
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    for (const s of skills) {
+      if (s.x < minX) minX = s.x;
+      if (s.x > maxX) maxX = s.x;
+      if (s.y < minY) minY = s.y;
+      if (s.y > maxY) maxY = s.y;
+    }
+    return { minX: minX - 100, maxX: maxX + 100, minY: minY - 100, maxY: maxY + 100 };
+  }, [skills]);
   const treeWidth = treeBounds.maxX - treeBounds.minX;
   const treeHeight = treeBounds.maxY - treeBounds.minY;
 
@@ -359,6 +364,7 @@ const SkillTree: React.FC = () => {
             width: treeWidth,
             height: treeHeight,
             transition: isDragging ? 'none' : 'transform 0.1s ease-out',
+            willChange: isDragging ? 'transform' : 'auto',
           }}
         >
           <ConnectionLines skills={skills} completedSkills={completedSkills} treeBounds={treeBounds} />

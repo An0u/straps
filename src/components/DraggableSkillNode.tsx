@@ -287,7 +287,7 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
         top: skill.y - height / 2,
         width,
         height,
-        transition: isDragging ? 'none' : 'all 0.3s',
+        transition: isDragging ? 'none' : 'transform 0.3s ease, opacity 0.3s ease',
         pointerEvents: 'auto',
         zIndex: isAvailable ? 25 : 20,
         touchAction: 'none', // Prevent default touch behaviors
@@ -324,8 +324,11 @@ const DraggableSkillNode = forwardRef<HTMLDivElement, DraggableSkillNodeProps>((
       <img
         src={getSvgPath()}
         alt=""
+        loading="lazy"
+        decoding="async"
         className={cn(
-          'absolute inset-0 w-full h-full object-contain transition-all duration-300',
+          'absolute inset-0 w-full h-full object-contain',
+          'transition-[filter,opacity] duration-300',
           !isActive && !isKey && 'skill-node-grayscale opacity-70',
           (isActive || isKey) && getGlowClass()
         )}
