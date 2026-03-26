@@ -1444,7 +1444,7 @@ export const skillTreeData: Skill[] = [
     x: -390,
     y: 963,
     connections: [],
-    videoUrl: 'https://youtube.com/shorts/WNXk34-Fzyk?si=ZLeCu4_LBh8XpCCa',
+    videoUrl: 'https://youtube.com/shorts/cHMKZoVjEWk?si=EgpzTzzwcLeWm03P',
   },
 
   // ── LEVEL 4 — one-swing-rotating-ii chain ─────────────────────────────────────────────────
