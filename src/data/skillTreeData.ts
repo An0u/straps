@@ -1005,6 +1005,7 @@ export const skillTreeData: Skill[] = [
     x: -240,
     y: -75,
     connections: [],
+	videoUrl:'https://pub-a63668e636f74423bd8c02be5fd4da4b.r2.dev/Nugget.mp4',
   },
 
   // ── LEVEL 4 — one-spin-reverse chain ─────────────────────────────────────────────────
