@@ -761,7 +761,7 @@ export const skillTreeData: Skill[] = [
   },
   {
     id: 'swing-to-fulll',
-    name: 'Swing To Fulll',
+    name: 'Swing To Full',
     description: 'Swing leading to fully extended position using momentum.',
     prerequisites: ['two-swing-twisting'],
     type: 'regular',
@@ -770,7 +770,7 @@ export const skillTreeData: Skill[] = [
     x: 2160,
     y: 825,
     connections: [],
-    videoUrl: 'https://youtube.com/shorts/tt-u-38k0Qc?si=x4_ri0iYD-fW6Z2A',
+    videoUrl: 'https://www.youtube.com/shorts/E58MCWjGn90',
   },
 
   // ── LEVEL 4 — two-swing-twisting-ii chain ─────────────────────────────────────────────────
