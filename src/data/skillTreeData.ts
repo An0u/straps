@@ -705,6 +705,7 @@ export const skillTreeData: Skill[] = [
     x: 2010,
     y: 675,
     connections: ['azarian'],
+	 videoUrl: 'https://pub-a63668e636f74423bd8c02be5fd4da4b.r2.dev/press-to-handstand.mp4',
   },
   {
     id: 'azarian',
