@@ -23,10 +23,11 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
       <TooltipTrigger asChild>
         <Button
           onClick={handleClick}
-          className="feedback-button rounded-full w-14 h-14 p-0 transition-all duration-300"
+          className="feedback-button rounded-full w-14 md:w-auto px-0 md:px-4 h-14 gap-2 transition-all duration-300"
           aria-label="Send Feedback"
         >
-          <MessageSquarePlus size={24} />
+          <span className="hidden md:inline text-sm font-medium">Feedback</span>
+          <MessageSquarePlus size={20} />
         </Button>
       </TooltipTrigger>
       <TooltipContent side="left" className="bg-card border-border">
