@@ -8,6 +8,7 @@ const SkillModal = lazy(() => import('./SkillModal'));
 const OnboardingModal = lazy(() => import('./OnboardingModal'));
 import { useSkillProgress } from '@/hooks/useSkillProgress';
 import { useEditableSkillTree } from '@/hooks/useEditableSkillTree';
+import { useSheetSkills } from '@/hooks/useSheetSkills';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useOnboarding } from '@/hooks/useOnboarding';
 import { ZoomIn, ZoomOut, RotateCcw, Move } from 'lucide-react';
@@ -96,7 +97,8 @@ const SkillTree: React.FC = () => {
     getAvailableSkills,
   } = useSkillProgress();
 
-  const { skills } = useEditableSkillTree();
+  const { data: sheetSkills } = useSheetSkills();
+  const { skills } = useEditableSkillTree(sheetSkills);
 
   // Derive available skills — updates any time completedSkills or skills change
   const availableSkills = getAvailableSkills(skills);

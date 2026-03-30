@@ -2,13 +2,15 @@ import React, { lazy, Suspense } from 'react';
 import FeedbackButton from '@/components/FeedbackButton';
 import { useSkillProgress } from '@/hooks/useSkillProgress';
 import { skillTreeData } from '@/data/skillTreeData';
+import { useSheetSkills } from '@/hooks/useSheetSkills';
 
 // Lazy-load the heavy skill tree component — it won't block first paint
 const SkillTree = lazy(() => import('@/components/SkillTree'));
 
 const Index: React.FC = () => {
   const { completedSkills } = useSkillProgress();
-  const totalSkills = skillTreeData.length;
+  const { data: sheetSkills } = useSheetSkills();
+  const totalSkills = (sheetSkills ?? skillTreeData).length;
   const completedCount = completedSkills.size;
 
   return (
