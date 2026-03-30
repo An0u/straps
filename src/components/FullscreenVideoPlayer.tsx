@@ -41,14 +41,25 @@ const FullscreenVideoPlayer: React.FC<FullscreenVideoPlayerProps> = ({
             <X size={24} />
           </Button>
 
-          {/* Video iframe */}
-          <iframe
-            src={videoUrl}
-            title={title}
-            className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+          {/* Video */}
+          {videoUrl.match(/\.(mp4|webm|ogg)(\?|$)/i) ? (
+            <video
+              src={videoUrl}
+              title={title}
+              className="w-full h-full"
+              controls
+              autoPlay
+              playsInline
+            />
+          ) : (
+            <iframe
+              src={videoUrl}
+              title={title}
+              className="w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          )}
         </div>
       </DialogContent>
     </Dialog>

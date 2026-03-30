@@ -145,6 +145,7 @@ const SkillModal: React.FC<SkillModalProps> = ({
   
   const embedUrl = skill.videoUrl ? getYouTubeEmbedUrl(skill.videoUrl) : null;
   const videoId = embedUrl?.split('/').pop();
+  const isDirectVideo = !embedUrl && !!skill.videoUrl?.match(/\.(mp4|webm|ogg)(\?|$)/i);
   
   const categorySvg = isCategory ? getCategorySvg(skill.name) : null;
 
@@ -235,7 +236,45 @@ const SkillModal: React.FC<SkillModalProps> = ({
           )}
           
           {/* Video Hero Section or Category SVG or Empty State */}
-          {embedUrl ? (
+          {isDirectVideo ? (
+            <div className="relative w-full">
+              {isMobile && (
+                <div className="absolute top-2 left-1/2 -translate-x-1/2 z-30 w-10 h-1 bg-white/40 rounded-full" />
+              )}
+              <button
+                onClick={onClose}
+                className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 flex items-center justify-center transition-colors"
+              >
+                <X size={18} className="text-white" />
+              </button>
+              <button
+                onClick={() => setIsVideoFullscreen(true)}
+                className={cn(
+                  "relative w-full overflow-hidden bg-black group",
+                  isMobile && "rounded-t-[24px]"
+                )}
+              >
+                <AspectRatio ratio={16 / 9}>
+                  <video
+                    src={skill.videoUrl!}
+                    className="w-full h-full object-cover"
+                    preload="metadata"
+                    muted
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center transform transition-all group-hover:scale-110 group-hover:bg-white shadow-2xl">
+                      <Play size={28} className="text-black ml-1" fill="currentColor" />
+                    </div>
+                  </div>
+                  <div className="absolute bottom-3 right-3 px-2 py-1 bg-black/80 rounded text-xs text-white flex items-center gap-1">
+                    <Clock size={12} />
+                    <span>Tutorial</span>
+                  </div>
+                </AspectRatio>
+              </button>
+            </div>
+          ) : embedUrl ? (
             <div className="relative w-full">
               {isMobile && (
                 <div className="absolute top-2 left-1/2 -translate-x-1/2 z-30 w-10 h-1 bg-white/40 rounded-full" />
@@ -522,9 +561,9 @@ const SkillModal: React.FC<SkillModalProps> = ({
         </div>
 
         {/* Fullscreen video player */}
-        {embedUrl && (
+        {(embedUrl || isDirectVideo) && (
           <FullscreenVideoPlayer
-            videoUrl={embedUrl}
+            videoUrl={embedUrl ?? skill.videoUrl!}
             title={`${skill.name} tutorial`}
             isOpen={isVideoFullscreen}
             onClose={() => setIsVideoFullscreen(false)}
