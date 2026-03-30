@@ -533,6 +533,7 @@ export const skillTreeData: Skill[] = [
     x: 1710,
     y: 75,
     connections: ['straightjacket-in-reverse'],
+	videoUrl:'https://www.youtube.com/shorts/UiYRfphWzLk',
   },
   {
     id: 'straightjacket-in-reverse',
@@ -1444,7 +1445,7 @@ export const skillTreeData: Skill[] = [
     x: -390,
     y: 963,
     connections: [],
-    videoUrl: 'https://youtube.com/shorts/cHMKZoVjEWk?si=EgpzTzzwcLeWm03P',
+    videoUrl: 'https://youtube.com/shorts/tR2kE-mkF5o?si=qq60zBKtuSFc8k-M',
   },
 
   // ── LEVEL 4 — one-swing-rotating-ii chain ─────────────────────────────────────────────────
