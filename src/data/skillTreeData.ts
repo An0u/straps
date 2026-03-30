@@ -693,6 +693,7 @@ export const skillTreeData: Skill[] = [
     x: 1860,
     y: 675,
     connections: ['press-handstand'],
+	videoUrl: 'https://www.youtube.com/shorts/4ENCBawZ2pk',
   },
   {
     id: 'press-handstand',
