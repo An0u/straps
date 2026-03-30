@@ -770,7 +770,7 @@ export const skillTreeData: Skill[] = [
     x: 2160,
     y: 825,
     connections: [],
-    videoUrl: 'https://youtube.com/shorts/aCkpDVtMdzM?si=-f0jfaHafW56R9he',
+    videoUrl: 'https://youtube.com/shorts/tt-u-38k0Qc?si=x4_ri0iYD-fW6Z2A',
   },
 
   // ── LEVEL 4 — two-swing-twisting-ii chain ─────────────────────────────────────────────────
@@ -1309,7 +1309,7 @@ export const skillTreeData: Skill[] = [
     x: 60,
     y: 663,
     connections: [],
-    videoUrl: 'https://youtube.com/shorts/qzoISsV5-Zc?si=kgap5Uj5kiOh8x7t',
+    videoUrl: 'https://www.youtube.com/watch?v=xTpNrPP5crQ',
   },
 
   // ── LEVEL 4 — one-swing-twisting chain ─────────────────────────────────────────────────
@@ -1347,7 +1347,7 @@ export const skillTreeData: Skill[] = [
     x: -90,
     y: 813,
     connections: ['outside-pirouette'],
-    videoUrl: 'https://youtube.com/shorts/u8FwOq0WFXc',
+    videoUrl: 'https://youtube.com/shorts/6Jbf4Mhr8pI?si=CWrnPTBOsqJYb2C3',
   },
   {
     id: 'outside-pirouette',
