@@ -20,7 +20,7 @@ const SVG_PATHS = {
     purple: '/shapes/key-purple.svg',
   },
   regular: {
-    blue: '/shapes/regular-blue.svg',
+    blue: '/shapes/regular-blue-new.svg',
     purple: '/shapes/regular-purple.svg',
   },
   inactive: '/shapes/regular-inactive.svg',
