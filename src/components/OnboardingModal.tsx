@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
@@ -73,6 +74,8 @@ const OnboardingModal: React.FC<OnboardingModalProps> = ({
             : "sm:max-w-2xl rounded-lg max-h-[85vh]"
         )}
       >
+        <DialogTitle className="sr-only">{currentStepData.title}</DialogTitle>
+
         {/* Mobile swipe handle */}
         {isMobile && (
           <div className="flex justify-center pt-3 pb-2">
