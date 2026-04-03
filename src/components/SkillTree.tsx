@@ -76,6 +76,10 @@ const SkillTree: React.FC = () => {
     liveTransform.current.y = position.y;
   }, [position]);
 
+  // "Start Here" tooltip — shown until the user clicks any skill for the first time
+  const startHereRef = useRef(!localStorage.getItem('straps_has_clicked_skill'));
+  const [showStartHere, setShowStartHere] = useState(startHereRef.current);
+
   const containerRef = useRef<HTMLDivElement>(null);
   // Ref to the inner transform div - we mutate its style directly during gestures
   const transformDivRef = useRef<HTMLDivElement>(null);
@@ -295,6 +299,11 @@ const SkillTree: React.FC = () => {
   const handleSkillClick = useCallback((skill: Skill) => {
     setSelectedSkill(skill);
     setIsModalOpen(true);
+    if (startHereRef.current) {
+      startHereRef.current = false;
+      setShowStartHere(false);
+      localStorage.setItem('straps_has_clicked_skill', '1');
+    }
   }, []);
 
   const closeModal = useCallback(() => {
@@ -393,6 +402,54 @@ const SkillTree: React.FC = () => {
                 <p style={{ fontSize: 12, color: 'hsl(220 10% 55%)' }}>Loading skill tree...</p>
               </div>
               <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+            </div>
+          )}
+
+          {treeReady && showStartHere && (
+            <div
+              style={{
+                position: 'absolute',
+                left: 1050,
+                top: 502,
+                transform: 'translateX(-50%)',
+                pointerEvents: 'none',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: 0,
+                animation: 'startHereBounce 1.2s ease-in-out infinite',
+                zIndex: 10,
+              }}
+            >
+              {/* triangle pointer toward node — sits behind pill, overlaps by 4px */}
+              <div style={{
+                width: 0,
+                height: 0,
+                borderLeft: '8px solid transparent',
+                borderRight: '8px solid transparent',
+                borderBottom: '10px solid hsl(45 100% 65%)',
+                marginBottom: -4,
+                zIndex: 0,
+              }} />
+              {/* pill */}
+              <div style={{
+                background: 'hsl(45 100% 65%)',
+                color: 'hsl(220 15% 8%)',
+                padding: '4px 12px',
+                borderRadius: 6,
+                zIndex: 1,
+                position: 'relative',
+                fontSize: 11,
+                fontWeight: 700,
+                whiteSpace: 'nowrap',
+                letterSpacing: '0.04em',
+              }}>Start Here</div>
+              <style>{`
+                @keyframes startHereBounce {
+                  0%, 100% { transform: translateX(-50%) translateY(0); }
+                  50% { transform: translateX(-50%) translateY(4px); }
+                }
+              `}</style>
             </div>
           )}
 
