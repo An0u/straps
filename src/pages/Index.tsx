@@ -191,7 +191,7 @@ const Index: React.FC = () => {
             </div>
           </div>
         }>
-          <SkillTree />
+          <SkillTree onOpenFeedback={() => setFeedbackOpen(true)} />
         </Suspense>
       </main>
 

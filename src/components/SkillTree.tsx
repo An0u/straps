@@ -11,7 +11,7 @@ import { useEditableSkillTree } from '@/hooks/useEditableSkillTree';
 import { useSheetSkills } from '@/hooks/useSheetSkills';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useOnboarding } from '@/hooks/useOnboarding';
-import { Minus, Plus, CircleHelp } from 'lucide-react';
+import { Minus, Plus, CircleHelp, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
@@ -21,7 +21,11 @@ import {
 
 const DOT_BASE = 24; // base dot spacing in px at scale 1
 
-const SkillTree: React.FC = () => {
+interface SkillTreeProps {
+  onOpenFeedback?: () => void;
+}
+
+const SkillTree: React.FC<SkillTreeProps> = ({ onOpenFeedback }) => {
   const isMobile = useIsMobile();
   const [scale, setScale] = useState(isMobile ? 0.5 : 0.8);
   const [position, setPosition] = useState({ x: isMobile ? 50 : -200, y: isMobile ? 50 : -100 });
@@ -417,6 +421,21 @@ const SkillTree: React.FC = () => {
               </Button>
             </TooltipTrigger>
             <TooltipContent side="top">Help</TooltipContent>
+          </Tooltip>
+
+          {/* Feedback */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => onOpenFeedback?.()}
+                className="h-6 w-6 text-white hover:text-white hover:bg-white/10 rounded-md"
+              >
+                <MessageCircle size={24} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="top">Feedback</TooltipContent>
           </Tooltip>
         </div>
       </div>

@@ -8,9 +8,9 @@ const FORM_URL =
   'https://docs.google.com/forms/d/e/1FAIpQLScfOMETI1Od-pukc2GfdQVBMePJuw-_Si-Ta2HS0ftmUfDhmw/formResponse';
 
 // Google Form field entry IDs
-const FIELD_FEEDBACK   = 'entry.621624340';   // "Your feedback" (paragraph)
-const FIELD_CATEGORY   = 'entry.1904988938';  // "Feedback type" (single choice)
-const FIELD_EXTRA      = 'entry.1314121031';  // "Additional comments"
+const FIELD_FEEDBACK   = 'entry.1632666854';  // "Your feedback" (paragraph)
+const FIELD_CATEGORY   = 'entry.1209057512';  // "Feedback type" (single choice)
+const FIELD_EXTRA      = 'entry.152193729';   // "Additional comments"
 
 const CATEGORIES = [
   { label: 'Bug Report',             formValue: 'Bug Report' },
