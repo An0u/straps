@@ -1,21 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export const useOnboarding = () => {
   const [showOnboarding, setShowOnboarding] = useState(false);
 
-  useEffect(() => {
-    // Check if user has completed onboarding
-    const hasCompletedOnboarding = localStorage.getItem('onboarding-completed');
-    
-    if (!hasCompletedOnboarding) {
-      // Small delay to let the app load first
-      const timer = setTimeout(() => {
-        setShowOnboarding(true);
-      }, 500);
-      
-      return () => clearTimeout(timer);
-    }
-  }, []);
+  // Onboarding is triggered manually via the ? button, not auto-started
 
   const handleOnboardingComplete = () => {
     setShowOnboarding(false);

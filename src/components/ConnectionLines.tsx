@@ -136,9 +136,9 @@ const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills, completedSkil
       </defs>
       
       {/* Render inactive lines first (below) */}
-      {lines.filter(l => !l.isActive).map((line, index) => (
+      {lines.filter(l => !l.isActive).map((line) => (
         <line
-          key={`inactive-${index}`}
+          key={`${line.x1}-${line.y1}-${line.x2}-${line.y2}`}
           x1={line.x1}
           y1={line.y1}
           x2={line.x2}
@@ -150,9 +150,9 @@ const ConnectionLines: React.FC<ConnectionLinesProps> = ({ skills, completedSkil
         />
       ))}
       {/* Render active lines on top */}
-      {lines.filter(l => l.isActive).map((line, index) => (
+      {lines.filter(l => l.isActive).map((line) => (
         <line
-          key={`active-${index}`}
+          key={`${line.x1}-${line.y1}-${line.x2}-${line.y2}`}
           x1={line.x1}
           y1={line.y1}
           x2={line.x2}

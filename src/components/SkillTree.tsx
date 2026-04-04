@@ -11,13 +11,15 @@ import { useEditableSkillTree } from '@/hooks/useEditableSkillTree';
 import { useSheetSkills } from '@/hooks/useSheetSkills';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useOnboarding } from '@/hooks/useOnboarding';
-import { ZoomIn, ZoomOut, RotateCcw, Move } from 'lucide-react';
+import { Minus, Plus, CircleHelp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+
+const DOT_BASE = 24; // base dot spacing in px at scale 1
 
 const SkillTree: React.FC = () => {
   const isMobile = useIsMobile();
@@ -83,12 +85,19 @@ const SkillTree: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   // Ref to the inner transform div - we mutate its style directly during gestures
   const transformDivRef = useRef<HTMLDivElement>(null);
+  // Ref to the dot pattern layer - updated alongside the transform
+  const dotLayerRef = useRef<HTMLDivElement>(null);
 
   // Apply transform directly to DOM - zero React overhead during gesture
   const applyTransformDirect = useCallback((x: number, y: number, s: number) => {
     liveTransform.current = { x, y, scale: s };
     if (transformDivRef.current) {
       transformDivRef.current.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+    }
+    if (dotLayerRef.current) {
+      const spacing = DOT_BASE * s;
+      dotLayerRef.current.style.backgroundSize = `${spacing}px ${spacing}px`;
+      dotLayerRef.current.style.backgroundPosition = `${x % spacing}px ${y % spacing}px`;
     }
   }, []);
 
@@ -107,23 +116,32 @@ const SkillTree: React.FC = () => {
   // Derive available skills — updates any time completedSkills or skills change
   const availableSkills = getAvailableSkills(skills);
 
+  // Track container size so culling updates on window resize
+  const [containerSize, setContainerSize] = React.useState({ w: window.innerWidth, h: window.innerHeight });
+  React.useEffect(() => {
+    const ro = new ResizeObserver(entries => {
+      const { width, height } = entries[0].contentRect;
+      setContainerSize({ w: width, h: height });
+    });
+    if (containerRef.current) ro.observe(containerRef.current);
+    return () => ro.disconnect();
+  }, []);
+
   // Viewport culling — only render nodes visible in the current viewport
   // Adds a generous 200px buffer so nodes pop in before they're visible
   const visibleSkills = React.useMemo(() => {
-    const vpWidth = window.innerWidth;
-    const vpHeight = window.innerHeight;
     const buffer = 200;
     return skills.filter(skill => {
       const screenX = skill.x * scale + position.x;
       const screenY = skill.y * scale + position.y;
       return (
         screenX > -buffer &&
-        screenX < vpWidth + buffer &&
+        screenX < containerSize.w + buffer &&
         screenY > -buffer &&
-        screenY < vpHeight + buffer
+        screenY < containerSize.h + buffer
       );
     });
-  }, [skills, scale, position]);
+  }, [skills, scale, position, containerSize]);
 
   // Tree bounds — memoized so it only recalculates when skills change.
   // Uses reduce instead of Math.min/max(...spread) to avoid call stack limits on large arrays.
@@ -140,10 +158,19 @@ const SkillTree: React.FC = () => {
   const treeWidth = treeBounds.maxX - treeBounds.minX;
   const treeHeight = treeBounds.maxY - treeBounds.minY;
 
-  // Zoom button handler
+  // Zoom button handler — zooms from the viewport center
   const handleZoom = useCallback((delta: number) => {
-    setScale(prev => Math.min(Math.max(0.3, prev + delta), 2));
-  }, []);
+    const newScale = Math.min(Math.max(0.3, scale + delta), 2);
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (rect) {
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const worldX = (cx - position.x) / scale;
+      const worldY = (cy - position.y) / scale;
+      setPosition({ x: cx - worldX * newScale, y: cy - worldY * newScale });
+    }
+    setScale(newScale);
+  }, [scale, position]);
 
   // Wheel zoom (desktop)
   const handleWheel = useCallback((e: React.WheelEvent) => {
@@ -322,32 +349,74 @@ const SkillTree: React.FC = () => {
   return (
     <div className="relative w-full h-full overflow-hidden tree-canvas overscroll-none">
 
-      {/* Floating bottom toolbar */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
-        <div className="bg-card/80 backdrop-blur-sm rounded-full p-1.5 flex flex-row gap-1 shadow-lg">
+      {/* Dot pattern layer — scales and pans with the board */}
+      <div
+        ref={dotLayerRef}
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.09) 1px, transparent 1px)',
+          backgroundSize: `${DOT_BASE * scale}px ${DOT_BASE * scale}px`,
+          backgroundPosition: `${position.x % (DOT_BASE * scale)}px ${position.y % (DOT_BASE * scale)}px`,
+        }}
+      />
+
+      {/* Floating bottom toolbar — Figma zoom design */}
+      <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20">
+        <div
+          className="flex items-center gap-4 px-4 py-2 rounded-lg border"
+          style={{ background: '#1a1d23', borderColor: '#2b303b' }}
+        >
+          {/* Zoom controls */}
+          <div className="flex items-center gap-3 h-10">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleZoom(-0.2)}
+                  className="h-8 w-8 text-white hover:text-white hover:bg-white/10 rounded-md"
+                >
+                  <Minus size={18} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="top">Zoom Out</TooltipContent>
+            </Tooltip>
+
+            <span className="text-white text-[14px] leading-[20px] tabular-nums w-10 text-center select-none">
+              {Math.round(scale * 100)}%
+            </span>
+
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleZoom(0.2)}
+                  className="h-8 w-8 text-white hover:text-white hover:bg-white/10 rounded-md"
+                >
+                  <Plus size={18} />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="top">Zoom In</TooltipContent>
+            </Tooltip>
+          </div>
+
+          {/* Divider */}
+          <div className="w-px h-[33px]" style={{ background: '#2b303b' }} />
+
+          {/* Help / Onboarding */}
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={() => handleZoom(0.2)} className="h-9 w-9 rounded-full">
-                <ZoomIn size={18} />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowOnboarding(true)}
+                className="h-6 w-6 text-white hover:text-white hover:bg-white/10 rounded-md"
+              >
+                <CircleHelp size={24} />
               </Button>
             </TooltipTrigger>
-            <TooltipContent side="top">Zoom In</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={() => handleZoom(-0.2)} className="h-9 w-9 rounded-full">
-                <ZoomOut size={18} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="top">Zoom Out</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={resetView} className="h-9 w-9 rounded-full">
-                <RotateCcw size={18} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="top">Reset View</TooltipContent>
+            <TooltipContent side="top">Help</TooltipContent>
           </Tooltip>
         </div>
       </div>
@@ -461,18 +530,6 @@ const SkillTree: React.FC = () => {
               isFavorite={isSkillFavorite(skill.id)}
               isAvailable={availableSkills.has(skill.id)}
               onClick={() => handleSkillClick(skill)}
-              scale={scale}
-              isEditMode={false}
-              isSelected={false}
-              isConnectionSource={false}
-              onSelect={() => new Set<string>()}
-              onDragStart={() => {}}
-              onDragMove={() => {}}
-              onDragEnd={() => {}}
-              onConnectionClick={() => false}
-              gridSize={30}
-              onNameChange={() => {}}
-              onToggleKeySkill={() => {}}
             />
           ))}
         </div>

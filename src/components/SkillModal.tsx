@@ -76,17 +76,20 @@ const SkillModal: React.FC<SkillModalProps> = ({
 }) => {
   const [isVideoFullscreen, setIsVideoFullscreen] = useState(false);
   const isMobile = useIsMobile();
-  
-  if (!skill) return null;
 
-  // Build parent map for ancestor lookups
-  const parentMap = new Map<string, Skill[]>();
-  allSkills.forEach(s => {
-    s.connections.forEach(childId => {
-      if (!parentMap.has(childId)) parentMap.set(childId, []);
-      parentMap.get(childId)!.push(s);
+  // Build parent map for ancestor lookups — must be before early return (Rules of Hooks)
+  const parentMap = React.useMemo(() => {
+    const map = new Map<string, Skill[]>();
+    allSkills.forEach(s => {
+      s.connections.forEach(childId => {
+        if (!map.has(childId)) map.set(childId, []);
+        map.get(childId)!.push(s);
+      });
     });
-  });
+    return map;
+  }, [allSkills]);
+
+  if (!skill) return null;
 
   // Walk up to find the nearest category ancestor
   const findCategoryAncestor = (skillId: string, visited = new Set<string>()): Skill | null => {
