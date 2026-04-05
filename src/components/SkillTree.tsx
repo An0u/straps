@@ -11,7 +11,7 @@ import { useEditableSkillTree } from '@/hooks/useEditableSkillTree';
 import { useSheetSkills } from '@/hooks/useSheetSkills';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useOnboarding } from '@/hooks/useOnboarding';
-import { Minus, Plus, CircleHelp, MessageCircle } from 'lucide-react';
+import { Minus, Plus, CircleHelp, MessageCircle, Map } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
@@ -33,6 +33,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onOpenFeedback }) => {
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showLegend, setShowLegend] = useState(false);
   // Onboarding state
   const { 
     showOnboarding, 
@@ -364,79 +365,101 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onOpenFeedback }) => {
         }}
       />
 
-      {/* Floating bottom toolbar — Figma zoom design */}
+      {/* Floating bottom toolbar */}
       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20">
         <div
-          className="flex items-center gap-4 px-4 py-2 rounded-lg border"
+          className="flex items-center gap-[8px] px-[16px] py-[8px] rounded-[8px] border"
           style={{ background: '#1a1d23', borderColor: '#2b303b' }}
         >
           {/* Zoom controls */}
-          <div className="flex items-center gap-3 h-10">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleZoom(-0.2)}
-                  className="h-8 w-8 text-white hover:text-white hover:bg-white/10 rounded-md"
-                >
-                  <Minus size={18} />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="top">Zoom Out</TooltipContent>
-            </Tooltip>
+          <div className="flex items-center gap-[12px] h-[40px]">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => handleZoom(-0.2)}
+              className="h-8 w-8 text-white hover:text-white hover:bg-white/10 rounded-md"
+            >
+              <Minus size={18} />
+            </Button>
 
             <span className="text-white text-[14px] leading-[20px] tabular-nums w-10 text-center select-none">
               {Math.round(scale * 100)}%
             </span>
 
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleZoom(0.2)}
-                  className="h-8 w-8 text-white hover:text-white hover:bg-white/10 rounded-md"
-                >
-                  <Plus size={18} />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="top">Zoom In</TooltipContent>
-            </Tooltip>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => handleZoom(0.2)}
+              className="h-8 w-8 text-white hover:text-white hover:bg-white/10 rounded-md"
+            >
+              <Plus size={18} />
+            </Button>
           </div>
 
           {/* Divider */}
-          <div className="w-px h-[33px]" style={{ background: '#2b303b' }} />
+          <div className="w-px h-[33px] shrink-0" style={{ background: '#2b303b' }} />
 
-          {/* Help / Onboarding */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setShowOnboarding(true)}
-                className="h-6 w-6 text-white hover:text-white hover:bg-white/10 rounded-md"
-              >
-                <CircleHelp size={24} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="top">Help</TooltipContent>
-          </Tooltip>
+          {/* Icon buttons group */}
+          <div className="flex items-center gap-[8px] h-[40px]">
 
-          {/* Feedback */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => onOpenFeedback?.()}
-                className="h-6 w-6 text-white hover:text-white hover:bg-white/10 rounded-md"
+            {/* Legend */}
+            <div className="relative">
+              {showLegend && (
+                <div
+                  className="absolute bottom-full mb-5 left-1/2 -translate-x-1/2 rounded-xl p-4 w-44 z-30"
+                  style={{ background: '#1a1d23', border: '1px solid #2b303b' }}
+                >
+                  <h3 className="text-sm font-medium text-white mb-3">Legend</h3>
+                  <div className="space-y-2 text-sm">
+                    <p className="text-white font-medium">Categories</p>
+                    <div className="flex items-center gap-2">
+                      <img src="/shapes/category-blue.svg" alt="" className="w-5 h-5" />
+                      <span className="text-white/60">Two arm</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <img src="/shapes/category-ornate.svg" alt="" className="w-5 h-5" />
+                      <span className="text-white/60">One arm</span>
+                    </div>
+                    <p className="text-white font-medium pt-1">Skills</p>
+                    <div className="flex items-center gap-2">
+                      <img src="/shapes/regular-blue-new.svg" alt="" className="w-5 h-5" />
+                      <span className="text-white/60">Two arm</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <img src="/shapes/regular-purple.svg" alt="" className="w-5 h-5" />
+                      <span className="text-white/60">One arm</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <button
+                onClick={() => setShowLegend(v => !v)}
+                className="flex flex-col items-center justify-center gap-[2px] w-[40px] h-full text-white/70 hover:text-white transition-colors overflow-hidden"
               >
-                <MessageCircle size={24} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="top">Feedback</TooltipContent>
-          </Tooltip>
+                <Map size={20} />
+                <span className="text-[8.8px] leading-[13.2px] tracking-[0.352px]">Legend</span>
+              </button>
+            </div>
+
+            {/* Bugs */}
+            <button
+              onClick={() => onOpenFeedback?.()}
+              className="flex flex-col items-center justify-center gap-[2px] w-[40px] h-full text-white/70 hover:text-white transition-colors overflow-hidden"
+            >
+              <MessageCircle size={20} />
+              <span className="text-[8.8px] leading-[13.2px] tracking-[0.352px]">Bugs</span>
+            </button>
+
+            {/* Help */}
+            <button
+              onClick={() => setShowOnboarding(true)}
+              className="flex flex-col items-center justify-center gap-[2px] w-[40px] h-full text-white/70 hover:text-white transition-colors overflow-hidden"
+            >
+              <CircleHelp size={20} />
+              <span className="text-[8.8px] leading-[13.2px] tracking-[0.352px]">Help</span>
+            </button>
+
+          </div>
         </div>
       </div>
 

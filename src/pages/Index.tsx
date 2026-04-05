@@ -195,36 +195,6 @@ const Index: React.FC = () => {
         </Suspense>
       </main>
 
-      {/* ── Legend (desktop only) ── */}
-      <div className="hidden md:block absolute bottom-4 left-4 z-20 bg-card/80 backdrop-blur-sm rounded-lg p-3">
-        <h3 className="text-xs font-medium text-foreground mb-2">Legend</h3>
-        <div className="space-y-1.5 text-xs">
-          <div className="flex items-center gap-2">
-            <img src="/shapes/category-blue.svg" alt="Two Arm Category" className="w-5 h-5" />
-            <span className="text-muted-foreground">Two Arm Category</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <img src="/shapes/category-ornate.svg" alt="One Arm Category" className="w-5 h-5" />
-            <span className="text-muted-foreground">One Arm Category</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-sm bg-skill-gold shadow-[0_0_8px_hsl(45_100%_55%/0.7)]" />
-            <span className="text-muted-foreground">Key Skill</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <img src="/shapes/regular-blue-new.svg" alt="Two Arm Skill" className="w-5 h-5" />
-            <span className="text-muted-foreground">Two Arm Skill</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <img src="/shapes/regular-purple.svg" alt="One Arm Skill" className="w-5 h-5" />
-            <span className="text-muted-foreground">One Arm Skill</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <img src="/shapes/regular-inactive.svg" alt="Skill Not Started" className="w-5 h-5 grayscale opacity-50" />
-            <span className="text-muted-foreground">Skill Not Started</span>
-          </div>
-        </div>
-      </div>
 
       {/* ── Slide-in Menu ── */}
       {menuOpen && (
