@@ -179,7 +179,7 @@ const Menu: React.FC<MenuProps> = ({ onClose, onReset, onOpenFeedback, completed
               <span className="text-[12px] leading-[16px] px-3" style={{ color: '#818898' }}>Credits to</span>
               <div className="px-3">
                 <p className="text-white text-[14px] leading-[20px]">
-                  Alvaro Medrano, Mathis Machure, Garrett Schniewind, Julian Acrobat
+                  Alvaro Medrano, Mathis Machure, Garrett Schniewind, Julian Mctaggart
                 </p>
               </div>
             </div>
