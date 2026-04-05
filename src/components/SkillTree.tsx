@@ -372,7 +372,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onOpenFeedback }) => {
           style={{ background: '#1a1d23', borderColor: '#2b303b' }}
         >
           {/* Zoom controls */}
-          <div className="flex items-center gap-[12px] h-[40px]">
+          <div className="flex items-center gap-[12px] px-[12px] h-[40px]">
             <Button
               variant="ghost"
               size="icon"
@@ -400,7 +400,7 @@ const SkillTree: React.FC<SkillTreeProps> = ({ onOpenFeedback }) => {
           <div className="w-px h-[33px] shrink-0" style={{ background: '#2b303b' }} />
 
           {/* Icon buttons group */}
-          <div className="flex items-center gap-[8px] h-[40px]">
+          <div className="flex items-center gap-[12px] px-[12px] h-[40px]">
 
             {/* Legend */}
             <div className="relative">
