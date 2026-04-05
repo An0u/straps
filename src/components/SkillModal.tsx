@@ -9,11 +9,10 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Check, Lock, ChevronRight, Star, Play, Clock, X, Camera } from 'lucide-react';
+import { Check, Lock, Star, Play, Clock, X, Camera } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Progress } from '@/components/ui/progress';
 import {
   Tooltip,
   TooltipContent,
@@ -89,6 +88,26 @@ const SkillModal: React.FC<SkillModalProps> = ({
     return map;
   }, [allSkills]);
 
+  // Follow the chain forward up to 3 skills deep — must be before early return (Rules of Hooks)
+  const nextSkillsInChain = React.useMemo(() => {
+    if (!skill) return [];
+    const result: Skill[] = [];
+    const visited = new Set<string>([skill.id]);
+    let nextIds = skill.connections;
+
+    while (result.length < 3 && nextIds.length > 0) {
+      const nextId = nextIds[0];
+      if (visited.has(nextId)) break;
+      visited.add(nextId);
+      const nextSkill = allSkills.find(s => s.id === nextId);
+      if (!nextSkill) break;
+      result.push(nextSkill);
+      nextIds = nextSkill.connections;
+    }
+
+    return result;
+  }, [skill, allSkills]);
+
   if (!skill) return null;
 
   // Walk up to find the nearest category ancestor
@@ -128,20 +147,8 @@ const SkillModal: React.FC<SkillModalProps> = ({
     return true;
   })();
 
-  // For the prerequisites display, show the category ancestor as the requirement
-  // when the direct parent is a non-category L4 skill
+  // Category ancestor — used for the badge label on non-category skills
   const categoryAncestor = findCategoryAncestor(skill.id);
-  const showChainPrereqs = directParents.length > 0 && directParents.every(p => p.type !== 'category');
-
-  // What to show in the prerequisites section
-  const prereqsToShow: Skill[] = showChainPrereqs && categoryAncestor
-    ? [categoryAncestor]
-    : directParents;
-
-  const completedPrereqsCount = prereqsToShow.filter(p => completedSkills.has(p.id)).length;
-  const prereqProgress = prereqsToShow.length > 0
-    ? (completedPrereqsCount / prereqsToShow.length) * 100
-    : 100;
 
   const isCategory = skill.type === 'category';
   const isKey = skill.type === 'key';
@@ -152,28 +159,6 @@ const SkillModal: React.FC<SkillModalProps> = ({
   
   const categorySvg = isCategory ? getCategorySvg(skill.name) : null;
 
-  const getTypeLabel = () => {
-    if (isCategory) return 'Category';
-    if (isKey) return 'Key Skill';
-    return 'Regular Skill';
-  };
-
-  const getTypeBadgeColor = () => {
-    if (isCategory) return 'bg-purple-500/10 text-purple-400 border-purple-500/30';
-    if (isKey) return 'bg-blue-500/10 text-blue-400 border-blue-500/30';
-    return 'bg-muted text-muted-foreground border-border';
-  };
-
-  const getStatusBadge = () => {
-    if (isCompleted) {
-      return <Badge className="bg-green-500/10 text-green-400 border-green-500/30">Completed</Badge>;
-    }
-    if (isLocked) {
-      return <Badge className="bg-amber-500/10 text-amber-400 border-amber-500/30">Locked</Badge>;
-    }
-    return <Badge className="bg-green-500/10 text-green-400 border-green-500/30">Ready to Learn</Badge>;
-  };
-
   const getButtonText = () => {
     if (isLocked) {
       return (
@@ -183,40 +168,20 @@ const SkillModal: React.FC<SkillModalProps> = ({
         </>
       );
     }
-    
-    if (isCategory) {
-      if (isCompleted) {
-        return (
-          <>
-            <Check size={16} />
-            Started
-          </>
-        );
-      } else {
-        return (
-          <>
-            <Play size={16} />
-            Start Now
-          </>
-        );
-      }
-    }
-    
     if (isCompleted) {
       return (
         <>
           <Check size={16} />
-          Mark as Incomplete
-        </>
-      );
-    } else {
-      return (
-        <>
-          <Check size={16} />
-          Mark as Complete
+          Unmark as complete
         </>
       );
     }
+    return (
+      <>
+        <Check size={16} />
+        Mark as complete
+      </>
+    );
   };
 
   return (
@@ -376,13 +341,23 @@ const SkillModal: React.FC<SkillModalProps> = ({
             <DialogHeader className="select-none caret-transparent space-y-3">
               {/* Badges */}
               <div className="flex items-center gap-2 flex-wrap">
-                <Badge className={cn('text-xs border', getTypeBadgeColor())}>
-                  {getTypeLabel()}
-                </Badge>
-                {getStatusBadge()}
-                {skill.isGoldBorder && (
-                  <Badge className="bg-skill-gold/10 text-skill-gold border-skill-gold/30 text-xs">
-                    Gold Tier
+                {isCategory ? (
+                  <Badge className="bg-purple-500/10 text-purple-400 border border-purple-500/30 text-xs">
+                    {skill.name}
+                  </Badge>
+                ) : categoryAncestor ? (
+                  <Badge className="bg-muted text-muted-foreground border border-border text-xs">
+                    {categoryAncestor.name}
+                  </Badge>
+                ) : null}
+                {isCompleted && (
+                  <Badge className="bg-green-500/10 text-green-400 border border-green-500/30 text-xs">
+                    Completed
+                  </Badge>
+                )}
+                {isFavorite && (
+                  <Badge className="bg-skill-gold/10 text-skill-gold border border-skill-gold/30 text-xs">
+                    Favourite
                   </Badge>
                 )}
               </div>
@@ -392,40 +367,18 @@ const SkillModal: React.FC<SkillModalProps> = ({
                 <DialogTitle className="font-sans text-2xl text-foreground select-none caret-transparent">
                   {skill.name}
                 </DialogTitle>
-                {!isMobile ? (
-                  <Tooltip delayDuration={200}>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={onToggleFavorite}
-                        className={cn(
-                          'h-7 w-7 shrink-0',
-                          isFavorite ? 'text-skill-gold hover:text-skill-gold/80' : 'text-muted-foreground hover:text-foreground',
-                          'select-none caret-transparent'
-                        )}
-                      >
-                        <Star size={18} className={cn(isFavorite && 'fill-skill-gold')} />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent side="top" sideOffset={5}>
-                      {isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-                    </TooltipContent>
-                  </Tooltip>
-                ) : (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={onToggleFavorite}
-                    className={cn(
-                      'h-7 w-7 shrink-0',
-                      isFavorite ? 'text-skill-gold hover:text-skill-gold/80' : 'text-muted-foreground hover:text-foreground',
-                      'select-none caret-transparent'
-                    )}
-                  >
-                    <Star size={18} className={cn(isFavorite && 'fill-skill-gold')} />
-                  </Button>
-                )}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={onToggleFavorite}
+                  className={cn(
+                    'h-7 w-7 shrink-0',
+                    isFavorite ? 'text-skill-gold hover:text-skill-gold/80' : 'text-muted-foreground hover:text-foreground',
+                    'select-none caret-transparent'
+                  )}
+                >
+                  <Star size={18} className={cn(isFavorite && 'fill-skill-gold')} />
+                </Button>
               </div>
 
               {/* Description */}
@@ -434,91 +387,13 @@ const SkillModal: React.FC<SkillModalProps> = ({
               </DialogDescription>
             </DialogHeader>
 
-            {/* Prerequisites Progress */}
-            {prereqsToShow.length > 0 && (
-              <div className="space-y-3 p-4 bg-muted/30 rounded-lg border border-border">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-medium text-foreground flex items-center gap-2">
-                    <Lock size={14} />
-                    Prerequisites
-                  </h4>
-                  <span className="text-xs text-muted-foreground">
-                    {completedPrereqsCount}/{prereqsToShow.length} completed
-                  </span>
-                </div>
-                
-                <Progress value={prereqProgress} className="h-2" />
-
-                <div className="space-y-2">
-                  {prereqsToShow.map(parent => {
-                    const isDone = completedSkills.has(parent.id);
-                    return (
-                      <div
-                        key={parent.id}
-                        className={cn(
-                          'flex items-center justify-between p-2 rounded-md text-sm',
-                          isDone
-                            ? 'bg-green-500/10 text-green-400'
-                            : 'bg-muted text-muted-foreground'
-                        )}
-                      >
-                        <div className="flex items-center gap-2">
-                          {isDone ? (
-                            <Check size={14} className="shrink-0" />
-                          ) : (
-                            <div className="w-3.5 h-3.5 rounded-full border-2 border-current shrink-0" />
-                          )}
-                          <span>{parent.name}</span>
-                        </div>
-                        {!isDone && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-6 text-xs"
-                            onClick={() => onClose()}
-                          >
-                            View
-                          </Button>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
             {/* Unlocks Section */}
-            {skill.connections.length > 0 && (
-              <div className="space-y-3">
-                <h4 className="text-sm font-medium text-foreground flex items-center gap-2">
-                  <ChevronRight size={14} className="text-muted-foreground" />
-                  Unlocks the Following
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {skill.connections.map(connId => {
-                    const connectedSkill = allSkills.find(s => s.id === connId);
-                    const displayName = connectedSkill?.name || connId.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-                    const isUnlocked = connectedSkill ? completedSkills.has(connectedSkill.id) : false;
-                    return (
-                      <div
-                        key={connId}
-                        className={cn(
-                          'flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm',
-                          isUnlocked
-                            ? 'bg-green-500/10 text-green-400 border border-green-500/30'
-                            : 'bg-muted text-muted-foreground border border-border'
-                        )}
-                      >
-                        {isUnlocked ? (
-                          <Check size={12} />
-                        ) : (
-                          <Lock size={12} />
-                        )}
-                        {displayName}
-                      </div>
-                    );
-                  })}
-                </div>
+            {nextSkillsInChain.length > 0 && (
+              <div className="space-y-1">
+                <h4 className="text-sm font-medium text-foreground">Unlocks</h4>
+                <p className="text-sm text-muted-foreground">
+                  {nextSkillsInChain.map(s => s.name).join(', ')}
+                </p>
               </div>
             )}
           </div>
@@ -548,7 +423,7 @@ const SkillModal: React.FC<SkillModalProps> = ({
             </TooltipTrigger>
             {isLocked && (
               <TooltipContent>
-                <p>Complete {prereqsToShow.find(p => !completedSkills.has(p.id))?.name} to unlock this skill</p>
+                <p>Complete {categoryAncestor?.name ?? 'prerequisites'} to unlock this skill</p>
               </TooltipContent>
             )}
           </Tooltip>

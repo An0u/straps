@@ -212,7 +212,7 @@ const Index: React.FC = () => {
             <span className="text-muted-foreground">Key Skill</span>
           </div>
           <div className="flex items-center gap-2">
-            <img src="/shapes/regular-blue.svg" alt="Two Arm Skill" className="w-5 h-5" />
+            <img src="/shapes/regular-blue-new.svg" alt="Two Arm Skill" className="w-5 h-5" />
             <span className="text-muted-foreground">Two Arm Skill</span>
           </div>
           <div className="flex items-center gap-2">
