@@ -2,11 +2,14 @@ import { useQuery } from '@tanstack/react-query';
 import { skillTreeData, Skill } from '@/data/skillTreeData';
 import { supabase } from '@/lib/supabase';
 
+type Direction = 'Left' | 'Right' | 'Down' | 'Up';
+
 interface SkillRow {
   id: number;
   slug: string;
   name: string;
   is_key_skill: boolean;
+  direction: Direction;
   link: string | null;
   description: string | null;
   connects_to: number | null;
@@ -16,6 +19,7 @@ interface SkillRecord {
   slug: string;
   name: string;
   isKey: boolean;
+  direction: Direction;
   videoUrl: string;
   description: string;
   connectsToSlug: string | null;
@@ -46,6 +50,7 @@ async function fetchAllFromSupabase() {
     slug: row.slug,
     name: row.name,
     isKey: row.is_key_skill,
+    direction: row.direction,
     videoUrl: row.link ?? '',
     description: row.description ?? '',
     connectsToSlug: row.connects_to != null ? idToSlug.get(row.connects_to) ?? null : null,
@@ -60,6 +65,13 @@ async function fetchAllFromSupabase() {
   return { skills, slugToName };
 }
 
+const DIRECTION_OFFSET: Record<Direction, { dx: number; dy: number }> = {
+  Left:  { dx: -150, dy: 0 },
+  Right: { dx:  150, dy: 0 },
+  Down:  { dx: 0, dy:  150 },
+  Up:    { dx: 0, dy: -150 },
+};
+
 async function fetchAndMerge(): Promise<Skill[]> {
   const { skills, slugToName } = await fetchAllFromSupabase();
 
@@ -67,8 +79,18 @@ async function fetchAndMerge(): Promise<Skill[]> {
   const skillMap = new Map<string, SkillRecord>();
   skills.forEach(r => skillMap.set(r.slug, r));
 
-  return skillTreeData.map(skill => {
-    // Hierarchy nodes (L1/L2/L3) — match by slug (= local id), override name from DB.
+  // Forward chain map: parent slug → [child slugs] (inverse of DB connects_to)
+  const forwardMap = new Map<string, string[]>();
+  skills.forEach(s => {
+    if (!s.connectsToSlug) return;
+    const arr = forwardMap.get(s.connectsToSlug) ?? [];
+    arr.push(s.slug);
+    forwardMap.set(s.connectsToSlug, arr);
+  });
+
+  // First pass: merge DB data onto local nodes
+  const merged: Skill[] = skillTreeData.map(skill => {
+    // Hierarchy nodes (L1/L2/L3) — match by slug, override name from DB.
     if (skill.type === 'category') {
       const dbName = slugToName.get(skill.id);
       return dbName ? { ...skill, name: dbName } : skill;
@@ -76,19 +98,63 @@ async function fetchAndMerge(): Promise<Skill[]> {
 
     // Skill nodes (L4) — match by slug (= local id).
     const match = skillMap.get(skill.id);
-    if (!match) return skill;
-    const resolvedConnections = match.connectsToSlug ? [match.connectsToSlug] : undefined;
+    const children = forwardMap.get(skill.id);
+    if (!match) {
+      return children ? { ...skill, connections: children } : skill;
+    }
     return {
       ...skill,
       name:        match.name,
       description: match.description,
       videoUrl:    match.videoUrl || skill.videoUrl,
-      ...(resolvedConnections ? { connections: resolvedConnections } : {}),
+      ...(children ? { connections: children } : {}),
       ...(match.isKey && skill.type === 'regular'
         ? { type: 'key' as const, isGoldBorder: true }
         : {}),
     };
   });
+
+  // Second pass: append DB-only skills, positioning them relative to their parent.
+  const localSlugs = new Set(skillTreeData.map(s => s.id));
+  const mergedBySlug = new Map<string, Skill>(merged.map(s => [s.id, s]));
+
+  // Iterate in connects_to order: a chain of new skills must resolve in topological order.
+  // Re-loop until nothing new gets added (handles long chains).
+  let added = true;
+  while (added) {
+    added = false;
+    for (const dbSkill of skills) {
+      if (localSlugs.has(dbSkill.slug) || mergedBySlug.has(dbSkill.slug)) continue;
+      const parentSlug = dbSkill.connectsToSlug;
+      if (!parentSlug) continue;
+      const parent = mergedBySlug.get(parentSlug);
+      if (!parent) continue;
+      const offset = DIRECTION_OFFSET[dbSkill.direction] ?? DIRECTION_OFFSET.Right;
+      const newNode: Skill = {
+        id: dbSkill.slug,
+        name: dbSkill.name,
+        description: dbSkill.description,
+        videoUrl: dbSkill.videoUrl || undefined,
+        prerequisites: parent.prerequisites,
+        type: dbSkill.isKey ? 'key' : 'regular',
+        state: 'inactive',
+        isBlue: parent.isBlue,
+        isGoldBorder: dbSkill.isKey || undefined,
+        x: parent.x + offset.dx,
+        y: parent.y + offset.dy,
+        connections: [],
+      };
+      merged.push(newNode);
+      mergedBySlug.set(newNode.id, newNode);
+      // Make sure the parent connects forward to this new node
+      if (!parent.connections.includes(newNode.id)) {
+        parent.connections = [...parent.connections, newNode.id];
+      }
+      added = true;
+    }
+  }
+
+  return merged;
 }
 
 export const useSheetSkills = () => {
