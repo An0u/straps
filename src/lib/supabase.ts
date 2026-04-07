@@ -18,7 +18,7 @@ export type SkillRow = {
   direction: 'Left' | 'Right' | 'Down' | 'Up';
   link: string | null;
   description: string | null;
-  connects_to: string | null;
+  connects_to: number | null;
   subgroups: {
     name: string;
     groups: {
