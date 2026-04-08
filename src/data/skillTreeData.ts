@@ -1024,7 +1024,7 @@ export const skillTreeData: Skill[] = [
     x: 210,
     y: 75,
     connections: ['split-grip-to-flag'],
-    videoUrl: 'https://www.youtube.com/watch?v=MsLbJOZAW9M',
+    videoUrl: 'https://youtube.com/shorts/UiYRfphWzLk',
   },
   {
     id: 'split-grip-to-flag',
@@ -1122,7 +1122,7 @@ export const skillTreeData: Skill[] = [
     x: 210,
     y: 225,
     connections: ['nutcracker-1'],
-    videoUrl: 'https://youtube.com/shorts/LngeQfLsL3c',
+    videoUrl: 'https://youtube.com/shorts/MfAPFyVlzUY?is=K5IINHIYXcr6i3bE',
   },
   {
     id: 'nutcracker-1',
@@ -1134,7 +1134,7 @@ export const skillTreeData: Skill[] = [
     x: 60,
     y: 225,
     connections: ['reverse-meathook'],
-    videoUrl: 'https://youtube.com/shorts/zKKMrqKPJWY',
+    videoUrl: 'https://youtube.com/shorts/Vwj5hANDYws?is=U1AkMT8UEV5P85ml',
   },
   {
     id: 'reverse-meathook',
@@ -1159,7 +1159,7 @@ export const skillTreeData: Skill[] = [
     x: -240,
     y: 225,
     connections: ['low-switch'],
-    videoUrl: 'https://youtube.com/shorts/Rbs7Kw9xKU0',
+    videoUrl: 'https://youtube.com/shorts/FSWWEqdo3o8',
   },
   {
     id: 'low-switch',
@@ -1419,7 +1419,7 @@ export const skillTreeData: Skill[] = [
     x: 60,
     y: 963,
     connections: ['salto'],
-    videoUrl: 'https://youtube.com/shorts/uFZ2-c1vePE?si=NNe87_Q2NvrFPEfP',
+    videoUrl: 'https://youtube.com/shorts/8NfijlpC99A',
   },
   {
     id: 'salto',
@@ -1480,7 +1480,7 @@ export const skillTreeData: Skill[] = [
     x: 60,
     y: 1113,
     connections: ['double-front'],
-    videoUrl: 'https://youtube.com/shorts/G5TW1kj028g',
+    videoUrl: 'https://youtube.com/shorts/AGgargIWLX4?si=ItbhaMgTReC2ThFE',
   },
   {
     id: 'double-front',

@@ -4,11 +4,21 @@ import { skillTreeData, Skill } from '@/data/skillTreeData';
 const SHEET_CSV_URL =
   'https://docs.google.com/spreadsheets/d/e/2PACX-1vTonXeCX8scjv-zj5-K9kovfa69qTWkJXD4EwpmMhNg81dpH38zPAQqN67Yr3V_NaLkZouyVI_ZNajg/pub?gid=2087969470&single=true&output=csv';
 
+// Tree center x — skills to the left are One Arm, to the right are Two Arm
+const TREE_CENTER_X = 960;
+
 interface SheetRow {
   name: string;
   isKey: boolean;
+  level1: string;
   videoUrl: string;
   description: string;
+}
+
+function getSection(x: number): string {
+  if (x < TREE_CENTER_X) return 'one arm';
+  if (x > TREE_CENTER_X) return 'two arm';
+  return 'c-shaping';
 }
 
 function parseCSV(csv: string): SheetRow[] {
@@ -35,6 +45,7 @@ function parseCSV(csv: string): SheetRow[] {
     return {
       name:        cols[0] || '',
       isKey:       (cols[1] || '').toLowerCase() === 'yes',
+      level1:      (cols[3] || '').toLowerCase(),
       videoUrl:    cols[6] || '',
       description: cols[7] || '',
     };
@@ -47,13 +58,22 @@ async function fetchAndMerge(): Promise<Skill[]> {
   const csv = await res.text();
   const rows = parseCSV(csv);
 
-  // Build lookup by lowercase name
-  const sheetMap = new Map<string, SheetRow>();
-  rows.forEach(r => sheetMap.set(r.name.toLowerCase(), r));
+  // Build two lookup maps:
+  // 1. Composite key (name|level1) for disambiguating One Arm vs Two Arm duplicates
+  // 2. Name-only fallback for skills that only appear once
+  const sheetMapComposite = new Map<string, SheetRow>();
+  const sheetMapName = new Map<string, SheetRow>();
+  rows.forEach(r => {
+    const compositeKey = `${r.name.toLowerCase()}|${r.level1}`;
+    sheetMapComposite.set(compositeKey, r);
+    sheetMapName.set(r.name.toLowerCase(), r);
+  });
 
-  // Merge: sheet overrides name, description, videoUrl, isKey on matching skills
+  // Merge: sheet overrides description, videoUrl, isKey on matching skills
   return skillTreeData.map(skill => {
-    const match = sheetMap.get(skill.name.toLowerCase());
+    const section = getSection(skill.x);
+    const compositeKey = `${skill.name.toLowerCase()}|${section}`;
+    const match = sheetMapComposite.get(compositeKey) ?? sheetMapName.get(skill.name.toLowerCase());
     if (!match) return skill;
     return {
       ...skill,
