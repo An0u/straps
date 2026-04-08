@@ -227,7 +227,7 @@ export const skillTreeData: Skill[] = [
     state: 'active',
     x: 960,
     y: 1450,
-    connections: ['front-c']
+    connections: ['front-c', 'side-c']
   },
 
   // ── LEVEL 3 — Two Arm Spin ───────────────────────────────────────────────────
@@ -546,6 +546,7 @@ export const skillTreeData: Skill[] = [
     x: 1860,
     y: 75,
     connections: [],
+    videoUrl: 'https://pub-a63668e636f74423bd8c02be5fd4da4b.r2.dev/straightjacket-reverse.mp4'
   },
 
   // ── LEVEL 4 — two-spin-center chain ─────────────────────────────────────────────────
@@ -576,6 +577,7 @@ export const skillTreeData: Skill[] = [
     x: 1710,
     y: 375,
     connections: ['2-arm-skin-the-cat'],
+    videoUrl: 'https://pub-a63668e636f74423bd8c02be5fd4da4b.r2.dev/2-arm-inversion.mp4'
   },
   {
     id: '2-arm-skin-the-cat',
@@ -693,7 +695,7 @@ export const skillTreeData: Skill[] = [
     x: 1860,
     y: 675,
     connections: ['press-handstand'],
-	videoUrl: 'https://www.youtube.com/shorts/4ENCBawZ2pk',
+	videoUrl: 'https://www.youtube.com/watch?v=4ENCBawZ2pk',
   },
   {
     id: 'press-handstand',
@@ -868,6 +870,7 @@ export const skillTreeData: Skill[] = [
     x: 1710,
     y: 1125,
     connections: ['disloc'],
+    videoUrl: 'https://pub-a63668e636f74423bd8c02be5fd4da4b.r2.dev/armpit-beats.mp4'
   },
   {
     id: 'disloc',
@@ -1014,14 +1017,14 @@ export const skillTreeData: Skill[] = [
   {
     id: 'meathook-1',
     name: 'Meathook',
-    description: 'One-arm position with closed legs raised to the side; the hanging arm held tightly to the body with stretched free arm next to the ear; body in a closed hooked shape',
+    description: 'Hanging with legs raised and pelvis lifted to the side. Arm held tight to body.',
     prerequisites: ['one-spin-reverse'],
     type: 'regular',
     state: 'inactive',
     x: 210,
     y: 75,
     connections: ['split-grip-to-flag'],
-    videoUrl: 'https://youtube.com/shorts/UiYRfphWzLk',
+    videoUrl: 'https://www.youtube.com/watch?v=MsLbJOZAW9M',
   },
   {
     id: 'split-grip-to-flag',
@@ -1111,26 +1114,27 @@ export const skillTreeData: Skill[] = [
   {
     id: 'flare-1',
     name: 'Flare',
-    description: 'Dynamic swinging movement with body extended horizontally while spinning in reverse direction',
+    description: 'Horizontal Flag position performed in rotation. Body tilted to one side with arm tucked to back.',
     prerequisites: ['one-spin-normal'],
-    type: 'regular',
+    type: 'key' as const,
+    isGoldBorder: true,
     state: 'inactive',
     x: 210,
     y: 225,
     connections: ['nutcracker-1'],
-    videoUrl: 'https://youtube.com/shorts/oB5ib9u2fT4',
+    videoUrl: 'https://youtube.com/shorts/LngeQfLsL3c',
   },
   {
     id: 'nutcracker-1',
     name: 'Nutcracker',
-    description: 'One-arm position with legs separated and turned out; outer leg in hooked meathook shape; back stretched upward pushing hips toward wrist',
+    description: 'Inverted position with legs separated and turned out. Back stretched pushing hips toward wrist.',
     prerequisites: ['one-spin-normal'],
     type: 'regular',
     state: 'inactive',
     x: 60,
     y: 225,
     connections: ['reverse-meathook'],
-    videoUrl: 'https://youtube.com/shorts/Freat_9N9FQ',
+    videoUrl: 'https://youtube.com/shorts/zKKMrqKPJWY',
   },
   {
     id: 'reverse-meathook',
@@ -1147,7 +1151,7 @@ export const skillTreeData: Skill[] = [
   {
     id: 'flare-to-flag-1',
     name: 'Flare To Flag',
-    description: 'Dynamic flaring movement transitioning into a one-arm Flag position (horizontal inverted) while spinning forward',
+    description: 'Transition from flare to Flag while rotating. Continuous arm rotation from wrist through body.',
     prerequisites: ['one-spin-normal'],
     type: 'key',
     state: 'inactive',
@@ -1155,7 +1159,7 @@ export const skillTreeData: Skill[] = [
     x: -240,
     y: 225,
     connections: ['low-switch'],
-    videoUrl: 'https://youtube.com/shorts/FSWWEqdo3o8',
+    videoUrl: 'https://youtube.com/shorts/Rbs7Kw9xKU0',
   },
   {
     id: 'low-switch',
@@ -1167,6 +1171,7 @@ export const skillTreeData: Skill[] = [
     x: -390,
     y: 225,
     connections: ['nutcrcker-switch'],
+    videoUrl: 'https://pub-a63668e636f74423bd8c02be5fd4da4b.r2.dev/low-switch.mp4'
   },
   {
     id: 'nutcrcker-switch',
@@ -1241,18 +1246,19 @@ export const skillTreeData: Skill[] = [
     x: 210,
     y: 450,
     connections: ['high-switch-1'],
+    videoUrl: 'https://pub-a63668e636f74423bd8c02be5fd4da4b.r2.dev/straddle-rock-to-flag.mp4'
   },
   {
     id: 'high-switch-1',
     name: 'High Switch',
-    description: 'Transition from meathook to Flag position through vertical alignment with legs together; involves pelvis lift and half cat twist; performed without swinging momentum',
+    description: 'Fast transition between meathook and Flag positions at the peak of movement; involves stretching through vertical position with half cat twist',
     prerequisites: ['one-static-hanging'],
     type: 'regular',
     state: 'inactive',
     x: 60,
     y: 450,
     connections: ['inversion'],
-    videoUrl: 'https://youtube.com/shorts/ijT5BrdM0tg',
+    videoUrl: 'https://www.youtube.com/watch?v=FTWTzB1TrEo',
   },
   {
     id: 'inversion',
@@ -1264,6 +1270,7 @@ export const skillTreeData: Skill[] = [
     x: -90,
     y: 450,
     connections: ['inversion-to-meathook'],
+    videoUrl: 'https://pub-a63668e636f74423bd8c02be5fd4da4b.r2.dev/1-arm-inversion.mp4'
   },
   {
     id: 'inversion-to-meathook',
@@ -1405,14 +1412,14 @@ export const skillTreeData: Skill[] = [
   {
     id: 'disloc-1',
     name: 'Disloc',
-    description: 'Dislocate movement on one arm; outward rotation of hanging arm and shoulder allowing body to swing to opposite side of strap, maintaining axis and direction',
+    description: 'Shoulder rotation backward through full range. Continuous wrist rotation.',
     prerequisites: ['one-swing-rotating'],
     type: 'regular',
     state: 'inactive',
     x: 60,
     y: 963,
     connections: ['salto'],
-    videoUrl: 'https://youtube.com/shorts/8NfijlpC99A',
+    videoUrl: 'https://youtube.com/shorts/uFZ2-c1vePE?si=NNe87_Q2NvrFPEfP',
   },
   {
     id: 'salto',
@@ -1466,14 +1473,14 @@ export const skillTreeData: Skill[] = [
   {
     id: 'inloc-1',
     name: 'Inloc',
-    description: 'Inlocate movement - opposite of dislocate; inward rotation pattern during swing, body passing through specific rotational positions',
+    description: 'Forward shoulder rotation. Body passes forward through arms.',
     prerequisites: ['one-swing-rotating-ii'],
     type: 'regular',
     state: 'inactive',
     x: 60,
     y: 1113,
     connections: ['double-front'],
-    videoUrl: 'https://youtube.com/shorts/AGgargIWLX4?si=ItbhaMgTReC2ThFE',
+    videoUrl: 'https://youtube.com/shorts/G5TW1kj028g',
   },
   {
     id: 'double-front',
@@ -1497,6 +1504,17 @@ export const skillTreeData: Skill[] = [
     type: 'regular',
     state: 'inactive',
     x: 960,
+    y: 1610,
+    connections: []
+  },
+  {
+    id: 'side-c',
+    name: 'Side C',
+    description: 'C shaping technique.',
+    prerequisites: ['c-shaping-static'],
+    type: 'regular',
+    state: 'inactive',
+    x: 1110,
     y: 1610,
     connections: []
   }
